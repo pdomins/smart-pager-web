@@ -1,10 +1,10 @@
-import ClientLanding from '../components/clientLanding'
-import Navbar from '../components/navbar'
+import Layout from "@/components/navigation/client/layout";
+import ClientLanding from "@/components/clientLanding";
+
 export default function Home() {
   return (
-    <>
-      <Navbar />  
-      <ClientLanding/>
-    </>
-  )
+    <Layout>
+      <ClientLanding />
+    </Layout>
+  );
 }
