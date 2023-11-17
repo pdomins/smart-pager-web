@@ -16,5 +16,10 @@ const config: Config = {
     },
   },
   plugins: [],
+  colors: {
+    'primary': '#faf4ee',
+  }
 }
+
+module.exports = config
 export default config
