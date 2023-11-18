@@ -1,7 +1,7 @@
 export default function AboutUs() {
   return (
     <div className="min-h-screen relative">
-      <p className="text-m pt-5 text-indigo-500">SOBRE NOSOTROS</p>
+      <p className="font-averta text-m pt-5 text-indigo-500">SOBRE NOSOTROS</p>
       <p className="text-5xl mb-4 mt-2 text-custom-blue">
         <b>
           En Smart Pager nuestra ídea es <br className="block md:inline" />{" "}

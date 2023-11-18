@@ -8,7 +8,7 @@ export default function Footer() {
         <Link
           href="/"
           className={
-            "pl-1 text-center font-light hover:text-amber-500 text-decoration-none "
+            "pl-1 text-center font-averta font-light hover:text-amber-500 text-decoration-none "
           }
         >
           Smart-Pager

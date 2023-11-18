@@ -21,6 +21,7 @@ const config: Config = {
       },
       fontFamily: {
         recoleta: ["Recoleta", "Recoleta Alt", "serif"],
+        averta: ["Averta", "Recoleta", "serif"],
       },
     },
   },
