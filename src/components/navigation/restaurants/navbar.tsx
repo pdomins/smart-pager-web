@@ -9,16 +9,16 @@ export default function Navbar() {
               <div className="flex space-x-16">
                 <a
                   href="#"
-                  className="font-sans font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                  className="text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
                   aria-current="page"
                 >
                   Registrar mi Comercio
                 </a>
                 <a
                   href="#"
-                  className="font-sans font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                  className="text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
                 >
-                  Iniciar Sesión
+                  Iniciar Sesion
                 </a>
               </div>
             </div>

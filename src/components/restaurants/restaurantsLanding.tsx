@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
+import AboutUs from "./about-us";
 
 export default function RestaurantsLanding() {
   const aboutUsRef = useRef<HTMLDivElement | null>(null);
@@ -35,30 +36,30 @@ export default function RestaurantsLanding() {
         <div className="absolute bottom-20 p-4 text-custom-blue">
           <p className="text-7xl mb-4">
             <b>
-              Le traemos una<br className="block md:inline" />
-            solución a tu comercio
-              <br className="block md:inline" /> 
+              Le traemos una
+              <br className="block md:inline" />
+              solución a tu comercio
+              <br className="block md:inline" />
               gastronómico para <br className="block md:inline" />
               las filas eternas
             </b>
           </p>
           <p className="text-4xl">
-            Hace{' '}
+            Hace{" "}
             <span className="border-b-4 border-amber-400 mb-4">
               <button id="scrollButton">click aquí</button>
-            </span>{' '}
-            para saber más
+            </span>{" "}
+            para saber mas
           </p>
         </div>
       </div>
-      <main className="flex-grow overflow-y-auto mt-16">
+      <div className="flex-grow overflow-y-auto">
         <div className="min-h-screen">
           <motion.div ref={aboutUsRef} initial={{ y: 0 }} animate={controls}>
-            <p id="about-us">contratanos hijo de puta</p>
-            <p>o te vamos a matar</p>
+            <AboutUs />
           </motion.div>
         </div>
-      </main>
+      </div>
     </>
   );
 }
