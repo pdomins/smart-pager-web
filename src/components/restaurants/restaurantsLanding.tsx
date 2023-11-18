@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-export default function ClientLanding() {
+export default function RestaurantsLanding() {
   const aboutUsRef = useRef<HTMLDivElement | null>(null);
   const controls = useAnimation();
 
@@ -13,19 +13,16 @@ export default function ClientLanding() {
   };
 
   useEffect(() => {
-    // Add an event listener to handle scrolling to the aboutUsRef element
     const handleScrollToAboutUs = () => {
       scrollToElement(aboutUsRef);
     };
 
-    // Attach the event listener to a button or any other trigger
     const scrollButton = document.getElementById("scrollButton");
     if (scrollButton) {
       scrollButton.addEventListener("click", handleScrollToAboutUs);
     }
 
     return () => {
-      // Remove the event listener when the component unmounts
       if (scrollButton) {
         scrollButton.removeEventListener("click", handleScrollToAboutUs);
       }
@@ -36,11 +33,13 @@ export default function ClientLanding() {
     <>
       <div className="min-h-screen flex flex-col relative">
         <div className="absolute bottom-20 p-4 text-custom-blue">
-          <p className="text-7xl mb-2">
+          <p className="text-7xl mb-4">
             <b>
-              Te traemos <br className="block md:inline" />
-              una solución
-              <br className="block md:inline" /> a las filas eternas
+              Le traemos una<br className="block md:inline" />
+            solución a tu comercio
+              <br className="block md:inline" /> 
+              gastronómico para <br className="block md:inline" />
+              las filas eternas
             </b>
           </p>
           <p className="text-4xl">
@@ -55,8 +54,8 @@ export default function ClientLanding() {
       <main className="flex-grow overflow-y-auto mt-16">
         <div className="min-h-screen">
           <motion.div ref={aboutUsRef} initial={{ y: 0 }} animate={controls}>
-            <p id="about-us">This is some content below the text.</p>
-            <p>It will scroll along with the rest of the page.</p>
+            <p id="about-us">contratanos hijo de puta</p>
+            <p>o te vamos a matar</p>
           </motion.div>
         </div>
       </main>
