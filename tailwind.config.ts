@@ -16,12 +16,12 @@ const config: Config = {
       backgroundColor: {
         "custom-bg": "#FAF4EE",
       },
+      colors: {
+        "custom-blue": "#281952",
+      },
     },
   },
   plugins: [],
-  colors: {
-    primary: "#faf4ee",
-  },
 };
 
 module.exports = config;
