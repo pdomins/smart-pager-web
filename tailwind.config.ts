@@ -19,6 +19,9 @@ const config: Config = {
       colors: {
         "custom-blue": "#281952",
       },
+      fontFamily: {
+        recoleta: ["Recoleta", "Recoleta Alt", "serif"],
+      },
     },
   },
   plugins: [],
