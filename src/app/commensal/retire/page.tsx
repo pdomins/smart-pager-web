@@ -2,7 +2,7 @@
 import Layout from "@/components/navigation/commensal/layout";
 import RetireScreen from "@/components/commensal/retire/retireScreen";
 
-export default function Home() {
+export default function Page() {
   return (
     <Layout>
       <RetireScreen />
