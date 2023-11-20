@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, use, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useAnimation } from "framer-motion";
-import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
+import foodtrcuckLogo from "../../app/images/food_truck_logo.png";
 import QueueForm from "../forms/queueForm";
 import RetireForm from "../forms/retirementForm";
 export default function ClientLanding() {
@@ -18,11 +18,11 @@ export default function ClientLanding() {
 
   const toggleQueueFormVisibility = () => {
     setShowQueueForm(!showQueueForm); // Toggle the visibility state
-  }; 
+  };
 
   const toggleRetireFormVisibility = () => {
     setShowRetireForm(!showRetireForm); // Toggle the visibility state
-  }
+  };
 
   useEffect(() => {
     // Add an event listener to handle scrolling to the aboutUsRef element
@@ -46,50 +46,45 @@ export default function ClientLanding() {
 
   return (
     <>
- 
-    <div className="flex absolute top-1/2 left-1/2  translate-x-1/2 -translate-y-1/2  w-1/3 flex-row items-center">
-          <img
-            className="object-contain blur-sm box-content"
-            src={foodtrcuckLogo.src}
-            alt="logo"
-          />
-    </div>
+      <div className="flex absolute top-1/2 left-1/2  translate-x-1/2 -translate-y-1/2  w-1/3 flex-row items-center">
+        <img
+          className="object-contain blur-sm box-content"
+          src={foodtrcuckLogo.src}
+          alt="logo"
+        />
+      </div>
       {showQueueForm && <QueueForm />}
       {showRetireForm && <RetireForm />}
       <div className="min-h-screen flex flex-col justify-center relative ">
         <div className="p-4">
           <p className="text-7xl font-sans mb-2 text-center">
-            <b>
-             the food truck shop
-            </b>
+            <b>the food truck shop</b>
           </p>
           <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
             <b>
-              Te traemos 
-              una solución
+              Te traemos una solución
               <br className="block md:inline" /> a las filas eternas
             </b>
           </p>
           <div className="flex font-sans flex-col">
-              <button
-                onClick={toggleQueueFormVisibility}
-                className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
-                  Anotarme a la fila
-              </button>
-              <button 
-                onClick={toggleRetireFormVisibility}
-                className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
-                  Retirar pedido
-              </button>
-              <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
-                Menu
-              </button>
+            <button
+              onClick={toggleQueueFormVisibility}
+              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+            >
+              Anotarme a la fila
+            </button>
+            <button
+              onClick={toggleRetireFormVisibility}
+              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+            >
+              Retirar pedido
+            </button>
+            <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+              Menu
+            </button>
           </div>
         </div>
       </div>
-
-
-
     </>
   );
 }
