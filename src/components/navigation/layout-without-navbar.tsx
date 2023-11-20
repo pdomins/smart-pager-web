@@ -1,11 +1,10 @@
-import Footer from "../footer";
+import Footer from "./footer";
 
 interface LayoutProps {
-  // Define the types of props you expect here
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = (props) => {
+const LayoutWithOutNavbar: React.FC<LayoutProps> = (props) => {
   return (
     <div className="bg-custom-bg">
       <div className="flex flex-col justify-between min-h-screen">
@@ -18,4 +17,4 @@ const Layout: React.FC<LayoutProps> = (props) => {
   );
 };
 
-export default Layout;
+export default LayoutWithOutNavbar;
