@@ -11,7 +11,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className + "font-recoleta"}>{children}</body>
+      <body className={inter.className + "font-recoleta antialiased"}>{children}</body>
     </html>
   );
 }
