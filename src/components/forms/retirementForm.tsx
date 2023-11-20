@@ -4,17 +4,13 @@ import React, { useRef, useEffect } from "react";
 export default function RetireForm() {
   const router = useRouter();
 
-  function handleClick() {
-    router.push("/commensal/retire");
-  }
-
   useEffect(() => {
     //on submit we redirect to /commensal/queue
-    const form = document.getElementById("queueForm");
+    const form = document.getElementById("retireForm");
 
     const handleQueueFormSubmit = (e: Event) => {
       e.preventDefault();
-      window.location.href = "/commensal/queue";
+      router.push("/commensal/retire");
     };
     if (form) {
       form.addEventListener("submit", handleQueueFormSubmit);
@@ -30,7 +26,7 @@ export default function RetireForm() {
   return (
     <>
       <div className="min-h-screen font-sans flex flex-col justify-center relative ">
-        <form className="w-full max-w-lg">
+        <form id="retireForm" className="w-full max-w-lg">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
               Inserte su número de orden
@@ -55,13 +51,6 @@ export default function RetireForm() {
           </div>
 
           <button
-            onClick={() => {
-              try {
-                handleClick;
-              } catch (error) {
-                console.log(error);
-              }
-            }}
             className="bg-amber-500 border-gray-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
           >
             Siguiente

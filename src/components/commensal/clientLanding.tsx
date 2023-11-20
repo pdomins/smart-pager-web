@@ -3,11 +3,13 @@ import { useAnimation } from "framer-motion";
 import foodtrcuckLogo from "../../app/images/food_truck_logo.png";
 import QueueForm from "../forms/queueForm";
 import RetireForm from "../forms/retirementForm";
+import { useRouter } from "next/navigation";
+
 export default function ClientLanding() {
   const aboutUsRef = useRef<HTMLDivElement | null>(null);
-  const controls = useAnimation();
   const [showQueueForm, setShowQueueForm] = useState(false);
   const [showRetireForm, setShowRetireForm] = useState(false);
+  const router = useRouter();
 
   const scrollToElement = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
@@ -79,7 +81,9 @@ export default function ClientLanding() {
             >
               Retirar pedido
             </button>
-            <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+            <button
+            onClick={()=> router.push("/commensal/menu")}
+             className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
               Menu
             </button>
           </div>
