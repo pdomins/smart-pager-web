@@ -1,8 +1,8 @@
-import Footer from "../footer";
+import Footer from '../footer'
 
 interface LayoutProps {
   // Define the types of props you expect here
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
         <Footer />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

@@ -1,27 +1,27 @@
-"use client";
-import React from "react";
-import foodtrcuckLogo from "../../app/images/food_truck_logo.png";
-import { LeftOutlined } from "@ant-design/icons";
+'use client'
+import React from 'react'
+import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
+import { LeftOutlined } from '@ant-design/icons'
 
 export default function CommensalMenu() {
   const menuItems = [
     {
-      name: "Smash Burger simple",
-      description: "Medallon de 100g doble cheddar",
-      price: "$1500",
+      name: 'Smash Burger simple',
+      description: 'Medallon de 100g doble cheddar',
+      price: '$1500',
     },
     {
-      name: "Smash Burger doble",
-      description: "Dos medallones de 100g doble cheddar",
-      price: "$3000",
+      name: 'Smash Burger doble',
+      description: 'Dos medallones de 100g doble cheddar',
+      price: '$3000',
     },
     {
-      name: "Mistery burger",
-      description: "Medallon de 100g doble cheddar, salsa secreta, panceta",
-      price: "$2800",
+      name: 'Mistery burger',
+      description: 'Medallon de 100g doble cheddar, salsa secreta, panceta',
+      price: '$2800',
     },
     // Add more menu items as needed
-  ];
+  ]
 
   return (
     <>
@@ -51,5 +51,5 @@ export default function CommensalMenu() {
         </div>
       </div>
     </>
-  );
+  )
 }

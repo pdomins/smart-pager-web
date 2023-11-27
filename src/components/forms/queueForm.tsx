@@ -1,27 +1,27 @@
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 export default function QueueForm() {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     //on submit we redirect to /commensal/queue
-    const form = document.getElementById("queueForm");
+    const form = document.getElementById('queueForm')
 
     const handleQueueFormSubmit = (e: Event) => {
-      e.preventDefault();
-      router.push("/commensal/queue");
-    };
+      e.preventDefault()
+      router.push('/commensal/queue')
+    }
     if (form) {
-      form.addEventListener("submit", handleQueueFormSubmit);
+      form.addEventListener('submit', handleQueueFormSubmit)
     }
 
     return () => {
       if (form) {
-        form.removeEventListener("submit", handleQueueFormSubmit);
+        form.removeEventListener('submit', handleQueueFormSubmit)
       }
-    };
-  });
+    }
+  })
 
   return (
     <>
@@ -70,5 +70,5 @@ export default function QueueForm() {
         </form>
       </div>
     </>
-  );
+  )
 }

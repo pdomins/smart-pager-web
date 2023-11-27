@@ -1,14 +1,14 @@
-import * as React from "react";
+import * as React from 'react'
 
 interface Props {
-  children: React.ReactNode;
-  value: number;
-  index: number;
-  other: string;
+  children: React.ReactNode
+  value: number
+  index: number
+  other: string
 }
 
 const TabPanel = (props: Props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -20,7 +20,7 @@ const TabPanel = (props: Props) => {
     >
       {value === index && <div className="p-3">{children}</div>}
     </div>
-  );
-};
+  )
+}
 
-export default TabPanel;
+export default TabPanel

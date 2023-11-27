@@ -1,50 +1,50 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useAnimation } from "framer-motion";
-import foodtrcuckLogo from "../../app/images/food_truck_logo.png";
-import QueueForm from "../forms/queueForm";
-import RetireForm from "../forms/retirementForm";
-import { useRouter } from "next/navigation";
+import React, { useRef, useEffect, useState } from 'react'
+import { useAnimation } from 'framer-motion'
+import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
+import QueueForm from '../forms/queueForm'
+import RetireForm from '../forms/retirementForm'
+import { useRouter } from 'next/navigation'
 
 export default function ClientLanding() {
-  const aboutUsRef = useRef<HTMLDivElement | null>(null);
-  const [showQueueForm, setShowQueueForm] = useState(false);
-  const [showRetireForm, setShowRetireForm] = useState(false);
-  const router = useRouter();
+  const aboutUsRef = useRef<HTMLDivElement | null>(null)
+  const [showQueueForm, setShowQueueForm] = useState(false)
+  const [showRetireForm, setShowRetireForm] = useState(false)
+  const router = useRouter()
 
   const scrollToElement = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
-      const yOffset = ref.current.offsetTop;
-      window.scrollTo({ top: yOffset, behavior: "smooth" });
+      const yOffset = ref.current.offsetTop
+      window.scrollTo({ top: yOffset, behavior: 'smooth' })
     }
-  };
+  }
 
   const toggleQueueFormVisibility = () => {
-    setShowQueueForm(!showQueueForm); // Toggle the visibility state
-  };
+    setShowQueueForm(!showQueueForm) // Toggle the visibility state
+  }
 
   const toggleRetireFormVisibility = () => {
-    setShowRetireForm(!showRetireForm); // Toggle the visibility state
-  };
+    setShowRetireForm(!showRetireForm) // Toggle the visibility state
+  }
 
   useEffect(() => {
     // Add an event listener to handle scrolling to the aboutUsRef element
     const handleScrollToAboutUs = () => {
-      scrollToElement(aboutUsRef);
-    };
+      scrollToElement(aboutUsRef)
+    }
 
     // Attach the event listener to a button or any other trigger
-    const scrollButton = document.getElementById("scrollButton");
+    const scrollButton = document.getElementById('scrollButton')
     if (scrollButton) {
-      scrollButton.addEventListener("click", handleScrollToAboutUs);
+      scrollButton.addEventListener('click', handleScrollToAboutUs)
     }
 
     return () => {
       // Remove the event listener when the component unmounts
       if (scrollButton) {
-        scrollButton.removeEventListener("click", handleScrollToAboutUs);
+        scrollButton.removeEventListener('click', handleScrollToAboutUs)
       }
-    };
-  }, [aboutUsRef]);
+    }
+  }, [aboutUsRef])
 
   return (
     <>
@@ -82,13 +82,14 @@ export default function ClientLanding() {
               Retirar pedido
             </button>
             <button
-            onClick={()=> router.push("/commensal/menu")}
-             className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+              onClick={() => router.push('/commensal/menu')}
+              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+            >
               Ver menú
             </button>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

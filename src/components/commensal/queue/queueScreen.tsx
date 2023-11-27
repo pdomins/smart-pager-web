@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, use, useState } from "react";
-import foodtrcuckLogo from "../../../app/images/food_truck_logo.png";
+import React, { useRef, useEffect, use, useState } from 'react'
+import foodtrcuckLogo from '../../../app/images/food_truck_logo.png'
 export default function QueueScreen() {
   return (
     <>
@@ -15,16 +15,12 @@ export default function QueueScreen() {
           <b>¡Listo!</b>
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-          <b>
-            Nosotros te avisamos por email cuando tu
-            mesa este lista.
-          </b>
+          <b>Nosotros te avisamos por email cuando tu mesa este lista.</b>
         </p>
-        <button
-             className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
-              Ver menú
+        <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+          Ver menú
         </button>
       </div>
     </>
-  );
+  )
 }

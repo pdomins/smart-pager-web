@@ -1,7 +1,7 @@
-import Footer from "./footer";
+import Footer from './footer'
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const LayoutWithOutNavbar: React.FC<LayoutProps> = (props) => {
@@ -14,7 +14,7 @@ const LayoutWithOutNavbar: React.FC<LayoutProps> = (props) => {
         <Footer />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LayoutWithOutNavbar;
+export default LayoutWithOutNavbar

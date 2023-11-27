@@ -1,34 +1,34 @@
-import React, { useRef, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import AboutUs from "./about-us";
+import React, { useRef, useEffect } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import AboutUs from './about-us'
 
 export default function RestaurantsLanding() {
-  const aboutUsRef = useRef<HTMLDivElement | null>(null);
-  const controls = useAnimation();
+  const aboutUsRef = useRef<HTMLDivElement | null>(null)
+  const controls = useAnimation()
 
   const scrollToElement = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
-      const yOffset = ref.current.offsetTop;
-      window.scrollTo({ top: yOffset, behavior: "smooth" });
+      const yOffset = ref.current.offsetTop
+      window.scrollTo({ top: yOffset, behavior: 'smooth' })
     }
-  };
+  }
 
   useEffect(() => {
     const handleScrollToAboutUs = () => {
-      scrollToElement(aboutUsRef);
-    };
+      scrollToElement(aboutUsRef)
+    }
 
-    const scrollButton = document.getElementById("scrollButton");
+    const scrollButton = document.getElementById('scrollButton')
     if (scrollButton) {
-      scrollButton.addEventListener("click", handleScrollToAboutUs);
+      scrollButton.addEventListener('click', handleScrollToAboutUs)
     }
 
     return () => {
       if (scrollButton) {
-        scrollButton.removeEventListener("click", handleScrollToAboutUs);
+        scrollButton.removeEventListener('click', handleScrollToAboutUs)
       }
-    };
-  }, [aboutUsRef]);
+    }
+  }, [aboutUsRef])
 
   return (
     <>
@@ -45,10 +45,10 @@ export default function RestaurantsLanding() {
             </b>
           </p>
           <p className="text-4xl">
-            Hace{" "}
+            Hace{' '}
             <span className="border-b-4 border-amber-400 mb-4">
               <button id="scrollButton">click aquí</button>
-            </span>{" "}
+            </span>{' '}
             para saber mas
           </p>
         </div>
@@ -61,5 +61,5 @@ export default function RestaurantsLanding() {
         </div>
       </div>
     </>
-  );
+  )
 }
