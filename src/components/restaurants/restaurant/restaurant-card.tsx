@@ -13,13 +13,13 @@ export default function RestaurantCard(props: Props) {
         {" " + props.description}
       </h4>
       <div className="flex justify-end items-center space-x-2 ml-auto pl-1">
-        <button className="btn btn-link btn-rounded text--500 hover:text-green-900 h-min flex items-center">
+        <button className="btn btn-link btn-rounded text-gray-500 hover:text-green-500 h-min flex items-center">
           <CheckOutlinedIcon
             fontSize="small"
             className="group-hover:text-white mr-2"
           />
         </button>
-        <button className="btn btn-link btn-rounded text-amber-500 hover:text-amber-900 h-min flex items-center">
+        <button className="btn btn-link btn-rounded text-gray-500 hover:text-amber-500 h-min flex items-center">
           <ClearIcon fontSize="small" className="group-hover:text-white mr-2" />
         </button>
       </div>
