@@ -16,10 +16,14 @@ export default function RetireScreen() {
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
           <b>
-            No tenés que hacer nada. Nosotros te avisamos por mail cuando tu
+            Nosotros te avisamos por email cuando tu
             pedido este listo.
           </b>
         </p>
+      <button
+             className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+              Ver menú
+      </button>
       </div>
     </>
   );

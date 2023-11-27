@@ -12,16 +12,18 @@ export default function QueueScreen() {
       </div>
       <div className="min-h-screen flex flex-col justify-center relative ">
         <p className="text-6xl font-sans mb-2 text-center">
-          <b>
-            tenés <br /> 7 <br /> Personas adelante
-          </b>
+          <b>¡Listo!</b>
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
           <b>
-            tiempo estimado: 30 minutos, nosotros te avisamos por mail cuando la
-            mesa este lista
+            Nosotros te avisamos por email cuando tu
+            mesa este lista.
           </b>
         </p>
+        <button
+             className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
+              Ver menú
+        </button>
       </div>
     </>
   );

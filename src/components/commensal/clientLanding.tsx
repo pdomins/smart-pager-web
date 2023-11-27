@@ -73,7 +73,7 @@ export default function ClientLanding() {
               onClick={toggleQueueFormVisibility}
               className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
             >
-              Anotarme a la fila
+              Anotarse para comer
             </button>
             <button
               onClick={toggleRetireFormVisibility}
@@ -84,7 +84,7 @@ export default function ClientLanding() {
             <button
             onClick={()=> router.push("/commensal/menu")}
              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded">
-              Menu
+              Ver menú
             </button>
           </div>
         </div>
