@@ -11,7 +11,7 @@ export default function RestaurantDashboard() {
     setValue(newValue)
   }
 
-  let tabStyle = 'capitalize'
+  const tabStyle = 'capitalize'
 
   return (
     <div>

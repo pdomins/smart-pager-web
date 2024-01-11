@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import LayoutWithOutNavbar from '@/components/navigation/layout-without-navbar'
 import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'

@@ -15,13 +15,18 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "antd": "^5.11.2",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "cryptr": "^6.3.0",
     "framer-motion": "^10.16.5",
     "next": "14.0.3",
+    "next-connect": "^1.0.0-next.4",
     "prettier": "^3.1.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
