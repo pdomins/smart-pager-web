@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import RestaurantCard from './restaurant-card'
 import TabPanel from './tab-panel'
 import qr from '@/app/images/qr.png'
+import { useQRCode } from 'next-qrcode';
 
 export default function RestaurantDashboard() {
   const [value, setValue] = useState(0)
-
+  const { Canvas } = useQRCode();
+  
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
@@ -87,10 +89,23 @@ export default function RestaurantDashboard() {
       </TabPanel>
       <TabPanel value={value} index={3} other={''}>
         <div className="flex items-center justify-center text-center mt-4">
-          <img
+          {/* <img
             style={{ height: '250px', width: '250px' }}
             src={qr.src}
             alt="logo"
+          /> */}
+          <Canvas
+            text={'https://github.com/bunlong/next-qrcode'} // todo: change to the restaurant url form
+            options={{
+              errorCorrectionLevel: 'M',
+              margin: 3,
+              scale: 4,
+              width: 200,
+              color: {
+                dark: '#000000',
+                light: '#FFFFFFFF',
+              },
+            }}
           />
         </div>
       </TabPanel>
