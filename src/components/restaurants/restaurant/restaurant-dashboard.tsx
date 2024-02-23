@@ -2,13 +2,13 @@ import { Tab, Tabs } from '@mui/material'
 import React, { useState } from 'react'
 import RestaurantCard from './restaurant-card'
 import TabPanel from './tab-panel'
-import qr from '@/app/images/qr.png'
-import { useQRCode } from 'next-qrcode';
+import { useQRCode } from 'next-qrcode'
 
 export default function RestaurantDashboard() {
   const [value, setValue] = useState(0)
-  const { Canvas } = useQRCode();
-  
+  const { Canvas } = useQRCode()
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
