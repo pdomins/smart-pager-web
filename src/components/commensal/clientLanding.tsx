@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { useAnimation } from 'framer-motion'
 import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
 import QueueForm from '../forms/queueForm'
 import RetireForm from '../forms/retirementForm'

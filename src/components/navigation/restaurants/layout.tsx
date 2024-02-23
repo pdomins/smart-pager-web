@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
+
 import Footer from '../footer'
 import Navbar from './navbar'
 
 interface LayoutProps {
-  // Define the types of props you expect here
   children: React.ReactNode
 }
 

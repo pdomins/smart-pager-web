@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, use, useState } from 'react'
+import React from 'react'
 import foodtrcuckLogo from '../../../app/images/food_truck_logo.png'
 export default function QueueScreen() {
   return (
