@@ -23,9 +23,8 @@ export default class RestaurantService {
         return result.rows
     }
 
-    public async createRestaurant(name: string, email: string, password: string) {
-        const hashedPassword = this.cryptoHelper.hashWithSalt(password)
-        const result = await sql`INSERT INTO Restaurants (name, email, hashed_password) VALUES (${name}, ${email}, ${hashedPassword})`
+    public async createRestaurant(email: string, name: string) {
+        const result = await sql`INSERT INTO Restaurants (email, name) VALUES (${email}, ${name})`
         return result
     
     }
@@ -35,13 +34,8 @@ export default class RestaurantService {
         return result
     }
 
-    public async login(email: string, password: string) {
-        const result = await sql`SELECT * FROM Restaurants WHERE email = ${email}`
-        
-        if (result.rows.length === 0 || !this.cryptoHelper.validateSaltedHash(password, result.rows[0].hashed_password)) {
-            return { error: 'error papi' } //TODO: ERROR CONSTANTS?
-        }
-
-        return result.rows
+    public async retireRestaurantByEmail(email: string) {
+        const result = await sql`DELETE FROM Restaurants WHERE email = ${email}`
+        return result
     }
 }
