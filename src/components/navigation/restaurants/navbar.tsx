@@ -13,7 +13,8 @@ export default function Navbar() {
               {!session ? ( 
               <div className="flex space-x-16">
                 <button
-                  onClick={() => signIn()}
+                  // onClick={() =>  signIn()}
+                  onClick={() =>  signIn(undefined, {callbackUrl: "http://localhost:3000/restaurants"})}
                   className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
                   aria-current="page"
                 >

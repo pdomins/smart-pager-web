@@ -16,17 +16,19 @@ const handler = NextAuth({
     callbacks: {
         async signIn({ user }) {
             // console.log("user:", user,"account: ", account,"profile: ", profile,"email: ", email,"credentials: ", credentials)
-            const restaurant = await sql`SELECT * FROM Restaurants WHERE email = ${user.email}`
+            const restaurant = await sql`SELECT * FROM Restaurants WHERE email = ${user.email}` //TODO: call the service, maybe use id
             if (restaurant.rows.length === 0 && user.email) { //i.e. the user is new
                 RestaurantService.getInstance().createRestaurant(user.email, user.name ?? '')
+                console.log("new user")
             } else {
                 console.log("old user");//TODO: might wanna do something here
             }
           return true
         },
         // async redirect({ url, baseUrl }) {
-        //     // console.log("redirect: ",url, baseUrl)
-        //   return baseUrl
+        //     console.log("redirect: ",url, baseUrl)
+        // //   return `${baseUrl}/restaurants/1`
+        //     return baseUrl
         // },
         // async session({ session, user, token }) {
         //     // console.log("session: ", session, user, token)
