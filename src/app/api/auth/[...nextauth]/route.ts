@@ -1,6 +1,6 @@
 // export { GET, POST } from "@/auth";
 // export const runtime = "edge";
-import RestaurantService from "@/services/restaurant.service";
+import { createRestaurant } from "@/services/restaurant.service";
 import { sql } from "@vercel/postgres";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -18,7 +18,7 @@ const handler = NextAuth({
             // console.log("user:", user,"account: ", account,"profile: ", profile,"email: ", email,"credentials: ", credentials)
             const restaurant = await sql`SELECT * FROM Restaurants WHERE email = ${user.email}` //TODO: call the service, maybe use id
             if (restaurant.rows.length === 0 && user.email) { //i.e. the user is new
-                RestaurantService.getInstance().createRestaurant(user.email, user.name ?? '')
+                createRestaurant(user.email, user.name ?? '')
                 console.log("new user")
             } else {
                 console.log("old user");//TODO: might wanna do something here

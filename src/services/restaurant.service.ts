@@ -1,52 +1,41 @@
+"use server"
+import { Restaurant } from "@/types/restaurant"
 import { sql } from "@vercel/postgres"
-export default class RestaurantService {
 
-    private static instance : RestaurantService
 
-    static getInstance() {
-        if (!RestaurantService.instance) {
-            RestaurantService.instance = new RestaurantService()
-        }
-        return RestaurantService.instance
-    }
+export async function getRestaurants() {
+    const result = await sql`SELECT * FROM Restaurants`
+    console.log(result)
+    return result.rows
+}
 
-    constructor() {
-    }
+export async function getRestaurantById(id: string) {
+    const result = await sql`SELECT * FROM Restaurants WHERE id = ${id}`
+    return result.rows[0]
+}
 
-    public async getRestaurants() {
-        const result = await sql`SELECT * FROM Restaurants`
-        console.log(result)
-        return result.rows
-    }
-
-    public async getRestaurantById(id: string) {
-        const result = await sql`SELECT * FROM Restaurants WHERE id = ${id}`
-        return result.rows[0]
-    }
-
-    public async getRestaurantByEmail(email: string) {
-        console.log({
-            POSTGRES_URL: process.env.POSTGRES_URL,
-            POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING
-      });
-        const result = await sql`SELECT * FROM Restaurants WHERE email = ${email}`
-        
-        return result.rows[0]
-    }
-
-    public async createRestaurant(email: string, name: string) {
-        const result = await sql`INSERT INTO Restaurants (email, name) VALUES (${email}, ${name})`
-        return result
+export async function getRestaurantByEmail(email: string): Promise<Restaurant> {
+    console.log({
+        POSTGRES_URL: process.env.POSTGRES_URL,
+        POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING
+    });
+    const result = await sql`SELECT * FROM Restaurants WHERE email = ${email}`
     
-    }
+    return result.rows[0] as Restaurant
+}
 
-    public async retireRestaurant(id: string) {
-        const result = await sql`DELETE FROM Restaurants WHERE id = ${id}`
-        return result
-    }
+export async function createRestaurant(email: string, name: string) {
+    const result = await sql`INSERT INTO Restaurants (email, name) VALUES (${email}, ${name})`
+    return result
 
-    public async retireRestaurantByEmail(email: string) {
-        const result = await sql`DELETE FROM Restaurants WHERE email = ${email}`
-        return result
-    }
+}
+
+export async function retireRestaurant(id: string) {
+    const result = await sql`DELETE FROM Restaurants WHERE id = ${id}`
+    return result
+}
+
+export async function retireRestaurantByEmail(email: string) {
+    const result = await sql`DELETE FROM Restaurants WHERE email = ${email}`
+    return result
 }

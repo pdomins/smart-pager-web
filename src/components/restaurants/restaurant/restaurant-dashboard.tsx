@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import RestaurantCard from './restaurant-card'
 import TabPanel from './tab-panel'
 import { useQRCode } from 'next-qrcode'
+import { Restaurant } from '@/types/restaurant'
 
-export default function RestaurantDashboard() {
+export default function RestaurantDashboard({restaurantData}: {restaurantData: Restaurant}) {
   const [value, setValue] = useState(0)
   const { Canvas } = useQRCode()
 
@@ -18,7 +19,7 @@ export default function RestaurantDashboard() {
   return (
     <div>
       <p className="text-5xl mb-4 mt-2 text-center pt-2">
-        <b>La Panera Rosa</b>
+        <b>{restaurantData.name}</b>
       </p>
       <div className="flex justify-center">
         <Tabs
