@@ -38,18 +38,18 @@ export default function RestaurantsLanding() {
             <b>
               Le traemos una
               <br className="block md:inline" />
-              solución a tu comercio
+              solución a su comercio
               <br className="block md:inline" />
               gastronómico para <br className="block md:inline" />
               las filas eternas
             </b>
           </p>
           <p className="text-4xl">
-            Hace{' '}
+            Haz{' '}
             <span className="border-b-4 border-amber-400 mb-4">
               <button id="scrollButton">click aquí</button>
             </span>{' '}
-            para saber mas
+            para saber más
           </p>
         </div>
       </div>
