@@ -25,7 +25,7 @@ export default function RestaurantProfile({restaurantData}: {restaurantData: Res
                     <ArrowBackIcon style={{fontSize: '50px'}} className='mt-3 hover:text-sky-700'/>
                 </button>
             </div>
-            <p className="text-5xl mb-4 mt-4 text-center pt-2">
+            <p className="text-5xl mb-4 mt-4 mr-8 text-center pt-2">
                 <b>Perfil</b>
             </p>
             <div></div>
