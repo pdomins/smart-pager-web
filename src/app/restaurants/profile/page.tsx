@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 
 import LayoutWithOutNavbar from '@/components/navigation/layout-without-navbar'
 import { useSession } from 'next-auth/react'
-import { getRestaurantByEmail } from '@/services/restaurant.service'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantProfile from '@/components/restaurants/restaurant/profile'
 import Loading from '@/components/utils/loading'
+import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 // import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {

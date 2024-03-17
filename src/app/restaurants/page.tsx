@@ -6,6 +6,7 @@ import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-
 import { useSession } from 'next-auth/react'
 import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
+import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 // import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
@@ -35,8 +36,7 @@ export default function Page() {
       {restaurantData ? (
         <RestaurantDashboard restaurantData={restaurantData} />
       ) : (
-          <Loading />
-
+        <Loading />
       )}
     </LayoutWithOutNavbar>
   )
