@@ -20,8 +20,6 @@ export default function Page() {
             session?.user?.email as string
           );
           setRestaurantData(restaurant);
-          console.log("restaurant: ", restaurant);
-          // Now you have the restaurant data, but how you handle it depends on your use case
         } catch (error) {
           console.error("Error fetching restaurant data:", error);
         }
