@@ -1,10 +1,10 @@
 'use server'
 import { Restaurant } from '@/types/restaurant'
 import { sql } from '@vercel/postgres'
+import { unstable_noStore } from 'next/cache'
 
 export async function getRestaurants() {
   const result = await sql`SELECT * FROM Restaurants`
-  console.log(result)
   return result.rows
 }
 
@@ -43,9 +43,9 @@ export async function updateRestaurantMenu(id: number, menuURL: string) {
 }
 
 export async function getRestaurantMenu(id: number) {
+  unstable_noStore()
   const result = await sql`SELECT menu FROM restaurants
   WHERE id = ${id};`
 
-  console.log(result)
   return result.rows[0].menu
 }
