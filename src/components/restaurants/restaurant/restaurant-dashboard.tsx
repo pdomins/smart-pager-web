@@ -4,11 +4,13 @@ import RestaurantCard from './restaurant-card'
 import TabPanel from './tab-panel'
 import { useQRCode } from 'next-qrcode'
 import { Restaurant } from '@/types/restaurant'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useRouter } from 'next/navigation'
 
 export default function RestaurantDashboard({restaurantData}: {restaurantData: Restaurant}) {
   const [value, setValue] = useState(0)
   const { Canvas } = useQRCode()
-
+  const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
@@ -18,9 +20,18 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
 
   return (
     <div>
-      <p className="text-5xl mb-4 mt-2 text-center pt-2">
-        <b>{restaurantData.name}</b>
-      </p>
+      <div className='flex justify-between align-center'>
+        <div></div>
+        <p className="text-5xl mb-4 mt-2 text-center pt-2">
+          <b>{restaurantData.name}</b>
+        </p>
+        <button
+          onClick={() => router.push('/restaurants/profile')}
+          className="text-3xl hover:text-sky-700"
+          >
+        <AccountCircleIcon style={{fontSize: '50px'}} className='mt-3 hover:text-sky-700'/>
+        </button>
+      </div>
       <div className="flex justify-center">
         <Tabs
           value={value}

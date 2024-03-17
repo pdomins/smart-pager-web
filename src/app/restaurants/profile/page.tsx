@@ -2,10 +2,10 @@
 import React, { useState } from 'react'
 
 import LayoutWithOutNavbar from '@/components/navigation/layout-without-navbar'
-import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'
 import { useSession } from 'next-auth/react'
 import { getRestaurantByEmail } from '@/services/restaurant.service'
 import { Restaurant } from '@/types/restaurant'
+import RestaurantProfile from '@/components/restaurants/restaurant/profile'
 // import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
@@ -33,7 +33,7 @@ export default function Page() {
   return (
     <LayoutWithOutNavbar>
       {restaurantData ? (
-        <RestaurantDashboard restaurantData={restaurantData} />
+        <RestaurantProfile restaurantData={restaurantData} />
       ) : (
         <p>Loading restaurant data...</p> //TODO: Add a spinner here
       )}
