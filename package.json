@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@vercel/kv": "^1.0.1",
+    "@vercel/blob": "^0.22.1",
     "@vercel/postgres": "^0.7.2",
     "antd": "^5.11.2",
     "assert": "^2.1.0",

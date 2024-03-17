@@ -8,7 +8,7 @@ export async function getRestaurants() {
   return result.rows
 }
 
-export async function getRestaurantById(id: string) {
+export async function getRestaurantById(id: number) {
   const result = await sql`SELECT * FROM Restaurants WHERE id = ${id}`
   return result.rows[0]
 }
@@ -33,4 +33,19 @@ export async function retireRestaurant(id: string) {
 export async function retireRestaurantByEmail(email: string) {
   const result = await sql`DELETE FROM Restaurants WHERE email = ${email}`
   return result
+}
+
+export async function updateRestaurantMenu(id: number, menuURL: string) {
+  const result = await sql`UPDATE restaurants
+  SET menu = ${menuURL}
+  WHERE id = ${id};`
+  return result.rows[0]
+}
+
+export async function getRestaurantMenu(id: number) {
+  const result = await sql`SELECT menu FROM restaurants
+  WHERE id = ${id};`
+
+  console.log(result)
+  return result.rows[0].menu
 }
