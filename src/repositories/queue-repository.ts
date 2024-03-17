@@ -73,7 +73,7 @@ const getFirstUsername = async () => {
       console.log('The queue is currently empty.')
       return null
     }
-    
+
     const firstUsername = firstUserArray[0]
     console.log(`First username in the queue: ${firstUsername}`)
     return firstUsername
