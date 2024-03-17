@@ -6,6 +6,8 @@ import { useQRCode } from 'next-qrcode'
 import { Restaurant } from '@/types/restaurant'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useRouter } from 'next/navigation'
+import qrframe from '../../../app/images/printqr.png'
+import QRCode from 'qrcode-svg';
 
 export default function RestaurantDashboard({restaurantData}: {restaurantData: Restaurant}) {
   const [value, setValue] = useState(0)
@@ -13,8 +15,97 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
   const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const [qrUrl, setQrUrl] = useState('https://smartpager.com.ar/' + restaurantData.slug);
+
+
+  const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue)
   }
+
+  const handlePrintQR = () => {
+    const qr = new QRCode(qrUrl);
+  
+    const imgWindow = window.open('');
+  
+    const loadImg = () => {
+      if (imgWindow) {
+        imgWindow.document.write(`
+          <html>
+            <head>
+              <title>QR Code Image</title>
+              <style>
+                body {
+                  margin: 0;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                }
+                .container {
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+                .overlay {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  margin-top: 10px;
+                }
+                img {
+                  width: 100%;
+                  height: auto;
+                  margin: 20px;
+                }
+                .print-area {
+                  position: relative;
+                  margin: 0 auto;
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: center;
+                  align-items: center;
+                }
+                .print-info {
+                  display: none;
+                }
+                @media print {
+                  img {
+                    width: 100%;
+                    height: 100%; 
+                  }
+                  .print-info {
+                    display: none !important;
+                  }
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <div class="print-area">
+                  <img src="${qrframe.src}" alt="QR Code Frame">
+                  <div class="overlay">
+                    ${qr.svg()}
+                  </div>
+                </div>
+              </div>
+            </body>
+          </html>
+        `);
+      }
+    };
+  
+    loadImg();
+  
+    setTimeout(() => {
+      if (imgWindow) {
+        imgWindow.print();
+      }
+    }, 50);
+  };
 
   const tabStyle = 'capitalize'
 
@@ -43,7 +134,7 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
           indicatorColor="primary"
           aria-label="tabs"
         >
-          <Tab className={tabStyle} label={'Comensales en fila'} />
+          <Tab className={tabStyle} label={'Fila de comensales'} />
           <Tab className={tabStyle} label={'Retiro de pedidos'} />
           <Tab className={tabStyle} label={'Menú'} />
           <Tab className={tabStyle} label={'QR'} />
@@ -80,7 +171,7 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
           <form action="upload.php">
             <div className="mb-4">
               <label className="block text-gray-600 font-medium">
-                Elige un archivo en formato pdf - esto es lo que verán tus
+                Elige un archivo en formato PDF - esto es lo que verán sus
                 clientes:
               </label>
               <input
@@ -100,14 +191,9 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
         </div>
       </TabPanel>
       <TabPanel value={value} index={3} other={''}>
-        <div className="flex items-center justify-center text-center mt-4">
-          {/* <img
-            style={{ height: '250px', width: '250px' }}
-            src={qr.src}
-            alt="logo"
-          /> */}
+        <div className="flex items-center justify-center text-center mt-4 mb-4">
           <Canvas
-            text={'https://github.com/bunlong/next-qrcode'} // todo: change to the restaurant url form
+            text={qrUrl} // todo: change to the restaurant url form
             options={{
               errorCorrectionLevel: 'M',
               margin: 3,
@@ -119,6 +205,34 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
               },
             }}
           />
+        </div>
+        <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-mó">
+          <form action="upload.php">
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Utilice este código QR para que sus clientes puedan anotarse
+              </label>
+            </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-4 mb-4"
+                onClick={() => {
+                  const updatedUrl = 'https://smartpager.com.ar/' + restaurantData.slug;
+                  setQrUrl(updatedUrl);
+                }}
+              >
+                Actualizar QR
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4"
+                onClick={handlePrintQR}
+              >
+                Imprimir QR
+              </button>
+            </div>
+          </form>
         </div>
       </TabPanel>
     </div>

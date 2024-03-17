@@ -14,7 +14,7 @@ export default function AboutUs() {
         que permite cargar su menú y gestionar a sus
         <br className="block md:inline" /> clientes en la fila, todo de manera
         eficiente
-        <br className="block md:inline" /> y desde cualquier lugar.
+        <br className="block md:inline" /> y desde un solo lugar.
       </p>
       <div className="flex justify-center">
         <p className="absolute  bottom-0 text-4xl mb-4 pt-5 text-custom-blue">
