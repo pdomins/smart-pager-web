@@ -1,8 +1,7 @@
-"use client"
-import {signIn, signOut, useSession} from 'next-auth/react'
+'use client'
+import { signIn, signOut, useSession } from 'next-auth/react'
 export default function Navbar() {
-  const {data: session} = useSession()
-  console.log(session)
+  const { data: session } = useSession()
   return (
     <nav>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -10,26 +9,32 @@ export default function Navbar() {
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
           <div className="flex flex-1 items-emnn justify-end sm:items-stretch sm:justify-end">
             <div className="hidden sm:ml-6 sm:block">
-              {!session ? ( 
-              <div className="flex space-x-16">
-                <button
-                  // onClick={() =>  signIn()}
-                  onClick={() =>  signIn(undefined, {callbackUrl: "http://localhost:3000/restaurants"})}
-                  className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                  aria-current="page"
-                >
-                  Ingresar
-                </button>
-              </div>): (
-              <div className="flex space-x-16">
-                <button
-                  onClick={() => signOut()}
-                  className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                  aria-current="page"
-                >
-                  logout
-                </button>
-              </div>)}
+              {!session ? (
+                <div className="flex space-x-16">
+                  <button
+                    // onClick={() =>  signIn()}
+                    onClick={() =>
+                      signIn(undefined, {
+                        callbackUrl: 'http://localhost:3000/restaurants',
+                      })
+                    }
+                    className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                    aria-current="page"
+                  >
+                    Ingresar
+                  </button>
+                </div>
+              ) : (
+                <div className="flex space-x-16">
+                  <button
+                    onClick={() => signOut()}
+                    className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                    aria-current="page"
+                  >
+                    logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

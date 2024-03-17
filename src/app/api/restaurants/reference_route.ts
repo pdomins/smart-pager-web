@@ -21,5 +21,3 @@
 //   const result = await restaurantController.retireRestaurant(id)
 //   return result
 // }
-
-
