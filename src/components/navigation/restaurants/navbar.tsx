@@ -18,14 +18,8 @@ export default function Navbar() {
                   className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
                   aria-current="page"
                 >
-                  Registrar mi Comercio
+                  Ingresar
                 </button>
-                <a
-                  href="#"
-                  className="font-averta font-light  text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                >
-                  Iniciar Sesion
-                </a>
               </div>): (
               <div className="flex space-x-16">
                 <button

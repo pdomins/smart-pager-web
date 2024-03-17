@@ -15,10 +15,6 @@ export async function getRestaurantById(id: string) {
 }
 
 export async function getRestaurantByEmail(email: string): Promise<Restaurant> {
-    console.log({
-        POSTGRES_URL: process.env.POSTGRES_URL,
-        POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING
-    });
     const result = await sql`SELECT * FROM Restaurants WHERE email = ${email}`
     
     return result.rows[0] as Restaurant
