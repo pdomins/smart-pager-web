@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <div className="relative flex inset-x-0 bottom-0 justify-center my-3.5">
       <div className={'flex text-base font-light'}>
-        © 2023 Copyright:
+        © 2024 Copyright:
         <Link
           href="/"
           className={
