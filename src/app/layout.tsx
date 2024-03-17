@@ -8,9 +8,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={'font-recoleta antialiased text-custom-blue'}>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

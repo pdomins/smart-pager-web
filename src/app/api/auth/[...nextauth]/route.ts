@@ -1,6 +1,6 @@
 // export { GET, POST } from "@/auth";
 // export const runtime = "edge";
-import { createRestaurant } from "@/services/restaurant.service";
+import { createRestaurant } from "@/repositories/restaurant-respository";
 import { sql } from "@vercel/postgres";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";

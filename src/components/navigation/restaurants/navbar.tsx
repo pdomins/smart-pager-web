@@ -2,7 +2,6 @@
 import {signIn, signOut, useSession} from 'next-auth/react'
 export default function Navbar() {
   const {data: session} = useSession()
-  console.log(session)
   return (
     <nav>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
