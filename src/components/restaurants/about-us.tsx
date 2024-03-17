@@ -19,12 +19,14 @@ export default function AboutUs() {
       <div className="flex justify-center">
         <p className="absolute  bottom-0 text-4xl mb-4 pt-5 text-custom-blue">
           ¿Qué está esperando?{' '}
-          <a
-            href="#"
-            className="text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-          >
-            ¡Empieze ahora!
-          </a>
+          <span className="border-b-4 border-amber-400 mb-4">
+            <a
+              href="#"
+              className="text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+            >
+              ¡Empiece ahora!
+            </a>
+          </span>{' '}
         </p>
       </div>
     </div>
