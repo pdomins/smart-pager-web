@@ -3,7 +3,7 @@
 import { assertAndReturn } from '@/lib/assertions'
 import { createClient } from '@vercel/kv'
 
-const QUEUE_KEY = 'usernameQueue'
+const QUEUE_KEY = 'usernameQueue' // todo: replace with restaurant slug
 
 type QueueElem = {
   example1: string
@@ -85,6 +85,10 @@ const getFirstUsername = async () => {
     )
     return null
   }
+}
+
+export async function getAll() {
+  return await kv.zrange(QUEUE_KEY, 0, -1)
 }
 
 export async function getFirst() {
