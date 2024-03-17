@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import LayoutWithOutNavbar from '@/components/navigation/layout-without-navbar'
 import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'
