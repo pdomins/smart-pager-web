@@ -15,6 +15,7 @@ export default function EditRestaurantProfile({
   const [restaurantName, setRestaurantName] = useState(restaurantData.name) //TODO: Change to restaurantName
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [modalMesaage, setModalMessage] = useState('Are you sure?')
+  const [modalAction, setModalAction] = useState<() => void>(() => {})
 
   const toggleModalVisibility = () => {
     setIsModalVisible(!isModalVisible)
@@ -31,7 +32,7 @@ export default function EditRestaurantProfile({
       {isModalVisible && (
         <Modal
           message={modalMesaage}
-          onAccept={handleAccept}
+          onAccept={modalAction}
           onCancel={toggleModalVisibility}
         />
       )}
@@ -69,6 +70,7 @@ export default function EditRestaurantProfile({
               'Si cancelas perderás los cambios realizados. ¿Estás seguro que quieres cancelar?'
             )
             setIsModalVisible(true)
+            setModalAction(() => toggleProfileFormVisibility)
           }}
         >
           Cancelar
@@ -78,6 +80,7 @@ export default function EditRestaurantProfile({
           onClick={() => {
             setModalMessage('¿Estás seguro que quieres guardar los cambios?')
             setIsModalVisible(true)
+            setModalAction(() => handleAccept)
           }}
         >
           Guardar
