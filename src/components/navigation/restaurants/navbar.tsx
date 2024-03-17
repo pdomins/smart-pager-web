@@ -31,7 +31,7 @@ export default function Navbar() {
                     className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
                     aria-current="page"
                   >
-                    logout
+                    Cerrar Sesión
                   </button>
                 </div>
               )}
