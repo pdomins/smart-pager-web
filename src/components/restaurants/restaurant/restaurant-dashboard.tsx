@@ -9,16 +9,17 @@ import { useRouter } from 'next/navigation'
 import qrframe from '../../../app/images/printqr.png'
 import QRCode from 'qrcode-svg';
 
+
+
 export default function RestaurantDashboard({restaurantData}: {restaurantData: Restaurant}) {
   const [value, setValue] = useState(0)
   const { Canvas } = useQRCode()
   const router = useRouter()
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
   const [qrUrl, setQrUrl] = useState('https://smartpager.com.ar/' + restaurantData.slug);
 
 
-  const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
+ // eslint-disable-next-line @typescript-eslint/ban-types
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {    
     setValue(newValue)
   }
 
