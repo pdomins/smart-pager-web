@@ -63,7 +63,7 @@ export default function ClientLanding() {
           </p>
           <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
             <b>
-              Te traemos una solución
+              Le traemos una solución
               <br className="block md:inline" /> a las filas eternas
             </b>
           </p>
