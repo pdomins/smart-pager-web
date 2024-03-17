@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { getRestaurantByEmail } from '@/services/restaurant.service'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantProfile from '@/components/restaurants/restaurant/profile'
+import Loading from '@/components/utils/loading'
 // import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
@@ -35,7 +36,7 @@ export default function Page() {
       {restaurantData ? (
         <RestaurantProfile restaurantData={restaurantData} />
       ) : (
-        <p>Loading restaurant data...</p> //TODO: Add a spinner here
+            <Loading />
       )}
     </LayoutWithOutNavbar>
   );
