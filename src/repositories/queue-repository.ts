@@ -1,5 +1,6 @@
 'use server'
 
+import { assertAndReturn } from '@/lib/assertions'
 import { createClient } from '@vercel/kv'
 
 const QUEUE_KEY = 'usernameQueue'
@@ -11,8 +12,8 @@ type QueueElem = {
 }
 
 const kv = createClient({
-  url: process.env.KV_REST_API_URL || '',
-  token: process.env.KV_REST_API_TOKEN || '',
+  url: assertAndReturn(process.env.KV_REST_API_URL),
+  token: assertAndReturn(process.env.KV_REST_API_TOKEN),
 })
 
 export async function add({ username }: { username: string }) {

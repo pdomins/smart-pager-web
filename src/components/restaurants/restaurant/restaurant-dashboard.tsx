@@ -4,30 +4,33 @@ import RestaurantCard from './restaurant-card'
 import TabPanel from './tab-panel'
 import { useQRCode } from 'next-qrcode'
 import { Restaurant } from '@/types/restaurant'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useRouter } from 'next/navigation'
 import qrframe from '../../../app/images/printqr.png'
-import QRCode from 'qrcode-svg';
+import QRCode from 'qrcode-svg'
 
-
-
-export default function RestaurantDashboard({restaurantData}: {restaurantData: Restaurant}) {
+export default function RestaurantDashboard({
+  restaurantData,
+}: {
+  restaurantData: Restaurant
+}) {
   const [value, setValue] = useState(0)
   const { Canvas } = useQRCode()
   const router = useRouter()
-  const [qrUrl, setQrUrl] = useState('https://smartpager.com.ar/' + restaurantData.slug);
+  const [qrUrl, setQrUrl] = useState(
+    'https://smartpager.com.ar/' + restaurantData.slug
+  )
 
-
- // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {    
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
 
   const handlePrintQR = () => {
-    const qr = new QRCode(qrUrl);
-  
-    const imgWindow = window.open('');
-  
+    const qr = new QRCode(qrUrl)
+
+    const imgWindow = window.open('')
+
     const loadImg = () => {
       if (imgWindow) {
         imgWindow.document.write(`
@@ -95,24 +98,24 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
               </div>
             </body>
           </html>
-        `);
+        `)
       }
-    };
-  
-    loadImg();
-  
+    }
+
+    loadImg()
+
     setTimeout(() => {
       if (imgWindow) {
-        imgWindow.print();
+        imgWindow.print()
       }
-    }, 50);
-  };
+    }, 50)
+  }
 
   const tabStyle = 'capitalize'
 
   return (
     <div>
-      <div className='flex justify-between align-center'>
+      <div className="flex justify-between align-center">
         <div></div>
         <p className="text-5xl mb-4 mt-2 text-center pt-2">
           <b>{restaurantData.name}</b>
@@ -120,8 +123,11 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
         <button
           onClick={() => router.push('/restaurants/profile')}
           className="text-3xl hover:text-sky-700"
-          >
-        <AccountCircleIcon style={{fontSize: '50px'}} className='mt-3 hover:text-sky-700'/>
+        >
+          <AccountCircleIcon
+            style={{ fontSize: '50px' }}
+            className="mt-3 hover:text-sky-700"
+          />
         </button>
       </div>
       <div className="flex justify-center">
@@ -219,8 +225,9 @@ export default function RestaurantDashboard({restaurantData}: {restaurantData: R
                 type="button"
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-4 mb-4"
                 onClick={() => {
-                  const updatedUrl = 'https://smartpager.com.ar/' + restaurantData.slug;
-                  setQrUrl(updatedUrl);
+                  const updatedUrl =
+                    'https://smartpager.com.ar/' + restaurantData.slug
+                  setQrUrl(updatedUrl)
                 }}
               >
                 Actualizar QR
