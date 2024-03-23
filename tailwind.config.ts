@@ -18,6 +18,12 @@ const config: Config = {
       },
       colors: {
         'custom-blue': '#281952',
+        'custom-beige': '#E2D1C3',
+        'custom-brown': '#C5B7A7',
+        'custom-grey': '#A89F96',
+        'custom-vintage': '#8C7B6B',
+        'complementary-blue': '#A7B5C5'
+
       },
       fontFamily: {
         recoleta: ['Recoleta', 'Recoleta Alt', 'serif'],

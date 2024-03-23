@@ -47,48 +47,50 @@ export default function ClientLanding() {
 
   return (
     <>
+      {/* si en algun momento queremos agregar el logo del resto
       <div className="flex absolute top-1/2 left-1/2  translate-x-1/2 -translate-y-1/2  w-1/3 flex-row items-center">
         <img
           className="object-contain blur-sm box-content"
           src={foodtrcuckLogo.src}
           alt="logo"
         />
-      </div>
-      {showQueueForm && <QueueForm />}
-      {showRetireForm && <RetireForm />}
-      <div className="min-h-screen flex flex-col justify-center relative ">
+      </div> */}
+      {showQueueForm && <QueueForm 
+        toggleQueueFormVisibility={toggleQueueFormVisibility}
+      />}
+      {showRetireForm && <RetireForm
+        toggleRetireFormVisibility={toggleRetireFormVisibility}
+      />}
+      { !showQueueForm && !showRetireForm &&
+        <div className="min-h-screen flex flex-col justify-center relative ">
         <div className="p-4">
-          <p className="text-7xl font-sans mb-2 text-center">
-            <b>the food truck shop</b>
+          <p className="text-7xl mb-2 text-center">
+            {/* TODO: traer el nombre del restaurante del back. Todavia no se como vamos a manejar el slug */}
+            <b>the food truck shop</b> 
           </p>
-          <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-            <b>
-              Le traemos una solución
-              <br className="block md:inline" /> a las filas eternas
-            </b>
-          </p>
-          <div className="flex font-sans flex-col">
+         
+          <div className="flex flex-col">
             <button
               onClick={toggleQueueFormVisibility}
-              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
             >
               Anotarse para comer
             </button>
             <button
               onClick={toggleRetireFormVisibility}
-              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
             >
               Retirar pedido
             </button>
             <button
               onClick={() => router.push('/commensal/menu')}
-              className="bg-amber-500 hover:bg-amber-700 text-white font-bold m-3 py-2 px-4 rounded"
+              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
             >
               Ver menú
             </button>
           </div>
         </div>
-      </div>
+      </div>}
     </>
   )
 }
