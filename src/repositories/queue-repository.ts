@@ -3,6 +3,8 @@
 import { assertAndReturn } from '@/lib/assertions'
 import { createClient } from '@vercel/kv'
 
+import { unstable_noStore as noStore } from 'next/cache'
+
 const QUEUE_KEY = 'usernameQueue' // todo: replace with restaurant slug
 
 type QueueElem = {
@@ -68,6 +70,7 @@ const getUserData = async (username: string) => {
 }
 
 const getFirstUsername = async () => {
+  noStore()
   try {
     const firstUserArray: string[] = await kv.zrange(QUEUE_KEY, 0, 1)
     if (firstUserArray.length === 0) {
@@ -87,14 +90,15 @@ const getFirstUsername = async () => {
   }
 }
 
-export async function getAll() {
-  return await kv.zrange(QUEUE_KEY, 0, -1)
-}
-
 export async function getFirst() {
+  noStore()
   const firstUsername = await getFirstUsername()
   if (!firstUsername) {
     return null
   }
   return getUserData(firstUsername)
+}
+
+export async function getAll() {
+  return await kv.zrange(QUEUE_KEY, 0, -1)
 }
