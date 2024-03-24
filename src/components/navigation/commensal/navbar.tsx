@@ -4,12 +4,11 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-emnn justify-start sm:items-stretch sm:justify-start">
-    
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 <h2 className=" text-left text-2xl mr-5 pr-5 font-bold text-black">
                   Smart Pager
-                </h2>                
+                </h2>
                 <a
                   href="#"
                   className="text-black hover:bg-custom-brown hover:text-white rounded-md px-3 py-2 text-sm font-medium"

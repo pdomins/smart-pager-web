@@ -1,12 +1,11 @@
-import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
-export default function QueueForm(
-  { toggleQueueFormVisibility }: { toggleQueueFormVisibility: () => void }
-) {
-  const router = useRouter()
-
+export default function QueueForm({
+  toggleQueueFormVisibility,
+}: {
+  toggleQueueFormVisibility: () => void
+}) {
   useEffect(() => {
     //on submit we redirect to /commensal/queue
     const form = document.getElementById('queueForm')
@@ -14,9 +13,18 @@ export default function QueueForm(
     const handleQueueFormSubmit = (e: Event) => {
       e.preventDefault()
       console.log('form submitted with data: ')
-      console.log('email: ', (document.getElementById('form-email') as HTMLInputElement).value)
-      console.log('name: ', (document.getElementById('form-first-name') as HTMLInputElement).value)
-      console.log('comensales: ', (document.getElementById('form-comensales') as HTMLInputElement).value)
+      console.log(
+        'email: ',
+        (document.getElementById('form-email') as HTMLInputElement).value
+      )
+      console.log(
+        'name: ',
+        (document.getElementById('form-first-name') as HTMLInputElement).value
+      )
+      console.log(
+        'comensales: ',
+        (document.getElementById('form-comensales') as HTMLInputElement).value
+      )
       // router.push('/commensal/queue')
     }
     if (form) {
@@ -35,9 +43,11 @@ export default function QueueForm(
       <div className="absolute top-2 left-2">
         <CloseIcon onClick={toggleQueueFormVisibility} />
       </div>
-      <div className='m-3'>
+      <div className="m-3">
         <h1 className="text-4xl text-center">Anotate en la cola</h1>
-        <p className="text-center">Dejanos tus datos y te avisamos cuando tu mesa esté lista</p>
+        <p className="text-center">
+          Dejanos tus datos y te avisamos cuando tu mesa esté lista
+        </p>
       </div>
       <form id="queueForm" className="mt-6 w-full max-w-lg">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -68,7 +78,8 @@ export default function QueueForm(
           </label>
           <select
             id="form-comensales"
-           className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+            className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+          >
             <option>1</option>
             <option>2</option>
             <option>3</option>

@@ -1,12 +1,11 @@
-import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
-export default function RetireForm(
-  { toggleRetireFormVisibility }: { toggleRetireFormVisibility: () => void }
-) {
-  const router = useRouter()
-
+export default function RetireForm({
+  toggleRetireFormVisibility,
+}: {
+  toggleRetireFormVisibility: () => void
+}) {
   useEffect(() => {
     //on submit we redirect to /commensal/queue
     const form = document.getElementById('retireForm')
@@ -16,9 +15,18 @@ export default function RetireForm(
 
       console.log('form submitted with data: ')
 
-      console.log('email: ', (document.getElementById('form-email') as HTMLInputElement).value)
-      console.log('name: ', (document.getElementById('form-first-name') as HTMLInputElement).value)
-      console.log('numero de pedido: ', (document.getElementById('form-numero') as HTMLInputElement).value)
+      console.log(
+        'email: ',
+        (document.getElementById('form-email') as HTMLInputElement).value
+      )
+      console.log(
+        'name: ',
+        (document.getElementById('form-first-name') as HTMLInputElement).value
+      )
+      console.log(
+        'numero de pedido: ',
+        (document.getElementById('form-numero') as HTMLInputElement).value
+      )
 
       // router.push('/commensal/retire')
     }

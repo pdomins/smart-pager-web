@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
 import QueueForm from '../forms/queueForm'
 import RetireForm from '../forms/retirementForm'
 import { useRouter } from 'next/navigation'
@@ -55,42 +54,43 @@ export default function ClientLanding() {
           alt="logo"
         />
       </div> */}
-      {showQueueForm && <QueueForm 
-        toggleQueueFormVisibility={toggleQueueFormVisibility}
-      />}
-      {showRetireForm && <RetireForm
-        toggleRetireFormVisibility={toggleRetireFormVisibility}
-      />}
-      { !showQueueForm && !showRetireForm &&
+      {showQueueForm && (
+        <QueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
+      )}
+      {showRetireForm && (
+        <RetireForm toggleRetireFormVisibility={toggleRetireFormVisibility} />
+      )}
+      {!showQueueForm && !showRetireForm && (
         <div className="min-h-screen flex flex-col justify-center relative ">
-        <div className="p-4">
-          <p className="text-7xl mb-2 text-center">
-            {/* TODO: traer el nombre del restaurante del back. Todavia no se como vamos a manejar el slug */}
-            <b>the food truck shop</b> 
-          </p>
-         
-          <div className="flex flex-col">
-            <button
-              onClick={toggleQueueFormVisibility}
-              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
-            >
-              Anotarse para comer
-            </button>
-            <button
-              onClick={toggleRetireFormVisibility}
-              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
-            >
-              Retirar pedido
-            </button>
-            <button
-              onClick={() => router.push('/commensal/menu')}
-              className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
-            >
-              Ver menú
-            </button>
+          <div className="p-4">
+            <p className="text-7xl mb-2 text-center">
+              {/* TODO: traer el nombre del restaurante del back. Todavia no se como vamos a manejar el slug */}
+              <b>the food truck shop</b>
+            </p>
+
+            <div className="flex flex-col">
+              <button
+                onClick={toggleQueueFormVisibility}
+                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
+              >
+                Anotarse para comer
+              </button>
+              <button
+                onClick={toggleRetireFormVisibility}
+                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
+              >
+                Retirar pedido
+              </button>
+              <button
+                onClick={() => router.push('/commensal/menu')}
+                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
+              >
+                Ver menú
+              </button>
+            </div>
           </div>
         </div>
-      </div>}
+      )}
     </>
   )
 }
