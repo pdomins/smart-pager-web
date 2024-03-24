@@ -28,7 +28,7 @@ export default function RestaurantDashboard({
   return (
     <div>
       <div className="flex justify-between align-center">
-        <div></div>
+        <div />
         <p className="text-5xl mb-4 mt-2 text-center pt-2">
           <b>{restaurantData.name}</b>
         </p>
