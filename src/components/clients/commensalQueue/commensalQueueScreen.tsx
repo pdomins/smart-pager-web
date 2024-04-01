@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import foodtrcuckLogo from '../../../app/images/food_truck_logo.png'
 import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
+import { useParams } from 'next/navigation';
 
 export default function CommensalQueueScreen() {
 
   const [menuUrl, setMenuUrl] = useState('');
+
+  const restaurantSlug = useParams<{restaurant: string}>()
 
 
   const viewMenu = async () => {
@@ -14,14 +17,12 @@ export default function CommensalQueueScreen() {
   useEffect(() => {
     const fetchMenuUrl = async () => {
       try {
-        const restaurantSlug = window.location.pathname.split('/')[2];
-        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug);
+        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant);
         setMenuUrl(menuUrl);
       } catch (error) {
         console.error('Error setting menu URL:', error);
       }
     };
-
     fetchMenuUrl();
   }, []);
 

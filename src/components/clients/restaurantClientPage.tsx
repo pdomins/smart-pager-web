@@ -1,24 +1,37 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommensalQueueForm from '../forms/commensalQueueForm'
 import PickUpQueueForm from '../forms/pickUpQueueForm'
 import { useParams, useRouter } from 'next/navigation'
 import { Restaurant } from '@/types/restaurant'
-import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import { getRestaurantBySlug, getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
 import Loading from '../utils/loading'
 
 export default function RestaurantClientPage() {
-  const aboutUsRef = useRef<HTMLDivElement | null>(null)
-  const [showQueueForm, setShowQueueForm] = useState(false)
-  const [showRetireForm, setShowRetireForm] = useState(false)
+  const [showCommensalForm, setShowCommensalForm] = useState(false)
+  const [showPickUpForm, setShowPickUpForm] = useState(false)
   const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
   const router = useRouter()
   const restaurantSlug = useParams<{restaurant: string}>()
-  const scrollToElement = (ref: React.RefObject<HTMLDivElement | null>) => {
-    if (ref.current) {
-      const yOffset = ref.current.offsetTop
-      window.scrollTo({ top: yOffset, behavior: 'smooth' })
-    }
+
+  const [menuUrl, setMenuUrl] = useState('');
+
+
+  const viewMenu = async () => {
+    window.open(await menuUrl, '_blank');
   }
+
+  useEffect(() => {
+    const fetchMenuUrl = async () => {
+      try {
+        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant);
+        setMenuUrl(menuUrl);
+      } catch (error) {
+        console.error('Error setting menu URL:', error);
+      }
+    };
+
+    fetchMenuUrl();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,46 +52,26 @@ export default function RestaurantClientPage() {
     fetchData()
   }, [])
 
-  const toggleQueueFormVisibility = () => {
-    setShowQueueForm(!showQueueForm) // Toggle the visibility state
+  const toggleCommensalFormVisibility = () => {
+    setShowCommensalForm(!showCommensalForm) // Toggle the visibility state
   }
 
-  const toggleRetireFormVisibility = () => {
-    setShowRetireForm(!showRetireForm) // Toggle the visibility state
+  const togglePickUpFormVisibility = () => {
+    setShowPickUpForm(!showPickUpForm) // Toggle the visibility state
   }
-
-  useEffect(() => {
-    // Add an event listener to handle scrolling to the aboutUsRef element
-    const handleScrollToAboutUs = () => {
-      scrollToElement(aboutUsRef)
-    }
-
-    // Attach the event listener to a button or any other trigger
-    const scrollButton = document.getElementById('scrollButton')
-    if (scrollButton) {
-      scrollButton.addEventListener('click', handleScrollToAboutUs)
-    }
-
-    return () => {
-      // Remove the event listener when the component unmounts
-      if (scrollButton) {
-        scrollButton.removeEventListener('click', handleScrollToAboutUs)
-      }
-    }
-  }, [aboutUsRef])
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
     {restaurantData ? (
       <>
-      {showQueueForm && (
-        <CommensalQueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
+      {showCommensalForm && (
+        <CommensalQueueForm toggleCommensalFormVisibility={toggleCommensalFormVisibility} />
       )}
-      {showRetireForm && (
-        <PickUpQueueForm toggleRetireFormVisibility={toggleRetireFormVisibility} />
+      {showPickUpForm && (
+        <PickUpQueueForm togglePickUpFormVisibility={togglePickUpFormVisibility} />
       )}
-      {!showQueueForm && !showRetireForm && (
+      {!showPickUpForm && !showCommensalForm && (
         <div className="min-h-screen flex flex-col justify-center relative ">
           <div className="p-4">
             <p className="text-7xl mb-2 text-center">
@@ -87,23 +80,26 @@ export default function RestaurantClientPage() {
 
             <div className="flex flex-col">
               <button
-                onClick={toggleQueueFormVisibility}
-                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
+                onClick={toggleCommensalFormVisibility}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
               >
                 Anotarse para comer
               </button>
               <button
-                onClick={toggleRetireFormVisibility}
-                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
+                onClick={togglePickUpFormVisibility}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
               >
                 Retirar pedido
               </button>
-              <button
-                onClick={() => router.push('/commensal/menu')}
-                className="bg-complementary-blue hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded"
-              >
+
+              { menuUrl && (
+              <button 
+              type="button"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+              onClick={viewMenu}>
                 Ver menú
               </button>
+              )}
             </div>
           </div>
         </div>

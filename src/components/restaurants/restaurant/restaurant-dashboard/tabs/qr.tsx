@@ -129,7 +129,7 @@ export default function RestaurantQR({
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-4 mb-4"
               onClick={() => {
                 const updatedUrl =
-                  'https://smartpager.com.ar/' + restaurantData.slug
+                  'https://smartpager.com.ar/restaurants/' + restaurantData.slug
                 setQrUrl(updatedUrl)
               }}
             >
