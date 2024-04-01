@@ -33,7 +33,7 @@ export default function RestaurantDashboard({
           <b>{restaurantData.name}</b>
         </p>
         <button
-          onClick={() => router.push('/restaurants/profile')}
+          onClick={() => router.push('/management/profile')}
           className="text-3xl hover:text-sky-700"
         >
           <AccountCircleIcon

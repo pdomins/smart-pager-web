@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react'
-import QueueForm from '../forms/queueForm'
-import RetireForm from '../forms/retirementForm'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import TableQueueForm from '../forms/tableQueueForm'
+import PickUpQueueForm from '../forms/pickUpQueueForm'
+import { useParams, useRouter } from 'next/navigation'
 import { Restaurant } from '@/types/restaurant'
 import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
 import Loading from '../utils/loading'
 
-export default function ClientLanding() {
+export default function RestaurantClientPage() {
   const aboutUsRef = useRef<HTMLDivElement | null>(null)
   const [showQueueForm, setShowQueueForm] = useState(false)
   const [showRetireForm, setShowRetireForm] = useState(false)
@@ -68,14 +68,15 @@ export default function ClientLanding() {
   }, [aboutUsRef])
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
     {restaurantData ? (
       <>
       {showQueueForm && (
-        <QueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
+        <TableQueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
       )}
       {showRetireForm && (
-        <RetireForm toggleRetireFormVisibility={toggleRetireFormVisibility} />
+        <PickUpQueueForm toggleRetireFormVisibility={toggleRetireFormVisibility} />
       )}
       {!showQueueForm && !showRetireForm && (
         <div className="min-h-screen flex flex-col justify-center relative ">

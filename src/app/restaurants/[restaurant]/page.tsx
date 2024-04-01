@@ -1,11 +1,11 @@
 'use client'
 import Layout from '@/components/navigation/commensal/layout'
-import ClientLanding from '@/components/commensal/clientLanding'
+import RestaurantClientPage from '@/components/clients/restaurantClientPage'
 
 export default function Home() {
   return (
     <Layout>
-      <ClientLanding />
+      <RestaurantClientPage />
     </Layout>
   )
 }

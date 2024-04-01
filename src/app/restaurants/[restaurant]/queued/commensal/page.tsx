@@ -1,12 +1,12 @@
 'use client'
 import Layout from '@/components/navigation/commensal/layout'
-import QueueScreen from '@/components/commensal/queue/queueScreen'
+import TableQueueScreen from '@/components/clients/tableQueue/tableQueueScreen'
 import React from 'react'
 
 export default function Page() {
   return (
     <Layout>
-      <QueueScreen />
+      <TableQueueScreen />
     </Layout>
   )
 }

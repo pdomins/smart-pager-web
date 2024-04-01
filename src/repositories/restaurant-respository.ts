@@ -54,3 +54,11 @@ export async function getRestaurantMenu(id: number) {
 
   return result.rows[0].menu
 }
+
+export async function getRestaurantMenuBySlug(slug: string) {
+  noStore()
+  const result = await sql`SELECT menu FROM restaurants
+  WHERE slug = ${slug};`
+
+  return result.rows[0].menu
+}

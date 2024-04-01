@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 
-export default function QueueForm({
+export default function TableQueueForm({
   toggleQueueFormVisibility,
 }: {
   toggleQueueFormVisibility: () => void

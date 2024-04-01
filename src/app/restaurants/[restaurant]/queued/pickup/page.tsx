@@ -1,12 +1,12 @@
 'use client'
 import Layout from '@/components/navigation/commensal/layout'
-import RetireScreen from '@/components/commensal/retire/retireScreen'
+import PickUpQueueScreen from '@/components/clients/pickUpQueue/pickUpQueueScreen'
 import React from 'react'
 
 export default function Page() {
   return (
     <Layout>
-      <RetireScreen />
+      <PickUpQueueScreen />
     </Layout>
   )
 }
