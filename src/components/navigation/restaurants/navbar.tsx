@@ -11,46 +11,32 @@ export default function Navbar() {
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"/>
           <div className="flex flex-1 items-emnn justify-end sm:items-stretch sm:justify-end">
             <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {session && (
-                  <div className="flex space-x-16">
-                    <button
-                      // onClick={() =>  signIn()}
-                      onClick={() => router.push('restaurants')}
-                      className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                      aria-current="page"
-                    >
-                      Mi Restaurante
-                    </button>
-                  </div>
-                )}
-                {!session ? (
-                  <div className="flex space-x-16">
-                    <button
-                      // onClick={() =>  signIn()}
-                      onClick={() =>
-                        signIn(undefined, {
-                          callbackUrl: 'http://localhost:3000/restaurants',
-                        })
-                      }
-                      className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                      aria-current="page"
-                    >
-                      Ingresar
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex space-x-16">
-                    <button
-                      onClick={() => signOut()}
-                      className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
-                      aria-current="page"
-                    >
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                )}
-              </div>
+              {!session ? (
+                <div className="flex space-x-16">
+                  <button
+                    // onClick={() =>  signIn()}
+                    onClick={() =>
+                      signIn(undefined, {
+                        callbackUrl: 'http://localhost:3000/restaurant',
+                      })
+                    }
+                    className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                    aria-current="page"
+                  >
+                    Ingresar
+                  </button>
+                </div>
+              ) : (
+                <div className="flex space-x-16">
+                  <button
+                    onClick={() => signOut()}
+                    className="font-averta font-light text-custom-blue hover:text-indigo-500 px-3 py-2 font-lg"
+                    aria-current="page"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
