@@ -1,20 +1,43 @@
 import React, { useRef, useEffect, useState } from 'react'
 import QueueForm from '../forms/queueForm'
 import RetireForm from '../forms/retirementForm'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { Restaurant } from '@/types/restaurant'
+import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import Loading from '../utils/loading'
 
 export default function ClientLanding() {
   const aboutUsRef = useRef<HTMLDivElement | null>(null)
   const [showQueueForm, setShowQueueForm] = useState(false)
   const [showRetireForm, setShowRetireForm] = useState(false)
+  const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
   const router = useRouter()
-
+  const restaurantSlug = useParams<{restaurant: string}>()
   const scrollToElement = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
       const yOffset = ref.current.offsetTop
       window.scrollTo({ top: yOffset, behavior: 'smooth' })
     }
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const restaurant = await getRestaurantBySlug(restaurantSlug.restaurant)
+        if (!restaurant) {
+          router.push('/404')
+          return
+        }
+        setRestaurantData(restaurant)
+      } catch (error) {
+      
+
+        console.error('Error fetching restaurant data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   const toggleQueueFormVisibility = () => {
     setShowQueueForm(!showQueueForm) // Toggle the visibility state
@@ -46,14 +69,8 @@ export default function ClientLanding() {
 
   return (
     <>
-      {/* si en algun momento queremos agregar el logo del resto
-      <div className="flex absolute top-1/2 left-1/2  translate-x-1/2 -translate-y-1/2  w-1/3 flex-row items-center">
-        <img
-          className="object-contain blur-sm box-content"
-          src={foodtrcuckLogo.src}
-          alt="logo"
-        />
-      </div> */}
+    {restaurantData ? (
+      <>
       {showQueueForm && (
         <QueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
       )}
@@ -64,8 +81,7 @@ export default function ClientLanding() {
         <div className="min-h-screen flex flex-col justify-center relative ">
           <div className="p-4">
             <p className="text-7xl mb-2 text-center">
-              {/* TODO: traer el nombre del restaurante del back. Todavia no se como vamos a manejar el slug */}
-              <b>the food truck shop</b>
+              <b>{restaurantData?.name}</b>
             </p>
 
             <div className="flex flex-col">
@@ -91,6 +107,10 @@ export default function ClientLanding() {
           </div>
         </div>
       )}
+      </>
+      ) : 
+      <Loading />
+      }
     </>
   )
 }

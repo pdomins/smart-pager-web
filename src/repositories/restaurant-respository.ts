@@ -19,6 +19,11 @@ export async function getRestaurantByEmail(email: string): Promise<Restaurant> {
   return result.rows[0] as Restaurant
 }
 
+export async function getRestaurantBySlug(slug: string) {
+  const result = await sql`SELECT * FROM Restaurants WHERE slug = ${slug}`
+  return result.rows[0] as Restaurant
+}
+
 export async function createRestaurant(email: string, name: string) {
   const result =
     await sql`INSERT INTO Restaurants (email, name) VALUES (${email}, ${name})`
