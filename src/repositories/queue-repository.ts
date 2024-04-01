@@ -5,8 +5,6 @@ import { createClient } from '@vercel/kv'
 
 import { unstable_noStore as noStore } from 'next/cache'
 
-const QUEUE_KEY = 'usernameQueue' // todo: replace with restaurant slug
-
 type QueueElem = {
   example1: string
   example2: string
@@ -18,15 +16,21 @@ const kv = createClient({
   token: assertAndReturn(process.env.KV_REST_API_TOKEN),
 })
 
-export async function add({ username }: { username: string }) {
-  const inList = !!(await kv.zscore(QUEUE_KEY, username))
+export async function add({
+  restaurantSlug,
+  username,
+}: {
+  restaurantSlug: string
+  username: string
+}) {
+  const inList = !!(await kv.zscore(restaurantSlug, username))
   if (inList) {
     console.log('Username already exists in the queue.')
     return
   }
   const score = Date.now()
 
-  await kv.zadd(QUEUE_KEY, { score, member: username })
+  await kv.zadd(restaurantSlug, { score, member: username })
   const values: QueueElem = {
     example1: 'hello',
     example2: 'world',
@@ -35,9 +39,15 @@ export async function add({ username }: { username: string }) {
   console.log(`Username ${username} added to the queue.`)
 }
 
-export async function remove({ username }: { username: string }) {
+export async function remove({
+  restaurantSlug,
+  username,
+}: {
+  restaurantSlug: string
+  username: string
+}) {
   try {
-    const removed = await kv.zrem(QUEUE_KEY, username)
+    const removed = await kv.zrem(restaurantSlug, username)
 
     if (removed) {
       await kv.del(username)
@@ -69,10 +79,14 @@ const getUserData = async (username: string) => {
   }
 }
 
-const getFirstUsername = async () => {
+const getFirstUsername = async ({
+  restaurantSlug,
+}: {
+  restaurantSlug: string
+}) => {
   noStore()
   try {
-    const firstUserArray: string[] = await kv.zrange(QUEUE_KEY, 0, 1)
+    const firstUserArray: string[] = await kv.zrange(restaurantSlug, 0, 1)
     if (firstUserArray.length === 0) {
       console.log('The queue is currently empty.')
       return null
@@ -90,15 +104,15 @@ const getFirstUsername = async () => {
   }
 }
 
-export async function getFirst() {
+export async function getFirst({ restaurantSlug }: { restaurantSlug: string }) {
   noStore()
-  const firstUsername = await getFirstUsername()
+  const firstUsername = await getFirstUsername({ restaurantSlug })
   if (!firstUsername) {
     return null
   }
   return getUserData(firstUsername)
 }
 
-export async function getAll() {
-  return await kv.zrange(QUEUE_KEY, 0, -1)
+export async function getAll({ restaurantSlug }: { restaurantSlug: string }) {
+  return await kv.zrange(restaurantSlug, 0, -1)
 }
