@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import TableQueueForm from '../forms/tableQueueForm'
+import CommensalQueueForm from '../forms/commensalQueueForm'
 import PickUpQueueForm from '../forms/pickUpQueueForm'
 import { useParams, useRouter } from 'next/navigation'
 import { Restaurant } from '@/types/restaurant'
@@ -73,7 +73,7 @@ export default function RestaurantClientPage() {
     {restaurantData ? (
       <>
       {showQueueForm && (
-        <TableQueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
+        <CommensalQueueForm toggleQueueFormVisibility={toggleQueueFormVisibility} />
       )}
       {showRetireForm && (
         <PickUpQueueForm toggleRetireFormVisibility={toggleRetireFormVisibility} />

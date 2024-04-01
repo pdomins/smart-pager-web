@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import foodtrcuckLogo from '../../../app/images/food_truck_logo.png'
 import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
 
-export default function TableQueueScreen() {
+export default function CommensalQueueScreen() {
 
   const [menuUrl, setMenuUrl] = useState('');
 
