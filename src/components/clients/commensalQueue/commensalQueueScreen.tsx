@@ -40,7 +40,7 @@ export default function CommensalQueueScreen() {
           <b>¡Listo!</b>
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-          <b>Le avisaremos por email cuando su mesa este lista.</b>
+          <b>Le avisaremos por email cuando su mesa este lista. Si desea desanotarse, verifique su email.</b>
         </p>
         { menuUrl && (
         <button 

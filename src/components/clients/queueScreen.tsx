@@ -36,10 +36,10 @@ export default function QueueScreen() {
       </div>
       <div className="min-h-screen flex flex-col justify-center relative ">
         <p className="text-6xl font-sans mb-2 text-center">
-          <b>¡Ya se encuentra en la lista!</b>
+          <b>¡Ya se encuentra en una lista de espera!</b>
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-          <b>Le avisaremos por email cuando sea su turno.</b>
+          <b>Le avisaremos por email cuando sea su turno. Si desea desanotarse, verifique su email.</b>
         </p>
         { menuUrl && (
         <button 
