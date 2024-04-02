@@ -8,13 +8,11 @@ interface LayoutProps {
 
 const LayoutWithOutNavbar: React.FC<LayoutProps> = (props) => {
   return (
-    <div className="bg-custom-bg">
-      <div className="flex flex-col justify-between min-h-screen">
-        <main className="flex-grow lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm container mx-auto">
-          <div className="h-full overflow-y-auto">{props.children}</div>
-        </main>
-        <Footer />
-      </div>
+    <div className="flex flex-col justify-between min-h-screen">
+      <main className="flex-grow lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm container mx-auto">
+        <div className="h-full overflow-y-auto">{props.children}</div>
+      </main>
+      <Footer />
     </div>
   )
 }
