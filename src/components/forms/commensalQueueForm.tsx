@@ -54,49 +54,53 @@ export default function CommensalQueueForm({
             Deje sus datos y le avisaremos cuando su mesa este preparada
           </p>
         </div>
-        <form id="queueForm" className="mt-6 w-full max-w-lg">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              Email
-            </label>
-            <input
-              className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="form-email"
-              type="text"
-              placeholder="ejemplo@mail.com"
-            />
-          </div>
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              Nombre Completo
-            </label>
-            <input
-              className="appearance-none block w-full bg-white-200 text-gray-700 border shadow rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="form-first-name"
-              type="text"
-              placeholder="Su nombre y apellido"
-            />
-          </div>
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0 inline-block relative w-64">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              Cantidad de comensales
-            </label>
-            <select
-              id="form-comensales"
-              className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6 o más</option>
-            </select>
-          </div>
-          <button className="bg-blue-500 hover:bg-blue-700 hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded">
-            Anotarse
-          </button>
-        </form>
+        <div className='flex justify-center'>
+          <form id="queueForm" className="mt-6 w-full max-w-lg">
+            <div className="w-full px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Email
+              </label>
+              <input
+                className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="form-email"
+                type="text"
+                placeholder="ejemplo@mail.com"
+              />
+            </div>
+            <div className="w-full px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Nombre Completo
+              </label>
+              <input
+                className="appearance-none block w-full bg-white-200 text-gray-700 border shadow rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="form-first-name"
+                type="text"
+                placeholder="Su nombre y apellido"
+              />
+            </div>
+            <div className=" px-3 mb-6 md:mb-0 inline-block relative w-64">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Cantidad de comensales
+              </label>
+              <select
+                id="form-comensales"
+                className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6 o más</option>
+              </select>
+            </div>
+            <div className='px-3'>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-4 py-2 rounded w-full">
+                Anotarse
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
   )
 }

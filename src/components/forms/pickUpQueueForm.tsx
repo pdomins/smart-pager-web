@@ -56,46 +56,49 @@ export default function RetireForm({
             Deje sus datos y le avisaremos cuando su pedido este listo para ser retirado
           </p>
         </div>
-      <form id="retireForm" className="w-full max-w-lg">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Email
-          </label>
-          <input
-            className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            id="form-email"
-            type="text"
-            placeholder="ejemplo@mail.com"
-          />
-        </div>
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Nombre Completo
-          </label>
-          <input
-            className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            id="form-first-name"
-            type="text"
-            placeholder="Su nombre y apellido"
-          />
-        </div>
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Número identificador de pedido
-          </label>
-          <input
-            className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            id="form-numero"
-            type="text"
-            placeholder="Número de pedido"
-          />
-        </div>
-        
-
-        <button className="bg-blue-500 hover:bg-blue-700 hover:bg-custom-beige text-white font-bold m-3 py-2 px-4 rounded">
-          Anotarse
-        </button>
-      </form>
+        <div className='flex justify-center'>
+          <form id="retireForm" className="w-full max-w-lg">
+            <div className="w-full  px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Email
+              </label>
+              <input
+                className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="form-email"
+                type="text"
+                placeholder="ejemplo@mail.com"
+              />
+            </div>
+            <div className="w-full px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Nombre Completo
+              </label>
+              <input
+                className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="form-first-name"
+                type="text"
+                placeholder="Su nombre y apellido"
+              />
+            </div>
+            <div className="w-full px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Número identificador de pedido
+              </label>
+              <input
+                className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="form-numero"
+                type="text"
+                placeholder="Número de pedido"
+              />
+            </div>
+            
+            <div className='px-3'>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-4 py-2 rounded w-full">
+                Anotarse
+              </button>
+            </div>
+          </form>
+      </div>
     </div>
   )
 }
