@@ -17,8 +17,8 @@ type CommensalData = {
 // }
 
 const kv = createClient({
-  url: assertAndReturn(process.env.KV_REST_API_URL),
-  token: assertAndReturn(process.env.KV_REST_API_TOKEN),
+  url: assertAndReturn(process.env.REDIS_REST_API_URL),
+  token: assertAndReturn(process.env.REDIS_REST_API_TOKEN),
 })
 
 //TODO refactor y modulacion cuando este pickup
