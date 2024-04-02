@@ -9,7 +9,6 @@ import RestaurantQueue from './tabs/queue'
 import RestaurantOrders from './tabs/orders'
 import RestaurantMenu from './tabs/menu'
 import RestaurantQR from './tabs/qr'
-import { signOut } from 'next-auth/react'
 
 export default function RestaurantDashboard({
   restaurantData,
@@ -34,8 +33,7 @@ export default function RestaurantDashboard({
           <b>{restaurantData.name}</b>
         </p>
         <button
-          // onClick={() => router.push('/management/profile')}
-          onClick={() => signOut()}
+          onClick={() => router.push('/management/profile')}
           className="text-3xl hover:text-sky-700"
         >
           <AccountCircleIcon
