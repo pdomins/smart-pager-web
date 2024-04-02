@@ -39,7 +39,7 @@ export default function PickUpQueueScreen() {
           <b>¡Listo!</b>
         </p>
         <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-          <b>Te avisaremos por email cuando tu pedido este listo.</b>
+          <b>Le avisaremos por email cuando su pedido este listo.</b>
         </p>
         { menuUrl && (
         <button 

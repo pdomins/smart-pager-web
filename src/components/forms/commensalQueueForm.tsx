@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useParams, useRouter } from 'next/navigation';
-import { addCommensal } from '@/repositories/commensal-queue-repository';
+import { addCommensal } from '@/repositories/queue-repository';
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
@@ -24,11 +24,14 @@ export default function CommensalQueueForm({
       const commensalsInput = document.getElementById('form-commensals') as HTMLInputElement | null;
 
       if (emailInput && nameInput && commensalsInput) {
-        await addCommensal(restaurantSlug.restaurant, emailInput.value, {
+        const success = await addCommensal(restaurantSlug.restaurant, emailInput.value, {
           name: nameInput.value,
           commensals: commensalsInput.value
         });
-        router.push("/restaurants/" + restaurantSlug.restaurant + "/queued/commensal")
+        if(success)
+          router.push("/restaurants/" + restaurantSlug.restaurant + "/queued/commensal")
+        else
+          router.push("/restaurants/" + restaurantSlug.restaurant + "/queued")
       } else {
         console.error('Some form elements are missing or inaccessible.');
       }

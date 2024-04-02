@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useParams, useRouter } from 'next/navigation';
+import { addPickUp } from '@/repositories/queue-repository';
 
 export default function RetireForm({
   togglePickUpFormVisibility,
@@ -15,25 +16,27 @@ export default function RetireForm({
   useEffect(() => {
     const form = document.getElementById('retireForm')
 
-    const handleQueueFormSubmit = (e: Event) => {
+    const handleQueueFormSubmit = async (e: Event) => {
       e.preventDefault()
 
-      console.log('form submitted with data: ')
+      const emailInput = document.getElementById('form-email') as HTMLInputElement | null;
+      const nameInput = document.getElementById('form-name') as HTMLInputElement | null;
+      const pickupid = document.getElementById('form-pickupid') as HTMLInputElement | null;
 
-      console.log(
-        'email: ',
-        (document.getElementById('form-email') as HTMLInputElement).value
-      )
-      console.log(
-        'name: ',
-        (document.getElementById('form-name') as HTMLInputElement).value
-      )
-      console.log(
-        'numero de pedido: ',
-        (document.getElementById('form-pickupid') as HTMLInputElement).value
-      )
-      router.push("/restaurants/" + restaurantSlug.restaurant + "/queued/pickup")
-    }
+      if (emailInput && nameInput && pickupid) {
+        const success = await addPickUp(restaurantSlug.restaurant, emailInput.value, {
+          name: nameInput.value,
+          pickupid: pickupid.value
+        });
+        if(success)
+          router.push("/restaurants/" + restaurantSlug.restaurant + "/queued/pickup")
+        else
+          router.push("/restaurants/" + restaurantSlug.restaurant + "/queued")
+      } else {
+        console.error('Some form elements are missing or inaccessible.');
+      }
+    };
+
     if (form) {
       form.addEventListener('submit', handleQueueFormSubmit)
     }

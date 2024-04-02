@@ -5,42 +5,58 @@ import { createClient } from '@vercel/kv'
 
 import { unstable_noStore as noStore } from 'next/cache'
 
+const PICK_UP_LIST = '-pickup'
+const COMMENSAL_LIST = '-commensal'
+
 type CommensalData = {
   name: string
   commensals: string
 }
 
-// TODO
-// type PickUpData = {
-//   name: string
-//   pickupid: string
-// }
+type PickUpData = {
+  name: string
+  pickupid: string
+}
 
 const kv = createClient({
   url: assertAndReturn(process.env.REDIS_REST_API_URL),
   token: assertAndReturn(process.env.REDIS_REST_API_TOKEN),
 })
 
-//TODO refactor y modulacion cuando este pickup
+//TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
 export async function addCommensal(
   restaurantSlug: string,
   email: string,
   clientData: CommensalData
 ) {
-  const inList = !!(await kv.zscore(restaurantSlug, email))
-  if (inList) {
-    console.log('Email already exists in the queue.')
-    return
-  }
+  noStore()
+  const isMember = await kv.smembers(email)
+  if (isMember.length !== 0) return false
+  await addClient(restaurantSlug + COMMENSAL_LIST, email, clientData)
+  return true
+}
+
+//TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
+export async function addPickUp(
+  restaurantSlug: string,
+  email: string,
+  clientData: PickUpData
+) {
+  noStore()
+  const isMember = await kv.smembers(email)
+  if (isMember.length !== 0) return false
+  await addClient(restaurantSlug + PICK_UP_LIST, email, clientData)
+  return true
+}
+
+async function addClient(list: string, email: string, clientData: object) {
   const score = Date.now()
 
-  await kv.zadd(restaurantSlug, { score, member: email })
-
+  await kv.zadd(list, { score, member: email })
   await kv.sadd(email, clientData)
   console.log(`Email ${email} added to the queue.`)
 }
 
-//TODO refactor y modulacion cuando este pickup
 export async function removeCommensal({
   restaurantSlug,
   email,
@@ -48,8 +64,22 @@ export async function removeCommensal({
   restaurantSlug: string
   email: string
 }) {
+  await removeClient(restaurantSlug + COMMENSAL_LIST, email)
+}
+
+export async function removePickUp({
+  restaurantSlug,
+  email,
+}: {
+  restaurantSlug: string
+  email: string
+}) {
+  await removeClient(restaurantSlug + PICK_UP_LIST, email)
+}
+
+async function removeClient(list: string, email: string) {
   try {
-    const removed = await kv.zrem(restaurantSlug, email)
+    const removed = await kv.zrem(list, email)
 
     if (removed) {
       await kv.del(email)
@@ -62,8 +92,7 @@ export async function removeCommensal({
   }
 }
 
-//TODO refactor y modulacion cuando este pickup
-const getCommensalData = async (email: string) => {
+const getClientData = async (email: string) => {
   try {
     const clientData = await kv.smembers(email)
     if (!clientData) {
@@ -82,15 +111,10 @@ const getCommensalData = async (email: string) => {
   }
 }
 
-//TODO refactor y modulacion cuando este pickup
-const getFirstEmail = async ({
-  restaurantSlug,
-}: {
-  restaurantSlug: string
-}) => {
+const getFirstEmail = async (list: string) => {
   noStore()
   try {
-    const firstUserArray: string[] = await kv.zrange(restaurantSlug, 0, 1)
+    const firstUserArray: string[] = await kv.zrange(list, 0, 1)
     if (firstUserArray.length === 0) {
       console.log('The queue is currently empty.')
       return null
@@ -108,25 +132,46 @@ const getFirstEmail = async ({
   }
 }
 
-//TODO refactor y modulacion cuando este pickup
 export async function getFirstCommensal({
   restaurantSlug,
 }: {
   restaurantSlug: string
 }) {
   noStore()
-  const email = await getFirstEmail({ restaurantSlug })
+  const email = await getFirstEmail(restaurantSlug + COMMENSAL_LIST)
   if (!email) {
     return null
   }
-  return getCommensalData(email)
+  return getClientData(email)
 }
 
-//TODO refactor y modulacion cuando este pickup
+export async function getFirstPickUp({
+  restaurantSlug,
+}: {
+  restaurantSlug: string
+}) {
+  noStore()
+  const email = await getFirstEmail(restaurantSlug + PICK_UP_LIST)
+  if (!email) {
+    return null
+  }
+  return getClientData(email)
+}
+
 export async function getAllCommensals({
   restaurantSlug,
 }: {
   restaurantSlug: string
 }) {
-  return await kv.zrange(restaurantSlug, 0, -1)
+  noStore()
+  return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
+}
+
+export async function getAllPickUps({
+  restaurantSlug,
+}: {
+  restaurantSlug: string
+}) {
+  noStore()
+  return await kv.zrange(restaurantSlug + PICK_UP_LIST, 0, -1)
 }
