@@ -26,11 +26,11 @@ export default function RetireForm({
       )
       console.log(
         'name: ',
-        (document.getElementById('form-first-name') as HTMLInputElement).value
+        (document.getElementById('form-name') as HTMLInputElement).value
       )
       console.log(
         'numero de pedido: ',
-        (document.getElementById('form-numero') as HTMLInputElement).value
+        (document.getElementById('form-pickupid') as HTMLInputElement).value
       )
       router.push("/restaurants/" + restaurantSlug.restaurant + "/queued/pickup")
     }
@@ -60,35 +60,38 @@ export default function RetireForm({
           <form id="retireForm" className="w-full max-w-lg">
             <div className="w-full  px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Email
+                Email <span className="text-red-500">*</span>
               </label>
               <input
                 className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                 id="form-email"
-                type="text"
+                type="email"
                 placeholder="ejemplo@mail.com"
+                required
               />
             </div>
             <div className="w-full px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Nombre Completo
+                Nombre Completo <span className="text-red-500">*</span>
               </label>
               <input
                 className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="form-first-name"
+                id="form-name"
                 type="text"
                 placeholder="Su nombre y apellido"
+                required
               />
             </div>
             <div className="w-full px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Número identificador de pedido
+                Número identificador de pedido <span className="text-red-500">*</span>
               </label>
               <input
                 className="appearance-none block w-full bg-white-200 text-gray-700 shadow border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="form-numero"
+                id="form-pickupid"
                 type="text"
                 placeholder="Número de pedido"
+                required
               />
             </div>
             
