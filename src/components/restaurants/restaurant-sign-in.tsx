@@ -5,12 +5,12 @@ import InfoIcon from '@mui/icons-material/Info'
 
 export default function RestaurantsSignIn() {
   return (
-    <div className="flex justify-center items-center h-screen ">
+    <div className="flex justify-center items-center h-screen">
       <div className="bg-white rounded-lg shadow-lg p-8 m-4 w-full lg:w-1/2">
         <h1 className="text-3xl font-bold text-center mb-4">
           Despídete de las filas eternas
         </h1>
-        <div className="bg-blue-100 text-blue-800 text-sm font-semibold mb-4 p-4 rounded-lg flex items-center">
+        <div className="bg-blue-100 text-blue-800 text-sm font-semibold mb-4 p-4 rounded-lg flex items-center text-justify">
           <InfoIcon
             className="w-6 h-6 text-blue-800 mr-2"
             aria-label="Información"
