@@ -1,13 +1,9 @@
 'use client'
-import { Tab, Tabs } from '@mui/material'
-import React, { useState } from 'react'
-import TabPanel from '../tab-panel'
+
 import { Restaurant } from '@/types/restaurant'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { useRouter } from 'next/navigation'
-import RestaurantQueue from './tabs/queue'
-import RestaurantOrders from './tabs/orders'
-import RestaurantMenu from './tabs/menu'
+import Gradient from '../../new/gradient'
+import Container from '../../new/container'
+import { useState } from 'react'
 import RestaurantQR from './tabs/qr'
 
 export default function RestaurantDashboard({
@@ -15,62 +11,91 @@ export default function RestaurantDashboard({
 }: {
   restaurantData: Restaurant
 }) {
-  const [value, setValue] = useState(0)
-
-  const router = useRouter()
-
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue)
-  }
-  const tabStyle = 'capitalize'
+  const [activeTab, setActiveTab] = useState('menu')
 
   return (
-    <div>
-      <div className="flex justify-between align-center">
-        <div />
-        <p className="text-5xl mb-4 mt-2 text-center pt-2">
-          <b>{restaurantData.name}</b>
-        </p>
-        <button
-          onClick={() => router.push('/management/profile')}
-          className="text-3xl hover:text-sky-700"
-        >
-          <AccountCircleIcon
-            style={{ fontSize: '50px' }}
-            className="mt-3 hover:text-sky-700"
-          />
-        </button>
-      </div>
-      <div className="flex justify-center">
-        <Tabs
-          value={value}
-          variant="scrollable"
-          allowScrollButtonsMobile
-          scrollButtons="auto"
-          onChange={handleChange}
-          textColor="primary"
-          indicatorColor="primary"
-          aria-label="tabs"
-        >
-          <Tab className={tabStyle} label={'Fila de comensales'} />
-          <Tab className={tabStyle} label={'Retiro de pedidos'} />
-          <Tab className={tabStyle} label={'Menú'} />
-          <Tab className={tabStyle} label={'QR'} />
-        </Tabs>
-      </div>
-      <TabPanel value={value} index={0} other={''}>
-        <RestaurantQueue />
-      </TabPanel>
-      <TabPanel value={value} index={1} other={''}>
-        <RestaurantOrders />
-      </TabPanel>
-      <TabPanel value={value} index={2} other={''}>
-        <RestaurantMenu restaurantData={restaurantData} />
-      </TabPanel>
-      <TabPanel value={value} index={3} other={''}>
-        <RestaurantQR restaurantData={restaurantData} />
-      </TabPanel>
+    <div className="relative" id="dashboard">
+      <Gradient />
+      <Container>
+        <div className="text-center pt-20 pb-10">
+          <h1 className="font-bold text-4xl md:text-5xl">
+            Panel de Control{' '}
+            <span className="text-purple-800">del Restaurante</span>
+          </h1>
+          <p className="mt-4 text-gray-700">
+            Gestiona tu restaurante de manera eficiente.
+          </p>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex justify-center">
+          <div className="border-b border-gray-300 inline-block">
+            <ul className="flex flex-wrap -mb-px text-sm font-medium justify-center items-center text-center">
+              <li
+                className={`${
+                  activeTab === 'menu' ? 'border-purple-700' : ''
+                } mr-2`}
+              >
+                <button
+                  onClick={() => setActiveTab('menu')}
+                  className={`relative inline-block p-4 rounded-t-lg border-b-2 ${
+                    activeTab === 'menu'
+                      ? 'text-purple-700 border-purple-700'
+                      : 'text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  }`}
+                >
+                  Menú
+                </button>
+              </li>
+              <li
+                className={`${
+                  activeTab === 'qr' ? 'border-purple-700' : ''
+                } mr-2`}
+              >
+                <button
+                  onClick={() => setActiveTab('qr')}
+                  className={`relative inline-block p-4 rounded-t-lg border-b-2 ${
+                    activeTab === 'qr'
+                      ? 'text-purple-700 border-purple-700'
+                      : 'text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  }`}
+                >
+                  QR
+                </button>
+              </li>
+              <li
+                className={`${activeTab === 'info' ? 'border-purple-700' : ''}`}
+              >
+                <button
+                  onClick={() => setActiveTab('info')}
+                  className={`relative inline-block p-4 rounded-t-lg border-b-2 ${
+                    activeTab === 'info'
+                      ? 'text-purple-700 border-purple-700'
+                      : 'text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  }`}
+                >
+                  Información
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Content */}
+        {activeTab === 'menu' && (
+          <div>
+            {/* Contenido del tab Menú */}
+            <p>Sube y gestiona tu menú aquí.</p>
+          </div>
+        )}
+        {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
+        {activeTab === 'info' && (
+          <div>
+            {/* Contenido del tab Información */}
+            <p>Actualiza la información de tu restaurante aquí.</p>
+          </div>
+        )}
+      </Container>
     </div>
   )
 }

@@ -38,19 +38,25 @@ export default function Navbar() {
 
   const signedLinks = [
     {
-      action: () => {},
+      action: () => {
+        router.push('/management')
+      },
       style: baseButtonStyle,
       textStyle: '',
       label: 'Mi Restaurante',
     },
     {
-      action: () => {},
+      action: () => {
+        router.push('/management')
+      },
       style: baseButtonStyle,
       textStyle: '',
       label: 'Lista de Comensales',
     },
     {
-      action: () => {},
+      action: () => {
+        router.push('/management')
+      },
       style: baseButtonStyle,
       textStyle: '',
       label: 'Lista de Pedidos',
