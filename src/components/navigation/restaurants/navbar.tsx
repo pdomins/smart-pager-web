@@ -5,9 +5,12 @@
 import Container from '@/components/restaurants/new/container'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 export default function Navbar() {
   const { data: session } = useSession()
   const router = useRouter()
+  const [isToggleActive, setIsToggleActive] = useState(false)
+
   const baseButtonStyle = 'flex h-11 items-center justify-center px-6'
 
   const unsignedlinks = [
@@ -94,9 +97,11 @@ export default function Navbar() {
               <button
                 aria-label="humburger"
                 id="hamburger"
-                className="relative -mr-6 p-6"
+                className={`${
+                  isToggleActive ? 'toggled' : ''
+                } relative -mr-6 p-6`}
                 onClick={() => {
-                  console.log('hello')
+                  setIsToggleActive((toggle) => !toggle)
                 }}
               >
                 <div
@@ -115,11 +120,17 @@ export default function Navbar() {
           <div
             id="navLayer"
             aria-hidden="true"
-            className="fixed inset-0 z-10 h-screen w-screen origin-bottom scale-y-0 bg-white/70 backdrop-blur-2xl transition duration-500 lg:hidden"
+            className={`${
+              isToggleActive ? 'origin-top scale-y-100 ' : ''
+            } fixed inset-0 z-10 h-screen w-screen origin-bottom scale-y-0 bg-white/70 backdrop-blur-2xl transition duration-500 lg:hidden`}
           ></div>
           <div
             id="navlinks"
-            className="invisible absolute top-full left-0 z-20 w-full origin-top-right translate-y-1 scale-90 flex-col flex-wrap justify-end gap-6 rounded-3xl border border-gray-100 bg-white p-8 opacity-0 shadow-2xl shadow-gray-600/10 transition-all duration-300 lg:visible lg:relative lg:flex lg:w-7/12 lg:translate-y-0 lg:scale-100 lg:flex-row lg:items-center lg:gap-0 lg:border-none lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none"
+            className={`${
+              isToggleActive
+                ? '!visible !scale-100 !opacity-100 !lg:translate-y-0'
+                : ''
+            } invisible absolute top-full left-0 z-20 w-full origin-top-right translate-y-1 scale-90 flex-col flex-wrap justify-end gap-6 rounded-3xl border border-gray-100 bg-white p-8 opacity-0 shadow-2xl shadow-gray-600/10 transition-all duration-300 lg:visible lg:relative lg:flex lg:w-7/12 lg:translate-y-0 lg:scale-100 lg:flex-row lg:items-center lg:gap-0 lg:border-none lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none`}
           >
             <div className="w-full text-gray-600  lg:w-auto lg:pr-4 lg:pt-0">
               <ul className="flex flex-col gap-6 tracking-wide lg:flex-row lg:gap-0 lg:text-sm">

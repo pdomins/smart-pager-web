@@ -22,8 +22,8 @@ export default function RestaurantLanding() {
               eternas.
             </h1>
             <p className="mt-8 text-gray-700">
-              Smart Pager transforma su comercio, centralizando en una sola
-              plataforma la gestión de su menú y la atención de clientes en
+              Smart Pager transforma tu comercio, centralizando en una sola
+              plataforma la gestión de tu menú y la atención de clientes en
               espera. Eficiencia y comodidad en un solo lugar. ¿Listo para la
               innovación?
             </p>
