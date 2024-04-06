@@ -3,11 +3,11 @@
 // import Hand from 'public/hand.png'
 
 import Container from '@/components/restaurants/new/container'
-import { signIn, useSession } from 'next-auth/react'
-// import { useRouter } from 'next/navigation'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 export default function Navbar() {
   const { data: session } = useSession()
-  // const router = useRouter()
+  const router = useRouter()
   const baseButtonStyle = 'flex h-11 items-center justify-center px-6'
 
   const unsignedlinks = [
@@ -56,9 +56,13 @@ export default function Navbar() {
     },
     {
       to: '/#',
-      action: () => {},
-      style: baseButtonStyle,
-      textStyle: '',
+      action: () => {
+        signOut()
+      },
+      style:
+        baseButtonStyle +
+        ' relative before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-violet-700/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max',
+      textStyle: 'relative text-purple-700 font-semibold',
       label: 'Cerrar sesión',
     },
   ]
@@ -78,9 +82,12 @@ export default function Navbar() {
                 height={80}
                 unoptimized={true}
               /> */}
-              <span className="text-2xl font-bold text-violet-900">
+              <button
+                className="text-2xl font-bold text-violet-900"
+                onClick={() => router.replace('/')}
+              >
                 Smart Pager
-              </span>
+              </button>
             </div>
 
             <div className="relative flex max-h-10 items-center lg:hidden">
