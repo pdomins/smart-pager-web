@@ -1,16 +1,11 @@
 import React from 'react'
 import Container from './new/container'
+import Gradient from './new/gradient'
 
 export default function RestautantMoreInfo() {
   return (
     <div className="relative" id="info">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 "
-      >
-        <div className="blur-[106px] h-56 bg-gradient-to-br from-purple-400 to-purple-400"></div>
-        <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300"></div>
-      </div>
+      <Gradient />
       <Container>
         <div className="relative pt-36 ml-auto">
           <div className="lg:w-2/3 text-center mx-auto">
@@ -55,7 +50,7 @@ export default function RestautantMoreInfo() {
           <div className="mt-16 text-center">
             <a
               href="#contact"
-              className="relative inline-flex items-center justify-center px-6 py-3 text-white bg-purple-700 rounded-full font-semibold hover:bg-purple-800 transition duration-300"
+              className="relative inline-flex items-center justify-center px-6 py-3 mb-6 text-white bg-purple-700 rounded-full font-semibold hover:bg-purple-800 transition duration-300"
             >
               Contáctanos
             </a>

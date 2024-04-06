@@ -1,13 +1,13 @@
 'use client'
 
 import Navbar from '@/components/navigation/restaurants/navbar'
-import RestaurantMoreInfo from '@/components/restaurants/more-info'
+import RestaurantSignUp from '@/components/restaurants/sign-up'
 
 export default function Page() {
   return (
     <>
       <Navbar />
-      <RestaurantMoreInfo />
+      <RestaurantSignUp />
     </>
   )
 }

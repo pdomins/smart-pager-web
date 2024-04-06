@@ -14,7 +14,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       backgroundColor: {
-        'custom-bg': '#FAF4EE',
+        'custom-bg': '#F3F4F6',
       },
       colors: {
         'custom-blue': '#281952',
@@ -25,7 +25,7 @@ const config: Config = {
         'complementary-blue': '#A7B5C5',
       },
       fontFamily: {
-        averta: ['Averta', 'serif'],
+        averta: ['Averta', 'Averta', 'serif'],
       },
     },
   },

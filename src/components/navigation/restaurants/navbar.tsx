@@ -15,14 +15,15 @@ export default function Navbar() {
 
   const unsignedlinks = [
     {
-      to: '/#',
-      action: () => {},
+      action: () =>
+        signIn('google', {
+          callbackUrl: '/management/sign-up',
+        }),
       style: baseButtonStyle,
       textStyle: '',
       label: 'Registrarse',
     },
     {
-      to: '/#',
       action: () =>
         signIn('google', {
           callbackUrl: '/management',
@@ -37,28 +38,24 @@ export default function Navbar() {
 
   const signedLinks = [
     {
-      to: '/#',
       action: () => {},
       style: baseButtonStyle,
       textStyle: '',
       label: 'Mi Restaurante',
     },
     {
-      to: '/#',
       action: () => {},
       style: baseButtonStyle,
       textStyle: '',
       label: 'Lista de Comensales',
     },
     {
-      to: '/#',
       action: () => {},
       style: baseButtonStyle,
       textStyle: '',
       label: 'Lista de Pedidos',
     },
     {
-      to: '/#',
       action: () => {
         signOut()
       },

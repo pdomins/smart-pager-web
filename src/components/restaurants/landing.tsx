@@ -1,19 +1,14 @@
 import React from 'react'
 import Container from './new/container'
 import { useRouter } from 'next/navigation'
+import Gradient from './new/gradient'
 
 export default function RestaurantLanding() {
   const router = useRouter()
 
   return (
     <div className="relative" id="home">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 "
-      >
-        <div className="blur-[106px] h-56 bg-gradient-to-br from-purple-400 to-purple-400"></div>
-        <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300"></div>
-      </div>
+      <Gradient />
       <Container>
         <div className="relative pt-36 ml-auto">
           <div className="lg:w-2/3 text-center mx-auto">
