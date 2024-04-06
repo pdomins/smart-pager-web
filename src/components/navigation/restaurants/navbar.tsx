@@ -1,21 +1,33 @@
 'use client'
-import Image from 'next/image'
-import Hand from 'public/hand.png'
+// import Image from 'next/image'
+// import Hand from 'public/hand.png'
 
 import Container from '@/components/restaurants/new/container'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 // import { useRouter } from 'next/navigation'
 export default function Navbar() {
   const { data: session } = useSession()
   // const router = useRouter()
+  const baseButtonStyle = 'flex h-11 items-center justify-center px-6'
 
   const unsignedlinks = [
     {
       to: '/#',
+      action: () => {},
+      style: baseButtonStyle,
+      textStyle: '',
       label: 'Registrarse',
     },
     {
       to: '/#',
+      action: () =>
+        signIn('google', {
+          callbackUrl: '/management',
+        }),
+      style:
+        baseButtonStyle +
+        ' relative before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-violet-700/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max',
+      textStyle: 'relative text-purple-700 font-semibold',
       label: 'Iniciar Sesión',
     },
   ]
@@ -23,18 +35,30 @@ export default function Navbar() {
   const signedLinks = [
     {
       to: '/#',
+      action: () => {},
+      style: baseButtonStyle,
+      textStyle: '',
       label: 'Mi Restaurante',
     },
     {
       to: '/#',
+      action: () => {},
+      style: baseButtonStyle,
+      textStyle: '',
       label: 'Lista de Comensales',
     },
     {
       to: '/#',
+      action: () => {},
+      style: baseButtonStyle,
+      textStyle: '',
       label: 'Lista de Pedidos',
     },
     {
       to: '/#',
+      action: () => {},
+      style: baseButtonStyle,
+      textStyle: '',
       label: 'Cerrar sesión',
     },
   ]
@@ -47,14 +71,14 @@ export default function Navbar() {
         <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 md:gap-0 md:py-4">
           <div className="relative z-20 flex w-full justify-between md:px-0 lg:w-max">
             <div className="flex items-center content-center">
-              <Image
+              {/* <Image
                 src={Hand.src}
                 alt="Logo"
                 width={80}
                 height={80}
                 unoptimized={true}
-              />
-              <span className="text-2xl font-bold text-gray-900">
+              /> */}
+              <span className="text-2xl font-bold text-violet-900">
                 Smart Pager
               </span>
             </div>
@@ -64,6 +88,9 @@ export default function Navbar() {
                 aria-label="humburger"
                 id="hamburger"
                 className="relative -mr-6 p-6"
+                onClick={() => {
+                  console.log('hello')
+                }}
               >
                 <div
                   aria-hidden="true"
@@ -89,24 +116,14 @@ export default function Navbar() {
           >
             <div className="w-full text-gray-600  lg:w-auto lg:pr-4 lg:pt-0">
               <ul className="flex flex-col gap-6 tracking-wide lg:flex-row lg:gap-0 lg:text-sm">
-                {/* <li>
-                  <a
-                    href="https://tailus.gumroad.com/l/astls-premium"
-                    target="_blank"
-                    className="flex gap-2 font-semibold text-gray-700 transition hover:text-primary md:px-4"
-                    rel="noreferrer"
-                  >
-                    <span>Premium</span>
-                  </a>
-                </li> */}
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.to}
-                      className="hover:text-primary block transition md:px-4"
+                    <button
+                      className={link.style}
+                      onClick={() => link.action()}
                     >
-                      <span>{link.label}</span>
-                    </a>
+                      <span className={link.textStyle}>{link.label}</span>
+                    </button>
                   </li>
                 ))}
               </ul>
