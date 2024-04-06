@@ -22,12 +22,10 @@ const config: Config = {
         'custom-brown': '#C5B7A7',
         'custom-grey': '#A89F96',
         'custom-vintage': '#8C7B6B',
-        'complementary-blue': '#A7B5C5'
-
+        'complementary-blue': '#A7B5C5',
       },
       fontFamily: {
-        recoleta: ['Recoleta', 'Recoleta Alt', 'serif'],
-        averta: ['Averta', 'Recoleta', 'serif'],
+        averta: ['Averta', 'serif'],
       },
     },
   },

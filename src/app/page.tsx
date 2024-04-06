@@ -1,5 +1,7 @@
 'use client'
-import RestaurantSingIn from '@/components/restaurants/restaurant-sign-in'
+
+import RestaurantLanding from '@/components/restaurants/restaurant-landing'
+
 export default function Page() {
-  return <RestaurantSingIn />
+  return <RestaurantLanding />
 }
