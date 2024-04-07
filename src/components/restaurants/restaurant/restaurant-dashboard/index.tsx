@@ -1,8 +1,8 @@
 'use client'
 
 import { Restaurant } from '@/types/restaurant'
-import Gradient from '../../new/gradient'
-import Container from '../../new/container'
+import Gradient from '../../style/gradient'
+import Container from '../../style/container'
 import { useState } from 'react'
 import RestaurantQR from './tabs/qr'
 import RestaurantMenu from './tabs/menu/menu'

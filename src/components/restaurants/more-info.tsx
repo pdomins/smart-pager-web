@@ -1,6 +1,6 @@
 import React from 'react'
-import Container from './new/container'
-import Gradient from './new/gradient'
+import Container from './style/container'
+import Gradient from './style/gradient'
 
 export default function RestautantMoreInfo() {
   return (

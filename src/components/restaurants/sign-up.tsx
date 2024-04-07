@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react'
-import Container from './new/container'
-import Gradient from './new/gradient'
+import Container from './style/container'
+import Gradient from './style/gradient'
 import { useRouter } from 'next/navigation'
 
 export default function RestaurantSignUp() {

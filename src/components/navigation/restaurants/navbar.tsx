@@ -2,7 +2,7 @@
 // import Image from 'next/image'
 // import Hand from 'public/hand.png'
 
-import Container from '@/components/restaurants/new/container'
+import Container from '@/components/restaurants/style/container'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -154,22 +154,4 @@ export default function Navbar() {
       </Container>
     </nav>
   )
-  {
-    /* <style>
-    #toggle_nav:checked ~ div #hamburger #line {
-        @apply translate-y-1.5 rotate-45;
-    }
-
-    #toggle_nav:checked ~ div #hamburger #line2 {
-        @apply -translate-y-1 -rotate-45;
-    }
-
-    .toggled div:first-child {
-        @apply translate-y-1.5 rotate-45;
-    }
-    .toggled div:last-child {
-        @apply -translate-y-1 -rotate-45;
-    }
-</style> */
-  }
 }

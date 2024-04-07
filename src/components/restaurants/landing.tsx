@@ -1,7 +1,7 @@
 import React from 'react'
-import Container from './new/container'
+import Container from './style/container'
 import { useRouter } from 'next/navigation'
-import Gradient from './new/gradient'
+import Gradient from './style/gradient'
 
 export default function RestaurantLanding() {
   const router = useRouter()
