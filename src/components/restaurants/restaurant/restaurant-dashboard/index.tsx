@@ -20,8 +20,7 @@ export default function RestaurantDashboard({
       <Container>
         <div className="text-center pt-20 pb-10">
           <h1 className="font-bold text-4xl md:text-5xl">
-            Panel de Control{' '}
-            <span className="text-purple-800">del Restaurante</span>
+            Panel de <span className="text-purple-800">Control</span>
           </h1>
           <p className="mt-4 text-gray-700">
             Gestiona tu restaurante de manera eficiente.

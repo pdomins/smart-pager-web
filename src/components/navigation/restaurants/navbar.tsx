@@ -47,7 +47,7 @@ export default function Navbar() {
     },
     {
       action: () => {
-        router.push('/management')
+        router.push('/management/queue')
       },
       style: baseButtonStyle,
       textStyle: '',
