@@ -81,17 +81,14 @@ export default function RestaurantDashboard({
           </div>
         </div>
 
-        {/* Content */}
         {activeTab === 'menu' && (
           <div>
-            {/* Contenido del tab Menú */}
             <p>Sube y gestiona tu menú aquí.</p>
           </div>
         )}
         {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
         {activeTab === 'info' && (
           <div>
-            {/* Contenido del tab Información */}
             <p>Actualiza la información de tu restaurante aquí.</p>
           </div>
         )}
