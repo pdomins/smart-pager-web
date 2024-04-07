@@ -5,6 +5,7 @@ import Gradient from '../../new/gradient'
 import Container from '../../new/container'
 import { useState } from 'react'
 import RestaurantQR from './tabs/qr'
+import RestaurantMenu from './tabs/menu/menu'
 
 export default function RestaurantDashboard({
   restaurantData,
@@ -82,9 +83,7 @@ export default function RestaurantDashboard({
         </div>
 
         {activeTab === 'menu' && (
-          <div>
-            <p>Sube y gestiona tu menú aquí.</p>
-          </div>
+          <RestaurantMenu restaurantData={restaurantData} />
         )}
         {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
         {activeTab === 'info' && (

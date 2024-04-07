@@ -1,4 +1,4 @@
-import { put, del } from '@vercel/blob'
+import { put, del, head } from '@vercel/blob'
 import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
@@ -35,4 +35,12 @@ export async function DELETE(request: Request) {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   })
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const blobUrl = searchParams.get('url') as string
+  const blobDetails = await head(blobUrl)
+
+  return Response.json(blobDetails)
 }
