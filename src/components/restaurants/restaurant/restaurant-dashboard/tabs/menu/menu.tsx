@@ -15,6 +15,7 @@ export default function RestaurantMenu({
   const inputFileRef = useRef<HTMLInputElement>(null)
   const [menu, setMenu] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [isMenuVisible, setIsMenuVisible] = useState(false)
 
   useEffect(() => {
     const getMenu = async () => {
@@ -75,8 +76,27 @@ export default function RestaurantMenu({
 
   return (
     <div className="max-w-md mx-auto bg-white mt-2 p-6 rounded-lg shadow-md">
-      {menu && <ViewMenu menu={menu} />}
+      <div className="flex flex-col items-center mb-2 pb-2">
+        {menu && (
+          <>
+            <button
+              onClick={() => setIsMenuVisible(!isMenuVisible)}
+              className="relative flex px-4 py-2 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-violet-700 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
+            >
+              <span className="relative text-white text-white">
+                {isMenuVisible ? 'Minimizar mi menú' : 'Ver mi menú'}
+              </span>
+            </button>
+            {isMenuVisible && (
+              <div className="w-full max-w-md mt-4">
+                <ViewMenu menu={menu} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
       <h2 className="text-xl font-semibold mb-4">Subir el menú</h2>
+
       <form onSubmit={onSubmit}>
         <div className="mb-4">
           <label className="block text-gray-600 font-medium">
@@ -99,9 +119,11 @@ export default function RestaurantMenu({
         ) : (
           <button
             type="submit"
-            className="relative px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-700"
+            className="relative flex px-6 h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-violet-700 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
           >
-            Subir archivo
+            <span className="relative text-white text-white">
+              Subir archivo
+            </span>
           </button>
         )}
       </form>

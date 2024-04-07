@@ -127,7 +127,7 @@ export default function RestaurantQR({
             <div className="flex gap-4">
               <button
                 type="button"
-                className="relative px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-700"
+                className="relative flex px-4 py-2 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-violet-700 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
                 onClick={() => {
                   const updatedUrl =
                     'https://smartpager.com.ar/restaurants/' +
@@ -135,14 +135,18 @@ export default function RestaurantQR({
                   setQrUrl(updatedUrl)
                 }}
               >
-                Actualizar QR
+                <span className="relative text-white text-white">
+                  Actualizar QR
+                </span>
               </button>
               <button
                 type="button"
-                className="relative px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-700"
+                className="relative flex px-4 py-2 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-violet-700 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
                 onClick={handlePrintQR}
               >
-                Imprimir QR
+                <span className="relative text-white text-white">
+                  Imprimir QR
+                </span>
               </button>
             </div>
           </div>
