@@ -66,14 +66,16 @@ export default function RestaurantClientPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Gradient />
-      <div className="py-5 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold">
-          Bienvenido a {restaurantData?.name}
-        </h1>
-        <p className="mt-2 text-gray-700">
-          Tu experincia culinaria comienza aquí.
-        </p>
-      </div>
+      {!showPickUpForm && !showCommensalForm && (
+        <div className="py-5 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold">
+            Bienvenido a {restaurantData?.name}
+          </h1>
+          <p className="mt-2 text-gray-700">
+            Tu experincia gastronómica comienza aquí.
+          </p>
+        </div>
+      )}
 
       <div className="flex-grow flex flex-col items-center justify-center px-4">
         {showCommensalForm && (
