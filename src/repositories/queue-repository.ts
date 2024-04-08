@@ -15,6 +15,11 @@ type CommensalData = {
   description: string
 }
 
+type FullCommensalData = CommensalData & {
+  status: 'waiting' | 'called' | 'done'
+  joinedAt: Date
+}
+
 type PickUpData = {
   name: string
   pickupid: string
@@ -38,7 +43,11 @@ export async function addCommensal({
   noStore()
   const isMember = await kv.smembers(email)
   if (isMember.length !== 0) return false
-  const data = { status: 'waiting', ...clientData }
+  const data: FullCommensalData = {
+    status: 'waiting',
+    joinedAt: new Date(),
+    ...clientData,
+  }
   await addClient({
     list: restaurantSlug + COMMENSAL_LIST,
     email,

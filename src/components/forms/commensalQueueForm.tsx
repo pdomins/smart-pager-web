@@ -101,13 +101,13 @@ export default function CommensalQueueForm({
               required
             />
           </div>
-          <div className=" px-3 mb-6 md:mb-0 inline-block relative w-64">
+          <div className="w-full px-3 mb-6 md:mb-0 inline-block relative">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
               Cantidad de comensales <span className="text-red-500">*</span>
             </label>
             <select
               id="form-commensals"
-              className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              className="block w-full bg-white border  hover:border-gray-500 px-4 py-2 pr-8 mb-3 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
               required
             >
               <option>1</option>
@@ -117,6 +117,29 @@ export default function CommensalQueueForm({
               <option>5</option>
               <option>6 o más</option>
             </select>
+          </div>
+          <div className="w-full px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              Número de Teléfono
+            </label>
+            <input
+              className="appearance-none block w-full bg-white-200 text-gray-700 border shadow rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="form-phone"
+              type="tel"
+              placeholder="Su número de teléfono"
+              required
+            />
+          </div>
+
+          <div className="w-full px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              Descripción
+            </label>
+            <textarea
+              className="appearance-none block w-full bg-white-200 text-gray-700 border shadow rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="form-description"
+              placeholder="Detalles adicionales"
+            ></textarea>{' '}
           </div>
           <div className="px-3">
             <button className="bg-violet-500 hover:bg-violet-700 text-white font-bold mt-4 py-2 rounded rounded-full w-full">
