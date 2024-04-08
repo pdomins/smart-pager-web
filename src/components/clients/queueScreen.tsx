@@ -1,55 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import foodtrcuckLogo from '../../app/images/food_truck_logo.png'
-import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository';
-import { useParams } from 'next/navigation';
+import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
+import { useParams } from 'next/navigation'
+import Gradient from '../restaurants/style/gradient'
+
 export default function QueueScreen() {
-
-  const [menuUrl, setMenuUrl] = useState('');
-  const restaurantSlug = useParams<{restaurant: string}>()
-
+  const [menuUrl, setMenuUrl] = useState('')
+  const restaurantSlug = useParams<{ restaurant: string }>()
 
   const viewMenu = async () => {
-    window.open(await menuUrl, '_blank');
+    window.open(menuUrl, '_blank')
   }
 
   useEffect(() => {
     const fetchMenuUrl = async () => {
       try {
-        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant);
-        setMenuUrl(menuUrl);
+        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant)
+        setMenuUrl(menuUrl)
       } catch (error) {
-        console.error('Error setting menu URL:', error);
+        console.error('Error setting menu URL:', error)
       }
-    };
-    fetchMenuUrl();
-  }, []);
-
+    }
+    fetchMenuUrl()
+  }, [])
 
   return (
-    <>
-      <div className="flex absolute top-1/2 left-1/2  translate-x-1/2 -translate-y-1/2  w-1/3 flex-row items-center">
-        <img
-          className="object-contain blur-sm box-content"
-          src={foodtrcuckLogo.src}
-          alt="logo"
-        />
+    <div className="flex flex-col min-h-screen">
+      <Gradient />
+      <div className="flex min-h-screen">
+        <div className="text-center mx-auto px-4 sm:px-6 lg:px-8 items-center content-center">
+          <h1 className="mt-5 font-bold text-3xl md:text-4xl lg:text-5xl text-gray-900">
+            ¡Ya se encuentra en una lista de espera!
+          </h1>
+          <p className="mt-4 md:text-lg lg:text-xl text-gray-700 italic">
+            Le enviaremos un mensaje por whatsapp cuando sea su turno. Si desea
+            desanotarse, verifique su email.
+          </p>
+          {menuUrl && (
+            <button
+              type="button"
+              className="relative mt-6 w-full bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 rounded rounded-full"
+              onClick={viewMenu}
+            >
+              Ver menú
+            </button>
+          )}
+        </div>
       </div>
-      <div className="min-h-screen flex flex-col justify-center relative ">
-        <p className="text-6xl font-sans mb-2 text-center">
-          <b>¡Ya se encuentra en una lista de espera!</b>
-        </p>
-        <p className="text-2sm font-sans text-custom-blue text-center italic mb-2 ">
-          <b>Le avisaremos por email cuando sea su turno. Si desea desanotarse, verifique su email.</b>
-        </p>
-        { menuUrl && (
-        <button 
-        type="button"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-        onClick={viewMenu}>
-          Ver menú
-        </button>
-        )}
-      </div>
-    </>
+    </div>
   )
 }
