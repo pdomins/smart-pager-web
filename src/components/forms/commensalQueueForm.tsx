@@ -2,6 +2,9 @@ import React, { FormEvent, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useParams, useRouter } from 'next/navigation'
 import { addCommensal } from '@/repositories/queue-repository'
+import PhoneInput from 'react-phone-input-2'
+import es from 'react-phone-input-2/lang/es.json'
+import 'react-phone-input-2/lib/style.css'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
@@ -109,14 +112,31 @@ export default function CommensalQueueForm({
           </div>
 
           {/* Número de Teléfono */}
-          <InputField
-            label="Número de Teléfono"
-            type="tel"
-            placeholder="Su número de teléfono"
-            value={phone}
-            onChange={setPhone}
-            required={true}
-          />
+          <div className="w-full px-3 mb-6 md:mb-0">
+            <LabelField label="Numero de Teléfono" required={true} />
+            <PhoneInput
+              country={'ar'}
+              placeholder="Su número de teléfono"
+              value={phone}
+              onChange={setPhone}
+              localization={es}
+              containerStyle={{
+                width: '100%',
+                marginBottom: '0.75rem',
+              }}
+              inputStyle={{
+                width: '100%',
+                display: 'block', // block
+                borderRadius: '0.375rem', // rounded
+                boxShadow:
+                  '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)', // shadow
+                outline: 'none', // focus:outline-none
+                borderColor: '#DDEBF6',//'#D4E2EC',
+                paddingBottom: '1.25rem', // py
+                paddingTop: '1.25rem', // pt
+              }}
+            />
+          </div>
 
           {/* Descripción */}
           <div className="w-full px-3 mb-6 md:mb-0">
