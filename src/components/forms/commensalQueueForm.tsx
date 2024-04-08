@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { addCommensal } from '@/repositories/queue-repository'
 import PhoneInput from 'react-phone-input-2'
 import es from 'react-phone-input-2/lang/es.json'
-import 'react-phone-input-2/lib/style.css'
+import 'react-phone-input-2/lib/bootstrap.css'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
@@ -19,6 +19,8 @@ export default function CommensalQueueForm({
   const [commensals, setCommensals] = useState('1')
   const [phone, setPhone] = useState('')
   const [description, setDescription] = useState('')
+  const areaCode = '54'
+  const pattern = /^\+?54\s*11\s*\d{8,10}$/
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -27,6 +29,11 @@ export default function CommensalQueueForm({
       console.error('Restaurant slug is missing')
       return
     }
+
+    if (!pattern.test(phone)) {
+      return
+    }
+
     console.log({
       restaurantSlug,
       email,
@@ -115,10 +122,20 @@ export default function CommensalQueueForm({
           <div className="w-full px-3 mb-6 md:mb-0">
             <LabelField label="Numero de Teléfono" required={true} />
             <PhoneInput
+              inputProps={{
+                required: true,
+              }}
+              onlyCountries={['ar']}
               country={'ar'}
-              placeholder="Su número de teléfono"
+              placeholder="+54 (11) 12345678"
               value={phone}
-              onChange={setPhone}
+              onChange={(num) => {
+                setPhone(num)
+              }}
+              isValid={(value) => {
+                return pattern.test(value) || value === areaCode
+              }}
+              defaultErrorMessage="Número invalido"
               localization={es}
               containerStyle={{
                 width: '100%',
@@ -131,9 +148,7 @@ export default function CommensalQueueForm({
                 boxShadow:
                   '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)', // shadow
                 outline: 'none', // focus:outline-none
-                borderColor: '#DDEBF6',//'#D4E2EC',
-                paddingBottom: '1.25rem', // py
-                paddingTop: '1.25rem', // pt
+                borderColor: '#DDEBF6', //'#D4E2EC',
               }}
             />
           </div>
