@@ -3,32 +3,53 @@
 import { Restaurant } from '@/types/restaurant'
 import Gradient from '../../style/gradient'
 import Container from '../../style/container'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ClientCard from './card'
+import {
+  CommensalData,
+  getPaginatedCommensals,
+  removeCommensal,
+  updateCommensalStatus,
+} from '@/repositories/queue-repository'
+const NoClientsMessage = ({ message }: { message: string }) => (
+  <div className="my-10 py-5 px-4 bg-white shadow rounded-lg flex justify-center items-center">
+    <p className="text-gray-600">{message}</p>
+  </div>
+)
 
 export default function RestaurantQueue({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
-  console.log(restaurantData)
-  const [waitingClients, setWaitingClients] = useState([
-    { id: 1, name: 'John Doe', guests: '3' },
-    { id: 2, name: 'Jane Doe', guests: '2' },
-  ])
-  const [calledClients, setCalledClients] = useState([
-    { id: 1, name: 'John Doe', guests: '3' },
-    { id: 2, name: 'Jane Doe', guests: '2' },
-  ])
+  const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
+  const [calledClients, setCalledClients] = useState<CommensalData[]>() //todo
+
+  const getCommensalList = useCallback(async () => {
+    const commensals = await getPaginatedCommensals({
+      restaurantSlug: restaurantData.slug,
+      start: 0,
+      end: 3,
+    })
+
+    if (commensals === null) return
+    const waitingClients = commensals.filter(
+      (commensal) => commensal.status === 'waiting'
+    )
+
+    const calledClients = commensals.filter(
+      (commensal) => commensal.status === 'called'
+    )
+
+    setWaitingClients(waitingClients)
+    setCalledClients(calledClients)
+
+    return commensals
+  }, [restaurantData.slug])
 
   useEffect(() => {
-    setWaitingClients((clients) => [
-      ...clients,
-      { id: 3, name: 'John Doe2', guests: '5' },
-    ])
-
-    setCalledClients((clients) => [...clients])
-  }, [])
+    getCommensalList()
+  }, [getCommensalList])
 
   return (
     <div className="relative" id="queue">
@@ -53,13 +74,31 @@ export default function RestaurantQueue({
             </button>
           </div>
 
-          {waitingClients.map((client) => (
-            <ClientCard
-              key={client.id}
-              name={client.name}
-              commensals={client.guests}
-            />
-          ))}
+          {waitingClients && waitingClients?.length > 0 ? (
+            waitingClients.map((client) => (
+              <ClientCard
+                key={client.email}
+                name={client.name}
+                commensals={client.groupSize}
+                description={client.description}
+                onCallClient={async () => {
+                  await updateCommensalStatus({ email: client.email })
+                  await getCommensalList()
+                }}
+                onRemoveClient={async () => {
+                  await removeCommensal({
+                    restaurantSlug: restaurantData.slug,
+                    email: client.email,
+                  })
+                  await getCommensalList()
+
+                  // add here logic of removed commensals without completion if needed (for metrics)
+                }}
+              />
+            ))
+          ) : (
+            <NoClientsMessage message="No hay clientes esperando en este momento." />
+          )}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Clientes Llamados</h2>
             <button
@@ -70,13 +109,36 @@ export default function RestaurantQueue({
             </button>
           </div>
 
-          {calledClients.map((client) => (
-            <ClientCard
-              key={client.id}
-              name={client.name}
-              commensals={client.guests}
-            />
-          ))}
+          {calledClients && calledClients.length > 0 ? (
+            calledClients.map((client) => (
+              <ClientCard
+                key={client.email}
+                name={client.name}
+                commensals={client.groupSize}
+                onCallClient={() => {}}
+                onRemoveClient={async () => {
+                  await removeCommensal({
+                    restaurantSlug: restaurantData.slug,
+                    email: client.email,
+                  })
+                  await getCommensalList()
+
+                  // add here logic of removed commensals without completion if needed (for metrics)
+                }}
+                onAcceptClient={async () => {
+                  await removeCommensal({
+                    restaurantSlug: restaurantData.slug,
+                    email: client.email,
+                  })
+                  await getCommensalList()
+
+                  // add here logic of removed commensals on acceptance if needed (for metrics)
+                }}
+              />
+            ))
+          ) : (
+            <NoClientsMessage message="Aún no se ha llamado ningún cliente." />
+          )}
         </div>
       </Container>
     </div>

@@ -8,16 +8,17 @@ import { unstable_noStore as noStore } from 'next/cache'
 const PICK_UP_LIST = '-pickup'
 const COMMENSAL_LIST = '-commensal'
 
-type CommensalData = {
+type CommensalDataParams = {
   name: string
   groupSize: string
   phoneNumber: string
   description: string
 }
 
-type FullCommensalData = CommensalData & {
-  status: 'waiting' | 'called' | 'done'
+export type CommensalData = CommensalDataParams & {
+  status: 'waiting' | 'called'
   joinedAt: Date
+  email: string
 }
 
 type PickUpData = {
@@ -38,12 +39,12 @@ export async function addCommensal({
 }: {
   restaurantSlug: string
   email: string
-  clientData: CommensalData
+  clientData: CommensalDataParams
 }) {
   noStore()
   const isMember = await kv.smembers(email)
   if (isMember.length !== 0) return false
-  const data: FullCommensalData = {
+  const data: Omit<CommensalData, 'email'> = {
     status: 'waiting',
     joinedAt: new Date(),
     ...clientData,
@@ -80,7 +81,7 @@ async function addClient({
 }: {
   list: string
   email: string
-  clientData: CommensalData | PickUpData
+  clientData: CommensalDataParams | PickUpData
 }) {
   const score = Date.now()
 
@@ -126,13 +127,17 @@ async function removeClient({ list, email }: { list: string; email: string }) {
 
 const getClientData = async ({ email }: { email: string }) => {
   try {
-    const clientData = await kv.smembers(email)
-    if (!clientData) {
+    const rawData = (await kv.smembers(email))[0] as unknown as Omit<
+      CommensalData,
+      'email'
+    > | null
+    if (!rawData) {
       console.log(`No data found for email ${email}.`)
       return null
     }
+    const clientData: CommensalData = { email, ...rawData }
 
-    console.log(`Data for email ${email}:`, JSON.stringify(clientData))
+    console.log(`Data for email ${email}:`, clientData)
     return clientData
   } catch (error) {
     console.error(
@@ -143,18 +148,25 @@ const getClientData = async ({ email }: { email: string }) => {
   }
 }
 
-const getFirstEmail = async ({ list }: { list: string }) => {
+const getPaginatedEmails = async ({
+  list,
+  start,
+  end,
+}: {
+  list: string
+  start: number
+  end: number
+}) => {
   noStore()
   try {
-    const firstUserArray: string[] = await kv.zrange(list, 0, 1)
-    if (firstUserArray.length === 0) {
+    const emails: string[] = await kv.zrange(list, start, end)
+    if (emails.length === 0) {
       console.log('The queue is currently empty.')
       return null
     }
 
-    const firstEmail = firstUserArray[0]
-    console.log(`First email in the queue: ${firstEmail}`)
-    return firstEmail
+    console.log({ msg: `Emails in the queue: ${emails}`, start, end })
+    return emails
   } catch (error) {
     console.error(
       'An error occurred while retrieving the first username from the queue:',
@@ -164,30 +176,53 @@ const getFirstEmail = async ({ list }: { list: string }) => {
   }
 }
 
-export async function getFirstCommensal({
+export async function getPaginatedCommensals({
   restaurantSlug,
+  start,
+  end,
 }: {
   restaurantSlug: string
+  start: number
+  end: number
 }) {
   noStore()
-  const email = await getFirstEmail({ list: restaurantSlug + COMMENSAL_LIST })
-  if (!email) {
+  const emails = await getPaginatedEmails({
+    list: restaurantSlug + COMMENSAL_LIST,
+    start,
+    end,
+  })
+  if (!emails) {
     return null
   }
-  return getClientData({ email })
+
+  const results = (
+    await Promise.all(emails.map((email) => getClientData({ email })))
+  ).filter(
+    (result): result is CommensalData => result !== null
+  ) as CommensalData[]
+
+  return results
 }
 
-export async function getFirstPickUp({
+export async function getPaginatedPickUps({
   restaurantSlug,
+  start,
+  end,
 }: {
   restaurantSlug: string
+  start: number
+  end: number
 }) {
   noStore()
-  const email = await getFirstEmail({ list: restaurantSlug + PICK_UP_LIST })
+  const email = await getPaginatedEmails({
+    list: restaurantSlug + PICK_UP_LIST,
+    start,
+    end,
+  })
   if (!email) {
     return null
   }
-  return getClientData({ email })
+  // return getClientData({ email })
 }
 
 export async function getAllCommensals({
@@ -196,6 +231,7 @@ export async function getAllCommensals({
   restaurantSlug: string
 }) {
   noStore()
+  console.log(restaurantSlug + COMMENSAL_LIST)
   return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
 }
 
@@ -206,4 +242,26 @@ export async function getAllPickUps({
 }) {
   noStore()
   return await kv.zrange(restaurantSlug + PICK_UP_LIST, 0, -1)
+}
+
+export async function updateCommensalStatus({ email }: { email: string }) {
+  noStore()
+  try {
+    const data = await getClientData({ email })
+    if (!data) {
+      console.error(`No data found for email ${email}.`)
+      return
+    }
+
+    const updatedData: Omit<CommensalData, 'email'> = {
+      ...data,
+      status: 'called',
+    }
+    await kv.del(email)
+    await kv.sadd(email, updatedData)
+
+    console.log(`Email ${email} updated in the queue.`)
+  } catch (error) {
+    console.error(`An error occurred while removing ${email}:`, error)
+  }
 }

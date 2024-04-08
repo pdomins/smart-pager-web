@@ -3,4 +3,5 @@ export interface Restaurant {
   name: string
   email: string
   slug: string
+  menu: string
 }

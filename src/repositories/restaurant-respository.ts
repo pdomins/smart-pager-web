@@ -14,8 +14,8 @@ export async function getRestaurantById(id: number) {
 }
 
 export async function getRestaurantByEmail(email: string): Promise<Restaurant> {
+  noStore()
   const result = await sql`SELECT * FROM Restaurants WHERE email = ${email}`
-
   return result.rows[0] as Restaurant
 }
 
