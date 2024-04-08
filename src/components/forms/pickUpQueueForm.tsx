@@ -28,14 +28,14 @@ export default function RetireForm({
       ) as HTMLInputElement | null
 
       if (emailInput && nameInput && pickupid) {
-        const success = await addPickUp(
-          restaurantSlug.restaurant,
-          emailInput.value,
-          {
+        const success = await addPickUp({
+          restaurantSlug: restaurantSlug.restaurant,
+          email: emailInput.value,
+          clientData: {
             name: nameInput.value,
             pickupid: pickupid.value,
-          }
-        )
+          },
+        })
         if (success)
           router.push(
             '/restaurants/' + restaurantSlug.restaurant + '/queued/pickup'

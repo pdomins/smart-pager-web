@@ -10,7 +10,9 @@ const COMMENSAL_LIST = '-commensal'
 
 type CommensalData = {
   name: string
-  commensals: string
+  groupSize: string
+  phoneNumber: string
+  description: string
 }
 
 type PickUpData = {
@@ -24,32 +26,53 @@ const kv = createClient({
 })
 
 //TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
-export async function addCommensal(
-  restaurantSlug: string,
-  email: string,
+export async function addCommensal({
+  restaurantSlug,
+  email,
+  clientData,
+}: {
+  restaurantSlug: string
+  email: string
   clientData: CommensalData
-) {
+}) {
   noStore()
   const isMember = await kv.smembers(email)
   if (isMember.length !== 0) return false
-  await addClient(restaurantSlug + COMMENSAL_LIST, email, clientData)
+  const data = { status: 'waiting', ...clientData }
+  await addClient({
+    list: restaurantSlug + COMMENSAL_LIST,
+    email,
+    clientData: data,
+  })
   return true
 }
 
 //TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
-export async function addPickUp(
-  restaurantSlug: string,
-  email: string,
+export async function addPickUp({
+  restaurantSlug,
+  email,
+  clientData,
+}: {
+  restaurantSlug: string
+  email: string
   clientData: PickUpData
-) {
+}) {
   noStore()
   const isMember = await kv.smembers(email)
   if (isMember.length !== 0) return false
-  await addClient(restaurantSlug + PICK_UP_LIST, email, clientData)
+  await addClient({ list: restaurantSlug + PICK_UP_LIST, email, clientData })
   return true
 }
 
-async function addClient(list: string, email: string, clientData: object) {
+async function addClient({
+  list,
+  email,
+  clientData,
+}: {
+  list: string
+  email: string
+  clientData: CommensalData | PickUpData
+}) {
   const score = Date.now()
 
   await kv.zadd(list, { score, member: email })
@@ -64,7 +87,7 @@ export async function removeCommensal({
   restaurantSlug: string
   email: string
 }) {
-  await removeClient(restaurantSlug + COMMENSAL_LIST, email)
+  await removeClient({ list: restaurantSlug + COMMENSAL_LIST, email })
 }
 
 export async function removePickUp({
@@ -74,10 +97,10 @@ export async function removePickUp({
   restaurantSlug: string
   email: string
 }) {
-  await removeClient(restaurantSlug + PICK_UP_LIST, email)
+  await removeClient({ list: restaurantSlug + PICK_UP_LIST, email })
 }
 
-async function removeClient(list: string, email: string) {
+async function removeClient({ list, email }: { list: string; email: string }) {
   try {
     const removed = await kv.zrem(list, email)
 
@@ -92,7 +115,7 @@ async function removeClient(list: string, email: string) {
   }
 }
 
-const getClientData = async (email: string) => {
+const getClientData = async ({ email }: { email: string }) => {
   try {
     const clientData = await kv.smembers(email)
     if (!clientData) {
@@ -111,7 +134,7 @@ const getClientData = async (email: string) => {
   }
 }
 
-const getFirstEmail = async (list: string) => {
+const getFirstEmail = async ({ list }: { list: string }) => {
   noStore()
   try {
     const firstUserArray: string[] = await kv.zrange(list, 0, 1)
@@ -138,11 +161,11 @@ export async function getFirstCommensal({
   restaurantSlug: string
 }) {
   noStore()
-  const email = await getFirstEmail(restaurantSlug + COMMENSAL_LIST)
+  const email = await getFirstEmail({ list: restaurantSlug + COMMENSAL_LIST })
   if (!email) {
     return null
   }
-  return getClientData(email)
+  return getClientData({ email })
 }
 
 export async function getFirstPickUp({
@@ -151,11 +174,11 @@ export async function getFirstPickUp({
   restaurantSlug: string
 }) {
   noStore()
-  const email = await getFirstEmail(restaurantSlug + PICK_UP_LIST)
+  const email = await getFirstEmail({ list: restaurantSlug + PICK_UP_LIST })
   if (!email) {
     return null
   }
-  return getClientData(email)
+  return getClientData({ email })
 }
 
 export async function getAllCommensals({

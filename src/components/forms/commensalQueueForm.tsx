@@ -28,14 +28,16 @@ export default function CommensalQueueForm({
       ) as HTMLInputElement | null
 
       if (emailInput && nameInput && commensalsInput) {
-        const success = await addCommensal(
-          restaurantSlug.restaurant,
-          emailInput.value,
-          {
+        const success = await addCommensal({
+          restaurantSlug: restaurantSlug.restaurant,
+          email: emailInput.value,
+          clientData: {
             name: nameInput.value,
-            commensals: commensalsInput.value,
-          }
-        )
+            groupSize: commensalsInput.value,
+            description: '',
+            phoneNumber: '',
+          },
+        })
         if (success)
           router.push(
             '/restaurants/' + restaurantSlug.restaurant + '/queued/commensal'
