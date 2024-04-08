@@ -26,7 +26,7 @@ export default function RestaurantQueue({
       ...clients,
       { id: 3, name: 'John Doe2', guests: '5' },
     ])
-    
+
     setCalledClients((clients) => [...clients])
   }, [])
 

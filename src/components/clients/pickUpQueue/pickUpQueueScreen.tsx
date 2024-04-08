@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository';
-import { useParams } from 'next/navigation';
-import Gradient from '@/components/restaurants/style/gradient';
+import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
+import { useParams } from 'next/navigation'
+import Gradient from '@/components/restaurants/style/gradient'
 export default function PickUpQueueScreen() {
-
-  const [menuUrl, setMenuUrl] = useState('');
-  const restaurantSlug = useParams<{restaurant: string}>()
-
+  const [menuUrl, setMenuUrl] = useState('')
+  const restaurantSlug = useParams<{ restaurant: string }>()
 
   const viewMenu = async () => {
-    window.open(await menuUrl, '_blank');
+    window.open(menuUrl, '_blank')
   }
 
   useEffect(() => {
     const fetchMenuUrl = async () => {
       try {
-        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant);
-        setMenuUrl(menuUrl);
+        const menuUrl = await getRestaurantMenuBySlug(restaurantSlug.restaurant)
+        setMenuUrl(menuUrl)
       } catch (error) {
-        console.error('Error setting menu URL:', error);
+        console.error('Error setting menu URL:', error)
       }
-    };
-    fetchMenuUrl();
-  }, []);
+    }
+    fetchMenuUrl()
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -33,8 +31,8 @@ export default function PickUpQueueScreen() {
             ¡Listo!
           </h1>
           <p className="mt-4 md:text-lg lg:text-xl text-gray-700 italic">
-            Le enviaremos un mensaje por whatsapp cuando su pedido este listo. Si desea
-            desanotarse, verifique su email.
+            Le enviaremos un mensaje por whatsapp cuando su pedido este listo.
+            Si desea desanotarse, verifique su email.
           </p>
           {menuUrl && (
             <button

@@ -10,7 +10,7 @@ export default function Navbar() {
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
-              <span className="absolute -inset-0.5"/>
+              <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
               <svg
                 className="block h-6 w-6"
@@ -43,7 +43,7 @@ export default function Navbar() {
             </button>
           </div>
           <div className="flex flex-1 items-emnn justify-start sm:items-stretch sm:justify-start">
-            <div className="flex flex-shrink-0 items-center"/>
+            <div className="flex flex-shrink-0 items-center" />
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 <h2 className=" text-left text-2xl mr-5 pr-5 font-bold text-black">

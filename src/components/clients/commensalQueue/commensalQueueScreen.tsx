@@ -9,7 +9,7 @@ export default function CommensalQueueScreen() {
   const restaurantSlug = useParams<{ restaurant: string }>()
 
   const viewMenu = async () => {
-    window.open(await menuUrl, '_blank')
+    window.open(menuUrl, '_blank')
   }
 
   useEffect(() => {

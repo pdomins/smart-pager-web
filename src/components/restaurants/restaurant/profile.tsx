@@ -35,7 +35,7 @@ export default function RestaurantProfile({
         <p className="text-5xl mb-4 mt-4 mr-8 text-center pt-2">
           <b>Perfil</b>
         </p>
-        <div/>
+        <div />
       </div>
       {showEditProfileForm ? (
         <EditRestaurantProfile
