@@ -1,15 +1,35 @@
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import Container from './style/container'
 import Gradient from './style/gradient'
 import { useRouter } from 'next/navigation'
+import GoogleMaps, { Coordinates } from '../maps'
+import PlacesAutocomplete from '../maps/autocomplete'
 
 export default function RestaurantSignUp() {
   // TODO aca deberiamos checkear que no este la info, sino lo mandamos a /management directo porque no tiene sentido que esten en esta pantalla
   const router = useRouter()
+  const [showMap, setShowMap] = useState(false)
+  const [coordinates, setCoordinates] = useState<Coordinates>(null)
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.defer = true
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&libraries=places&callback=loadSuggestions`
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('submitted')
     router.push('/management')
+  }
+
+  const toggleMap = () => {
+    setShowMap(!showMap)
   }
 
   return (
@@ -34,11 +54,17 @@ export default function RestaurantSignUp() {
                 placeholder="Nombre del restaurante"
                 className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
               />
-              <input
-                type="text"
-                placeholder="Dirección del restaurante"
-                className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
-              />
+              <div className="flex items-center space-x-4">
+                <PlacesAutocomplete setCoordinates={setCoordinates} />
+                <button
+                  onClick={toggleMap}
+                  type="button"
+                  className="bg-violet-500 w-1/3 text-white px-4 py-2 rounded-full transition-colors hover:bg-violet-700"
+                >
+                  {showMap ? 'Ocultar Mapa' : 'Ver Mapa'}
+                </button>
+              </div>
+              {showMap && <GoogleMaps coordinates={coordinates} />}
               <div className="flex gap-4">
                 <p className="text-gray-700">Horario de apertura:</p>
                 <input
