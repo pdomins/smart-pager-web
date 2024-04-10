@@ -1,4 +1,5 @@
 'use server'
+import { toKebabCase } from '@/lib/string'
 import { Restaurant } from '@/types/restaurant'
 import { sql } from '@vercel/postgres'
 import { unstable_noStore as noStore } from 'next/cache'
@@ -61,4 +62,24 @@ export async function getRestaurantMenuBySlug(slug: string) {
   WHERE slug = ${slug};`
 
   return result.rows[0].menu
+}
+
+export async function updateRestaurantDetails({
+  id,
+  menuURL,
+  name,
+}: {
+  id: number
+  menuURL: string
+  name: string
+}) {
+  const slug = toKebabCase(name) + '-' + id
+  // let query = ` name = ${name}, slug=${slug}`
+  // if (menuURL) query = query + `, menu = ${menuURL}`
+
+  const result = await sql`UPDATE restaurants
+  SET name = ${name}, slug = ${slug}, menu = ${menuURL}
+  WHERE id = ${id};`
+
+  return result.rows[0]
 }

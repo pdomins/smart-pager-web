@@ -5,6 +5,9 @@ const nextConfig = {
 
     return config
   },
+  node: {
+    fs: 'empty',
+  },
 }
 
 module.exports = nextConfig

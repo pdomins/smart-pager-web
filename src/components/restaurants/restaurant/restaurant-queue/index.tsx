@@ -1,8 +1,8 @@
 'use client'
 
 import { Restaurant } from '@/types/restaurant'
-import Gradient from '../../style/gradient'
-import Container from '../../style/container'
+import Gradient from '../../../style/gradient'
+import Container from '../../../style/container'
 import { useCallback, useEffect, useState } from 'react'
 import ClientCard from './card'
 import {

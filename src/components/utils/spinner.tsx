@@ -9,6 +9,7 @@ const Spinner = () => {
       width={62}
       height={62}
       unoptimized={true}
+      priority
     />
   )
 }

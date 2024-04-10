@@ -2,7 +2,7 @@
 // import Image from 'next/image'
 // import Hand from 'public/hand.png'
 
-import Container from '@/components/restaurants/style/container'
+import Container from '@/components/style/container'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

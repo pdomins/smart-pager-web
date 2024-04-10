@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getRestaurantMenuBySlug } from '@/repositories/restaurant-respository'
 import { useParams } from 'next/navigation'
-import Gradient from '../restaurants/style/gradient'
+import Gradient from '../style/gradient'
 
 export default function QueueScreen() {
   const [menuUrl, setMenuUrl] = useState('')

@@ -7,8 +7,10 @@ import useOnclickOutside from 'react-cool-onclickoutside'
 
 const PlacesAutocomplete = ({
   setCoordinates,
+  isRequired,
 }: {
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
+  isRequired: boolean
 }) => {
   const {
     ready,
@@ -73,6 +75,7 @@ const PlacesAutocomplete = ({
         type="text"
         className="px-4 py-2  w-full rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         placeholder="Dirección del restaurante"
+        required={isRequired}
       />
       {status === 'OK' && (
         <ul className="w-1/3 bg-white shadow-lg rounded mt-2 absolute z-50 overflow-hidden border border-gray-200">

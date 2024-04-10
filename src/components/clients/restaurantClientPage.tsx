@@ -8,7 +8,7 @@ import {
   getRestaurantMenuBySlug,
 } from '@/repositories/restaurant-respository'
 import Loading from '../utils/loading'
-import Gradient from '../restaurants/style/gradient'
+import Gradient from '../style/gradient'
 
 export default function RestaurantClientPage() {
   const [showCommensalForm, setShowCommensalForm] = useState(false)
