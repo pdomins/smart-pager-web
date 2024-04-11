@@ -50,7 +50,7 @@ export default function RestaurantSignUp({
         closingTime &&
         !isTimeError &&
         averageTimePerTable &&
-        // coordinates &&
+        coordinates &&
         selectedFile
       ) {
         setIsLoading(true)
@@ -98,7 +98,7 @@ export default function RestaurantSignUp({
     closingTime &&
     !isTimeError &&
     averageTimePerTable &&
-    // coordinates &&
+    coordinates &&
     selectedFile
 
   return (

@@ -29,8 +29,6 @@ export default function Page() {
         } catch (error) {
           console.error('Error fetching restaurant data:', error)
         }
-      } else {
-        router.push('/')
       }
     }
 
