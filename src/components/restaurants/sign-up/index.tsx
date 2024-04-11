@@ -130,6 +130,7 @@ export default function RestaurantSignUp({
                 setOpeningTime={setOpeningTime}
                 closingTime={closingTime || ''}
                 setClosingTime={setClosingTime}
+                isTimeError={isTimeError}
                 setIsTimeError={setIsTimeError}
               />
               <RestaurantAverageTimePerTableForm
