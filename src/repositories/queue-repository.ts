@@ -111,6 +111,7 @@ export async function removePickUp({
 }
 
 async function removeClient({ list, email }: { list: string; email: string }) {
+  noStore()
   try {
     const removed = await kv.zrem(list, email)
 

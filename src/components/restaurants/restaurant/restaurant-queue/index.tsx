@@ -23,7 +23,7 @@ export default function RestaurantQueue({
   restaurantData: Restaurant
 }) {
   const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
-  const [calledClients, setCalledClients] = useState<CommensalData[]>() //todo
+  const [calledClients, setCalledClients] = useState<CommensalData[]>()
 
   const getCommensalList = useCallback(async () => {
     const commensals = await getPaginatedCommensals({
@@ -31,6 +31,12 @@ export default function RestaurantQueue({
       start: 0,
       end: 3,
     })
+
+    if (commensals === null || commensals.length === 0) {
+      setWaitingClients([])
+      setCalledClients([])
+      return []
+    }
 
     if (commensals === null) return
     const waitingClients = commensals.filter(
@@ -49,7 +55,14 @@ export default function RestaurantQueue({
 
   useEffect(() => {
     getCommensalList()
-  }, [getCommensalList])
+
+    const intervalId = setInterval(() => {
+      getCommensalList()
+      // }, 5000) // every 5 secs here -> uncomment for debugging
+    }, 60000) // poll every 60 secs here (minute)
+
+    return () => clearInterval(intervalId)
+  }, [getCommensalList]) // calling useEffect like this for polling
 
   return (
     <div className="relative" id="queue">
