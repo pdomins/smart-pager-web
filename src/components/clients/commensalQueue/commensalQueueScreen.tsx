@@ -4,12 +4,12 @@ import { useParams } from 'next/navigation'
 import Gradient from '@/components/style/gradient'
 
 export default function CommensalQueueScreen() {
-  const [menuUrl, setMenuUrl] = useState('')
+  const [menuUrl, setMenuUrl] = useState<string | null>()
 
   const restaurantSlug = useParams<{ restaurant: string }>()
 
   const viewMenu = async () => {
-    window.open(menuUrl, '_blank')
+    if (menuUrl) window.open(menuUrl, '_blank')
   }
 
   useEffect(() => {

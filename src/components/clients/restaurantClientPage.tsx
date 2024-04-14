@@ -17,10 +17,10 @@ export default function RestaurantClientPage() {
   const router = useRouter()
   const restaurantSlug = useParams<{ restaurant: string }>()
 
-  const [menuUrl, setMenuUrl] = useState('')
+  const [menuUrl, setMenuUrl] = useState<string | null>()
 
   const viewMenu = async () => {
-    window.open(await menuUrl, '_blank')
+    if (menuUrl) window.open(menuUrl, '_blank')
   }
 
   useEffect(() => {
