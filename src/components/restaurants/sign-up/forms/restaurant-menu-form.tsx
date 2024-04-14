@@ -5,7 +5,16 @@ const RestaurantMenuForm = ({
 }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
+    const maxSizeInBytes = 2 * 1024 * 1024 // 2 MB
+
     if (file && file.name.toLowerCase().endsWith('.pdf')) {
+      if (file.size > maxSizeInBytes) {
+        alert(
+          'File size exceeds the maximum limit (2MB). Please choose a smaller file.'
+        )
+        setSelectedFile(null)
+        return
+      }
       setSelectedFile(file)
     } else {
       alert('El archivo debe estar en formato PDF.')

@@ -11,6 +11,8 @@ import {
   removeCommensal,
   updateCommensalStatus,
 } from '@/repositories/queue-repository'
+import { assertAndReturn } from '@/lib/assertions'
+import Loading from '@/components/utils/loading'
 const NoClientsMessage = ({ message }: { message: string }) => (
   <div className="my-10 py-5 px-4 bg-white shadow rounded-lg flex justify-center items-center">
     <p className="text-gray-600">{message}</p>
@@ -25,9 +27,14 @@ export default function RestaurantQueue({
   const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
   const [calledClients, setCalledClients] = useState<CommensalData[]>()
 
+  if (!restaurantData.slug) {
+    return <Loading />
+  }
+  const restaurantSlug = assertAndReturn(restaurantData.slug)
+
   const getCommensalList = useCallback(async () => {
     const commensals = await getPaginatedCommensals({
-      restaurantSlug: restaurantData.slug,
+      restaurantSlug,
       start: 0,
       end: 3,
     })
@@ -101,7 +108,7 @@ export default function RestaurantQueue({
                 }}
                 onRemoveClient={async () => {
                   await removeCommensal({
-                    restaurantSlug: restaurantData.slug,
+                    restaurantSlug,
                     email: client.email,
                   })
                   await getCommensalList()
@@ -132,7 +139,7 @@ export default function RestaurantQueue({
                 onCallClient={() => {}}
                 onRemoveClient={async () => {
                   await removeCommensal({
-                    restaurantSlug: restaurantData.slug,
+                    restaurantSlug,
                     email: client.email,
                   })
                   await getCommensalList()
@@ -141,7 +148,7 @@ export default function RestaurantQueue({
                 }}
                 onAcceptClient={async () => {
                   await removeCommensal({
-                    restaurantSlug: restaurantData.slug,
+                    restaurantSlug,
                     email: client.email,
                   })
                   await getCommensalList()

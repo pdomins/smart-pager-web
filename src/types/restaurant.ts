@@ -1,7 +1,5 @@
-export interface Restaurant {
-  id: number
-  name: string
-  email: string
-  slug: string
-  menu: string
-}
+import { Restaurants } from '@prisma/client'
+
+type Restaurant = Omit<Restaurants, 'createdAt' | 'updatedAt'>
+
+export { type Restaurant }

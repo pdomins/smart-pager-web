@@ -18,6 +18,6 @@
 // export async function DELETE(request: Request) {
 //   const restaurantController: RestaurantController = RestaurantController.getInstance() //TODO: dont use getInstance()
 //   const { id } = await request.json()
-//   const result = await restaurantController.retireRestaurant(id)
+//   const result = await restaurantController.deleteRestaurant(id)
 //   return result
 // }

@@ -22,7 +22,7 @@ export default function Page() {
             session?.user?.email as string
           )
           setRestaurantData(restaurant)
-          if (restaurant.slug) {
+          if (restaurant && restaurant.slug) {
             // router.push('/management')
           }
         } catch (error) {

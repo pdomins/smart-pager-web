@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db-generate": "npx dotenv -e .env.local -- npx prisma db pull",
+    "db-migrate": "npx dotenv -e .env.local -- npx prisma migrate dev && npx prisma generate",
+    "db-ui": "npx dotenv -e .env.local -- npx prisma studio"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -14,6 +17,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
+    "@prisma/client": "^5.12.1",
     "@react-google-maps/api": "^2.19.3",
     "@vercel/blob": "^0.22.1",
     "@vercel/kv": "^1.0.1",
@@ -23,6 +27,7 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "cryptr": "^6.3.0",
+    "dotenv-cli": "^7.4.1",
     "framer-motion": "^10.16.5",
     "next": "^14.0.3",
     "next-auth": "^4.24.6",
@@ -49,6 +54,7 @@
     "eslint": "^8.54.0",
     "eslint-plugin-react": "^7.33.2",
     "postcss": "^8",
+    "prisma": "^5.12.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

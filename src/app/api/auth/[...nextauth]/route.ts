@@ -1,7 +1,9 @@
 // export { GET, POST } from "@/auth";
 // export const runtime = "edge";
-import { createRestaurant } from '@/repositories/restaurant-respository'
-import { sql } from '@vercel/postgres'
+import {
+  createRestaurant,
+  getRestaurantByEmail,
+} from '@/repositories/restaurant-respository'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
@@ -16,9 +18,9 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user }) {
       // console.log("user:", user,"account: ", account,"profile: ", profile,"email: ", email,"credentials: ", credentials)
-      const restaurant =
-        await sql`SELECT * FROM Restaurants WHERE email = ${user.email}` //TODO: call the service, maybe use id
-      if (restaurant.rows.length === 0 && user.email) {
+      if (!user || !user.email) return false
+      const restaurant = await getRestaurantByEmail(user.email) //TODO: call the service, maybe use id
+      if (!restaurant) {
         //i.e. the user is new
         createRestaurant(user.email, user.name ?? '')
         console.log('new user')
