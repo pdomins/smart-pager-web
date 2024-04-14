@@ -1,4 +1,4 @@
-import ErrorSnackbar from '@/components/utils/error-snackbar'
+import Snackbar from '@/components/utils/snackbar'
 import { useEffect, useState } from 'react'
 
 const RestaurantOpeningAndClosingTimesForm = ({
@@ -37,8 +37,10 @@ const RestaurantOpeningAndClosingTimesForm = ({
   }
   return (
     <>
-      <ErrorSnackbar
+      <Snackbar
+        type="error"
         isOpen={showIsTimeError}
+        variant='filled'
         setIsOpen={setShowIsTimeError}
         text="Por favor, asegúrate que el horario de cierre sea mayor al de apertura."
       />
@@ -49,7 +51,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
           </span>
           <input
             type="time"
-            className="form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
+            className={`${isTimeError && 'border-red-300'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
             value={openingTime}
             onChange={(e) => {
               setOpeningTime(e.target.value)
@@ -67,7 +69,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
           </span>
           <input
             type="time"
-            className="form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
+            className={`${isTimeError && 'border-red-300'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
             value={closingTime}
             required
             onChange={(e) => {

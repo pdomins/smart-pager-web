@@ -1,17 +1,21 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Snackbar from '@mui/material/Snackbar'
+import { Snackbar as SnackbarMUI } from '@mui/material'
 import Grow from '@mui/material/Grow'
 import Alert from '@mui/material/Alert'
 
-export default function ErrorSnackbar({
+export default function Snackbar({
   isOpen,
   setIsOpen,
   text,
+  type,
+  variant = 'standard',
 }: {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   text: string
+  type: 'error' | 'info' | 'success' | 'warning'
+  variant?: 'filled' | 'standard' | 'outlined'
 }) {
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -26,7 +30,7 @@ export default function ErrorSnackbar({
 
   return (
     <Box sx={{ width: 500 }}>
-      <Snackbar
+      <SnackbarMUI
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={isOpen}
         onClose={handleClose}
@@ -34,14 +38,14 @@ export default function ErrorSnackbar({
         autoHideDuration={8000}
       >
         <Alert
-          severity="error"
-          variant="outlined"
-          sx={{ bgcolor: 'background.paper' }}
+          severity={type}
+          variant={variant}
+          sx={{ bgcolor: `${variant === 'outlined' && 'background.paper'}` }}
           onClose={() => setIsOpen(false)}
         >
           {text}
         </Alert>
-      </Snackbar>
+      </SnackbarMUI>
     </Box>
   )
 }
