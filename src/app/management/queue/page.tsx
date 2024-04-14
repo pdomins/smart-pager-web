@@ -23,12 +23,12 @@ export default function Page() {
             session?.user?.email as string
           )
           setRestaurantData(restaurant)
-          if (!restaurant.name) {
-            router.push('/management/sign-up')
-          }
+
         } catch (error) {
           console.error('Error fetching restaurant data:', error)
         }
+      } else if (status === 'unauthenticated') {
+        router.push('/')
       }
     }
 

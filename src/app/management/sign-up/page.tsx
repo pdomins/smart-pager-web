@@ -6,12 +6,12 @@ import Loading from '@/components/utils/loading'
 import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import { Restaurant } from '@/types/restaurant'
 import { useSession } from 'next-auth/react'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 export default function Page() {
   const { data: session, status } = useSession()
-  // const router = useRouter()
+  const router = useRouter()
   const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
 
   useEffect(() => {
@@ -28,6 +28,8 @@ export default function Page() {
         } catch (error) {
           console.error('Error fetching restaurant data:', error)
         }
+      } else if (status === 'unauthenticated') {
+        router.push('/')
       }
     }
 

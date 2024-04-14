@@ -59,7 +59,8 @@ export default function RestaurantQueue({
     const intervalId = setInterval(() => {
       getCommensalList()
       // }, 5000) // every 5 secs here -> uncomment for debugging
-    }, 60000) // poll every 60 secs here (minute)
+      // }, 60000) // poll every 60 secs here (1 minute)
+    }, 300000) // poll every 5 mins here
 
     return () => clearInterval(intervalId)
   }, [getCommensalList]) // calling useEffect like this for polling
