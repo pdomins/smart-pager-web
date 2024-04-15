@@ -1,6 +1,6 @@
 import { Restaurant } from '@/types/restaurant'
 import { Tooltip } from '@mui/material'
-import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit'
 import CloseIcon from '@mui/icons-material/Close'
 import DoneIcon from '@mui/icons-material/Done'
@@ -79,17 +79,6 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
   const [address, setAddress] = useState<string | null>(null)
 
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.defer = true
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&libraries=places&callback=loadSuggestions`
-    document.body.appendChild(script)
-
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

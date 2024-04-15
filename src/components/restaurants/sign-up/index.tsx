@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import Container from '../../style/container'
 import Gradient from '../../style/gradient'
 // import { useRouter } from 'next/navigation'
@@ -28,17 +28,6 @@ export default function RestaurantSignUp({
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
   const [address, setAddress] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.defer = true
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&libraries=places&callback=loadSuggestions`
-    document.body.appendChild(script)
-
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

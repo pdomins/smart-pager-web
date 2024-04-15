@@ -13,6 +13,10 @@ import {
 } from '@/repositories/queue-repository'
 import { assertAndReturn } from '@/lib/assertions'
 import Loading from '@/components/utils/loading'
+import { Tooltip } from '@mui/material'
+import { AddCircle } from '@mui/icons-material'
+import AddToQueueDialog from './dialog'
+
 const NoClientsMessage = ({ message }: { message: string }) => (
   <div className="my-10 py-5 px-4 bg-white shadow rounded-lg flex justify-center items-center">
     <p className="text-gray-600">{message}</p>
@@ -26,6 +30,7 @@ export default function RestaurantQueue({
 }) {
   const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
   const [calledClients, setCalledClients] = useState<CommensalData[]>()
+  const [isOpenDialog, setIsOpenDialog] = useState(false)
 
   if (!restaurantData.slug) {
     return <Loading />
@@ -74,6 +79,12 @@ export default function RestaurantQueue({
 
   return (
     <div className="relative" id="queue">
+      <AddToQueueDialog
+        isOpenDialog={isOpenDialog}
+        setIsOpenDialog={setIsOpenDialog}
+        restaurantSlug={restaurantData.slug}
+        getCommensalList={getCommensalList}
+      />
       <Gradient />
       <Container>
         <div className="text-center pt-20 pb-10">
@@ -87,12 +98,25 @@ export default function RestaurantQueue({
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Clientes Esperando</h2>
-            <button
-              onClick={() => {}}
-              className="relative text-purple-500 hover:text-purple-700 transition-colors"
-            >
-              Ver todo
-            </button>
+            <div className="flex justify-end items-end space-x-2">
+              <Tooltip title={'Agregar Cliente'} placement="top" arrow>
+                <button
+                  onClick={() => {
+                    setIsOpenDialog(true)
+                  }}
+                  type="button"
+                  className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2"
+                >
+                  <AddCircle />
+                </button>
+              </Tooltip>
+              <button
+                onClick={() => {}}
+                className="relative text-purple-500 hover:text-purple-700 transition-colors"
+              >
+                Ver todo
+              </button>
+            </div>
           </div>
 
           {waitingClients && waitingClients?.length > 0 ? (
