@@ -1,5 +1,6 @@
 import { areaCode, pattern } from '@/lib/phone'
 import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/bootstrap.css' // no me borren esto que se pierde el estilo del phone input :)
 import es from 'react-phone-input-2/lang/es.json'
 
 type CommensalQueueFormParams = {

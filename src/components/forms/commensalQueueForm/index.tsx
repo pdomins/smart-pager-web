@@ -3,7 +3,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useParams, useRouter } from 'next/navigation'
 import { addCommensal } from '@/repositories/queue-repository'
 
-import 'react-phone-input-2/lib/bootstrap.css'
 import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
 
