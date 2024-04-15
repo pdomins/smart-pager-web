@@ -6,28 +6,27 @@ import { Coordinates } from '../../maps'
 // import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
-import RestaurantNameForm from './forms/restaurant-name-form'
-import RestaurantLocationForm from './forms/restaurant-location-form'
-import RestaurantOpeningAndClosingTimesForm from './forms/restaurant-opening-and-closing-times-form'
-import RestaurantAverageTimePerTableForm from './forms/restaurant-average-time-per-table-form'
-import RestaurantMenuForm from './forms/restaurant-menu-form'
+import RestaurantForm, { FormState } from './forms/restaurant-form'
 
 export default function RestaurantSignUp({
   restaurantData,
 }: {
   restaurantData: Restaurant | null
 }) {
+  const initialState = {
+    name: null,
+    openingTime: null,
+    closingTime: null,
+    isTimeError: false,
+    averageTimePerTable: null,
+    selectedFile: null,
+  }
+
+  const [formState, setFormState] = useState<FormState>(initialState)
   // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
-  const [name, setName] = useState<string | null>(null)
-  const [openingTime, setOpeningTime] = useState<string | null>(null)
-  const [closingTime, setClosingTime] = useState<string | null>(null)
-  const [isTimeError, setIsTimeError] = useState(false)
-  const [averageTimePerTable, setAverageTimePerTable] = useState<string | null>(
-    null
-  )
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [address, setAddress] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -44,15 +43,7 @@ export default function RestaurantSignUp({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      if (
-        name &&
-        openingTime &&
-        closingTime &&
-        !isTimeError &&
-        averageTimePerTable &&
-        coordinates &&
-        selectedFile
-      ) {
+      if (isSubmittable) {
         setIsLoading(true)
         console.log(restaurantData)
         /** TODO wait for vercel blob storage be available again
@@ -69,16 +60,17 @@ export default function RestaurantSignUp({
         // await updateRestaurantDetails({
         //   id: 1,
         //   name,
-        //   menuURL: 'reestableceme-el-blob-vercel.pdf',
+        //   menu: 'reestableceme-el-blob-vercel.pdf', (menuURL)
         // })
         console.log({
           msg: 'Updated values',
-          name,
-          openingTime,
-          closingTime,
-          averageTimePerTable,
+          name: formState.name,
+          openingTime: formState.openingTime,
+          closingTime: formState.closingTime,
+          averageTimePerTable: formState.averageTimePerTable,
           coordinates,
-          selectedFile,
+          selectedFile: formState.selectedFile,
+          address,
         })
 
         // router.push('/management')
@@ -93,13 +85,14 @@ export default function RestaurantSignUp({
   }
 
   const isSubmittable =
-    name &&
-    openingTime &&
-    closingTime &&
-    !isTimeError &&
-    averageTimePerTable &&
-    coordinates &&
-    selectedFile
+    formState.name &&
+    formState.openingTime &&
+    formState.closingTime &&
+    !formState.isTimeError &&
+    formState.averageTimePerTable &&
+    // coordinates &&
+    formState.selectedFile &&
+    address
 
   return (
     <div className="relative" id="signup">
@@ -118,26 +111,15 @@ export default function RestaurantSignUp({
           </div>
           <div className="mt-10 md:mt-16 lg:w-1/2 lg:mx-auto">
             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-              <RestaurantNameForm name={name || ''} setName={setName} />
-              <RestaurantLocationForm
+              <RestaurantForm
+                formState={formState}
+                setFormState={setFormState}
                 coordinates={coordinates}
                 setCoordinates={setCoordinates}
                 showMap={showMap}
                 setShowMap={setShowMap}
+                setAddress={setAddress}
               />
-              <RestaurantOpeningAndClosingTimesForm
-                openingTime={openingTime || ''}
-                setOpeningTime={setOpeningTime}
-                closingTime={closingTime || ''}
-                setClosingTime={setClosingTime}
-                isTimeError={isTimeError}
-                setIsTimeError={setIsTimeError}
-              />
-              <RestaurantAverageTimePerTableForm
-                averageTimePerTable={averageTimePerTable || ''}
-                setAverageTimePerTable={setAverageTimePerTable}
-              />
-              <RestaurantMenuForm setSelectedFile={setSelectedFile} />
 
               {isLoading ? (
                 <div className="mt-4 px-6 py-2">

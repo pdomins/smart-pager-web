@@ -1,20 +1,19 @@
 import Snackbar from '@/components/utils/snackbar'
 import { useEffect, useState } from 'react'
+import { FormState } from './restaurant-form'
 
 const RestaurantOpeningAndClosingTimesForm = ({
   openingTime,
-  setOpeningTime,
   closingTime,
-  setClosingTime,
   isTimeError,
-  setIsTimeError,
+  setFormState,
+  disabled = false,
 }: {
   openingTime: string
-  setOpeningTime: React.Dispatch<React.SetStateAction<string | null>>
   closingTime: string
-  setClosingTime: React.Dispatch<React.SetStateAction<string | null>>
   isTimeError: boolean
-  setIsTimeError: React.Dispatch<React.SetStateAction<boolean>>
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  disabled?: boolean
 }) => {
   const [showIsTimeError, setShowIsTimeError] = useState(false)
 
@@ -30,9 +29,9 @@ const RestaurantOpeningAndClosingTimesForm = ({
     closing: string | null
   }) => {
     if (opening && closing) {
-      setIsTimeError(opening >= closing)
+      setFormState((prev) => ({ ...prev, isTimeError: opening >= closing }))
     } else {
-      setIsTimeError(false)
+      setFormState((prev) => ({ ...prev, isTimeError: false }))
     }
   }
   return (
@@ -40,7 +39,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
       <Snackbar
         type="error"
         isOpen={showIsTimeError}
-        variant='filled'
+        variant="filled"
         setIsOpen={setShowIsTimeError}
         text="Por favor, asegúrate que el horario de cierre sea mayor al de apertura."
       />
@@ -51,16 +50,19 @@ const RestaurantOpeningAndClosingTimesForm = ({
           </span>
           <input
             type="time"
-            className={`${isTimeError && 'border-red-300'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+            className={`${
+              isTimeError && 'border-red-300'
+            } form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
             value={openingTime}
             onChange={(e) => {
-              setOpeningTime(e.target.value)
+              setFormState((prev) => ({ ...prev, openingTime: e.target.value }))
               validateTimes({
                 opening: e.target.value,
                 closing: closingTime,
               })
             }}
             required
+            disabled={disabled}
           />
         </label>
         <label className="block flex-1">
@@ -69,11 +71,14 @@ const RestaurantOpeningAndClosingTimesForm = ({
           </span>
           <input
             type="time"
-            className={`${isTimeError && 'border-red-300'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+            className={`${
+              isTimeError && 'border-red-300'
+            } form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
             value={closingTime}
             required
+            disabled={disabled}
             onChange={(e) => {
-              setClosingTime(e.target.value)
+              setFormState((prev) => ({ ...prev, closingTime: e.target.value }))
               validateTimes({
                 opening: openingTime,
                 closing: e.target.value,

@@ -1,9 +1,13 @@
+import { FormState } from './restaurant-form'
+
 const RestaurantAverageTimePerTableForm = ({
   averageTimePerTable,
-  setAverageTimePerTable,
+  setFormState,
+  disabled = false,
 }: {
   averageTimePerTable: string
-  setAverageTimePerTable: React.Dispatch<React.SetStateAction<string | null>>
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  disabled?: boolean
 }) => {
   return (
     <label className="block">
@@ -16,8 +20,14 @@ const RestaurantAverageTimePerTableForm = ({
         className="form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         placeholder="Ejemplo: 45"
         value={averageTimePerTable}
-        onChange={(e) => setAverageTimePerTable(e.target.value)}
+        onChange={(e) =>
+          setFormState((prev) => ({
+            ...prev,
+            averageTimePerTable: e.target.value,
+          }))
+        }
         required
+        disabled={disabled}
       />
     </label>
   )

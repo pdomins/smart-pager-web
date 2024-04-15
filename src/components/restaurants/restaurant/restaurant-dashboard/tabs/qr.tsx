@@ -11,7 +11,7 @@ export default function RestaurantQR({
 }) {
   const { Canvas } = useQRCode() // esto no setea un QR nuevo cada vez? no deberia estar guardado siempre el mismo?
   const [qrUrl, setQrUrl] = useState(
-    'https://smart-pager-web.vercel.app/restaurants' + restaurantData.slug
+    'https://smart-pager-web.vercel.app/restaurants/' + restaurantData.slug
   )
 
   const handlePrintQR = () => {
@@ -116,7 +116,7 @@ export default function RestaurantQR({
           }}
         />
       </div>
-      <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-mó">
+      <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
         <form action="upload.php">
           <div className="mb-4">
             <label className="block text-gray-600 font-medium">

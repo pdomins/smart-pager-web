@@ -6,11 +6,15 @@ const RestaurantLocationForm = ({
   setShowMap,
   coordinates,
   setCoordinates,
+  setAddress,
+  disabled = false,
 }: {
   showMap: boolean
   setShowMap: React.Dispatch<React.SetStateAction<boolean>>
   coordinates: Coordinates
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
+  setAddress: React.Dispatch<React.SetStateAction<string | null>>
+  disabled?: boolean
 }) => {
   const toggleMap = () => {
     setShowMap(!showMap)
@@ -21,7 +25,12 @@ const RestaurantLocationForm = ({
         Ubicación: <span className="text-red-500">*</span>
       </span>
       <div className={`${showMap && 'mb-6'} flex items-center space-x-4 mt-1`}>
-        <PlacesAutocomplete setCoordinates={setCoordinates} isRequired={true} />
+        <PlacesAutocomplete
+          setCoordinates={setCoordinates}
+          setAddress={setAddress}
+          isRequired={true}
+          disabled={disabled}
+        />
         <button
           onClick={toggleMap}
           type="button"

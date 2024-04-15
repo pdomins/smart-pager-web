@@ -1,6 +1,7 @@
 'use server'
 import prisma from '@/lib/prisma'
 import { toKebabCase } from '@/lib/string'
+import { Restaurant } from '@/types/restaurant'
 import { unstable_noStore as noStore } from 'next/cache'
 
 export async function getRestaurants() {
@@ -116,16 +117,13 @@ export async function getRestaurantMenuBySlug(slug: string) {
 
 export async function updateRestaurantDetails({
   id,
-  menuURL,
   name,
+  ...data
 }: {
   id: number
-  menuURL: string
   name: string
-}) {
-  const slug = toKebabCase(name) + '-' + id
-
-  // we should update the menu here as well
+} & Partial<Omit<Restaurant, 'id' | 'name' | 'slug' | 'email'>>) {
+  const slug = toKebabCase(name) + '-' + id //TODO update this, seq ids are no good
 
   const result = await prisma.restaurants.update({
     where: {
@@ -134,7 +132,7 @@ export async function updateRestaurantDetails({
     data: {
       name,
       slug,
-      menu: menuURL,
+      ...data,
     },
   })
 

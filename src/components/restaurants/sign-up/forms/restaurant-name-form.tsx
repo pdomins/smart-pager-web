@@ -1,9 +1,13 @@
+import { FormState } from './restaurant-form'
+
 const RestaurantNameForm = ({
   name,
-  setName,
+  setFormState,
+  disabled = false,
 }: {
   name: string
-  setName: React.Dispatch<React.SetStateAction<string | null>>
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  disabled?: boolean
 }) => {
   return (
     <label className="block">
@@ -15,8 +19,14 @@ const RestaurantNameForm = ({
         className="form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         placeholder="Ingresa el nombre del restaurante"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) =>
+          setFormState((prev) => ({
+            ...prev,
+            name: e.target.value,
+          }))
+        }
         required
+        disabled={disabled}
       />
     </label>
   )

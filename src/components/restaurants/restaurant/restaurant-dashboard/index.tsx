@@ -6,6 +6,7 @@ import Container from '../../../style/container'
 import { useState } from 'react'
 import RestaurantQR from './tabs/qr'
 import RestaurantMenu from './tabs/menu/menu'
+import RestaurantInfo from './tabs/info'
 
 export default function RestaurantDashboard({
   restaurantData,
@@ -85,11 +86,7 @@ export default function RestaurantDashboard({
           <RestaurantMenu restaurantData={restaurantData} />
         )}
         {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
-        {activeTab === 'info' && (
-          <div>
-            <p>Actualiza la información de tu restaurante aquí.</p>
-          </div>
-        )}
+        {activeTab === 'info' && <RestaurantInfo restaurantData={restaurantData} />}
       </Container>
     </div>
   )

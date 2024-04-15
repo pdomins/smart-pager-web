@@ -1,7 +1,11 @@
+import { FormState } from './restaurant-form'
+
 const RestaurantMenuForm = ({
-  setSelectedFile,
+  setFormState,
+  disabled = false,
 }: {
-  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  disabled?: boolean
 }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
@@ -12,13 +16,13 @@ const RestaurantMenuForm = ({
         alert(
           'File size exceeds the maximum limit (2MB). Please choose a smaller file.'
         )
-        setSelectedFile(null)
+        setFormState((prev) => ({ ...prev, selectedFile: null }))
         return
       }
-      setSelectedFile(file)
+      setFormState((prev) => ({ ...prev, selectedFile: file }))
     } else {
       alert('El archivo debe estar en formato PDF.')
-      setSelectedFile(null)
+      setFormState((prev) => ({ ...prev, selectedFile: null }))
     }
   }
   return (
@@ -34,6 +38,7 @@ const RestaurantMenuForm = ({
         className="form-input bg-white text-gray-400 mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         onChange={handleFileChange}
         required
+        disabled={disabled}
       />
     </label>
   )

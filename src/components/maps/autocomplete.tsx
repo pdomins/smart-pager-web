@@ -7,10 +7,14 @@ import useOnclickOutside from 'react-cool-onclickoutside'
 
 const PlacesAutocomplete = ({
   setCoordinates,
+  setAddress,
   isRequired,
+  disabled = false,
 }: {
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
+  setAddress: React.Dispatch<React.SetStateAction<string | null>>
   isRequired: boolean
+  disabled?: boolean
 }) => {
   const {
     ready,
@@ -29,6 +33,7 @@ const PlacesAutocomplete = ({
   })
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value)
     setValue(e.target.value)
   }
 
@@ -37,6 +42,7 @@ const PlacesAutocomplete = ({
     () => {
       // When the user selects a place, we can replace the keyword without request data from API
       // by setting the second parameter to "false"
+      setAddress(description)
       setValue(description, false)
       clearSuggestions()
 
@@ -71,7 +77,7 @@ const PlacesAutocomplete = ({
       <input
         value={value}
         onChange={handleInput}
-        disabled={!ready}
+        disabled={!ready || disabled}
         type="text"
         className="px-4 py-2  w-full rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         placeholder="Dirección del restaurante"
