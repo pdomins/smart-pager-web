@@ -98,7 +98,7 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
     try {
       const res = await updateRestaurantDetails({
         id: restaurantData.id,
-        name: formState.name || restaurantData.name,
+        name: (formState.name || restaurantData.name) as string,
       })
       restaurantData = res
     } finally {
