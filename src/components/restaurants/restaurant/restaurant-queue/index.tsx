@@ -4,30 +4,28 @@ import { Restaurant } from '@/types/restaurant'
 import Gradient from '../../../style/gradient'
 import Container from '../../../style/container'
 import { useCallback, useEffect, useState } from 'react'
-import ClientCard from './card'
-import {
-  CommensalData,
-  getPaginatedCommensals,
-  removeCommensal,
-  updateCommensalStatus,
-} from '@/repositories/queue-repository'
+import ClientCard from './components/card'
+import { CommensalData } from '@/repositories/queue-repository'
 import { assertAndReturn } from '@/lib/assertions'
 import Loading from '@/components/utils/loading'
 import { Tooltip } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
-import AddToQueueDialog from './dialog'
-
-const NoClientsMessage = ({ message }: { message: string }) => (
-  <div className="my-10 py-5 px-4 bg-white shadow rounded-lg flex justify-center items-center">
-    <p className="text-gray-600">{message}</p>
-  </div>
-)
+import AddToQueueDialog from './components/dialog'
+import NoClientsMessage from './components/no-clients'
+import { useRouter } from 'next/navigation'
+import {
+  callCommensal,
+  getPaginatedCommensals,
+  removeCommensal,
+  retryCallCommensal,
+} from '@/services/commensal-queue-service'
 
 export default function RestaurantQueue({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
+  const router = useRouter()
   const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
   const [calledClients, setCalledClients] = useState<CommensalData[]>()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -38,44 +36,35 @@ export default function RestaurantQueue({
   const restaurantSlug = assertAndReturn(restaurantData.slug)
 
   const getCommensalList = useCallback(async () => {
-    const commensals = await getPaginatedCommensals({
-      restaurantSlug,
-      start: 0,
-      end: 3,
-    })
+    const waitingClients =
+      (await getPaginatedCommensals({
+        restaurantSlug,
+        start: 0,
+        end: 2,
+        waiting: true,
+      })) || []
 
-    if (commensals === null || commensals.length === 0) {
-      setWaitingClients([])
-      setCalledClients([])
-      return []
-    }
+    const calledClients =
+      (await getPaginatedCommensals({
+        restaurantSlug,
+        start: 0,
+        end: 2,
+        waiting: false,
+      })) || []
 
-    if (commensals === null) return
-    const waitingClients = commensals.filter(
-      (commensal) => commensal.status === 'waiting'
-    )
-
-    const calledClients = commensals.filter(
-      (commensal) => commensal.status === 'called'
-    )
-
-    setWaitingClients(waitingClients)
-    setCalledClients(calledClients)
-
-    return commensals
+    setWaitingClients(waitingClients.queue)
+    setCalledClients(calledClients.queue)
   }, [restaurantData.slug])
 
   useEffect(() => {
     getCommensalList()
 
     const intervalId = setInterval(() => {
-      getCommensalList()
-      // }, 5000) // every 5 secs here -> uncomment for debugging
-      // }, 60000) // poll every 60 secs here (1 minute)
-    }, 300000) // poll every 5 mins here
+      // getCommensalList()
+    }, 300000) // poll every 5 mins
 
     return () => clearInterval(intervalId)
-  }, [getCommensalList]) // calling useEffect like this for polling
+  }, [getCommensalList])
 
   return (
     <div className="relative" id="queue">
@@ -111,7 +100,9 @@ export default function RestaurantQueue({
                 </button>
               </Tooltip>
               <button
-                onClick={() => {}}
+                onClick={() => {
+                  router.push('/management/queue/waiting')
+                }}
                 className="relative text-purple-500 hover:text-purple-700 transition-colors"
               >
                 Ver todo
@@ -123,17 +114,15 @@ export default function RestaurantQueue({
             waitingClients.map((client) => (
               <ClientCard
                 key={client.email}
-                name={client.name}
-                commensals={client.groupSize}
-                description={client.description}
+                client={client}
                 onCallClient={async () => {
-                  await updateCommensalStatus({ email: client.email })
+                  await callCommensal({ restaurantSlug, client })
                   await getCommensalList()
                 }}
                 onRemoveClient={async () => {
                   await removeCommensal({
                     restaurantSlug,
-                    email: client.email,
+                    client,
                   })
                   await getCommensalList()
 
@@ -158,13 +147,15 @@ export default function RestaurantQueue({
             calledClients.map((client) => (
               <ClientCard
                 key={client.email}
-                name={client.name}
-                commensals={client.groupSize}
-                onCallClient={() => {}}
+                client={client}
+                onCallClient={async () => {
+                  await retryCallCommensal({ client })
+                  await getCommensalList()
+                }}
                 onRemoveClient={async () => {
                   await removeCommensal({
                     restaurantSlug,
-                    email: client.email,
+                    client,
                   })
                   await getCommensalList()
 
@@ -173,7 +164,7 @@ export default function RestaurantQueue({
                 onAcceptClient={async () => {
                   await removeCommensal({
                     restaurantSlug,
-                    email: client.email,
+                    client,
                   })
                   await getCommensalList()
 

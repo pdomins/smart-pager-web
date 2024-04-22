@@ -2,7 +2,7 @@
 'use client'
 import CommensalQueueInnerForm from '@/components/forms/commensalQueueForm/form'
 import { pattern } from '@/lib/phone'
-import { CommensalData, addCommensal } from '@/repositories/queue-repository'
+import { addCommensal } from '@/services/commensal-queue-service'
 import { Dialog } from '@mui/material'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 
@@ -15,7 +15,7 @@ const AddToQueueDialog = ({
   isOpenDialog: boolean
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>
   restaurantSlug: string
-  getCommensalList: () => Promise<CommensalData[] | undefined>
+  getCommensalList: () => Promise<void>
 }) => {
   const [email, setEmail] = useState<string>()
   const [name, setName] = useState<string>()

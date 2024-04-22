@@ -6,9 +6,8 @@ import { createClient } from '@vercel/kv'
 import { unstable_noStore as noStore } from 'next/cache'
 
 const PICK_UP_LIST = '-pickup'
-const COMMENSAL_LIST = '-commensal'
 
-type CommensalDataParams = {
+export type CommensalDataParams = {
   name: string
   groupSize: string
   phoneNumber: string
@@ -16,9 +15,9 @@ type CommensalDataParams = {
 }
 
 export type CommensalData = CommensalDataParams & {
-  status: 'waiting' | 'called'
   joinedAt: Date
   email: string
+  timesCalled: number
 }
 
 type PickUpData = {
@@ -31,107 +30,61 @@ const kv = createClient({
   token: assertAndReturn(process.env.REDIS_REST_API_TOKEN),
 })
 
-//TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
-export async function addCommensal({
-  restaurantSlug,
+export async function addClient({
+  lists,
   email,
   clientData,
 }: {
-  restaurantSlug: string
-  email: string
-  clientData: CommensalDataParams
-}) {
-  noStore()
-  const isMember = await kv.smembers(email)
-  if (isMember.length !== 0) return false
-  const data: Omit<CommensalData, 'email'> = {
-    status: 'waiting',
-    joinedAt: new Date(),
-    ...clientData,
-  }
-  await addClient({
-    list: restaurantSlug + COMMENSAL_LIST,
-    email,
-    clientData: data,
-  })
-  return true
-}
-
-//TODO kv.smembers(email) SOLO PODES ESTAR ANOTADO EN UNA UNICA FILA
-export async function addPickUp({
-  restaurantSlug,
-  email,
-  clientData,
-}: {
-  restaurantSlug: string
-  email: string
-  clientData: PickUpData
-}) {
-  noStore()
-  const isMember = await kv.smembers(email)
-  if (isMember.length !== 0) return false
-  await addClient({ list: restaurantSlug + PICK_UP_LIST, email, clientData })
-  return true
-}
-
-async function addClient({
-  list,
-  email,
-  clientData,
-}: {
-  list: string
+  lists: string[]
   email: string
   clientData: CommensalDataParams | PickUpData
 }) {
+  noStore()
+  const isMember = await kv.smembers(email)
+  if (isMember.length !== 0) return false
+
   const score = Date.now()
 
-  await kv.zadd(list, { score, member: email })
+  await Promise.all(
+    lists.map((list) => kv.zadd(list, { score, member: email }))
+  )
   await kv.sadd(email, clientData)
-  console.log(`Email ${email} added to the queue.`)
+
+  return true
 }
 
-export async function removeCommensal({
-  restaurantSlug,
+export async function removeClient({
+  lists,
   email,
 }: {
-  restaurantSlug: string
+  lists: string[]
   email: string
 }) {
-  await removeClient({ list: restaurantSlug + COMMENSAL_LIST, email })
-}
-
-export async function removePickUp({
-  restaurantSlug,
-  email,
-}: {
-  restaurantSlug: string
-  email: string
-}) {
-  await removeClient({ list: restaurantSlug + PICK_UP_LIST, email })
-}
-
-async function removeClient({ list, email }: { list: string; email: string }) {
   noStore()
   try {
-    const removed = await kv.zrem(list, email)
+    await Promise.all(lists.map((list) => kv.zrem(list, email)))
+  } catch (error) {
+    console.error(
+      `An error occurred while removing ${email} from lists:`,
+      error
+    )
+  }
 
-    if (removed) {
-      await kv.del(email)
-      console.log(`Email ${email} removed from the queue.`)
-    } else {
-      console.log(`Email ${email} was not found in the queue.`)
-    }
+  try {
+    await kv.del(email)
   } catch (error) {
     console.error(`An error occurred while removing ${email}:`, error)
   }
 }
 
-const getClientData = async ({ email }: { email: string }) => {
+export const getClientData = async ({ email }: { email: string }) => {
+  noStore()
   try {
     const rawData = (await kv.smembers(email))[0] as unknown as Omit<
       CommensalData,
       'email'
     > | null
+
     if (!rawData) {
       console.log(`No data found for email ${email}.`)
       return null
@@ -149,7 +102,7 @@ const getClientData = async ({ email }: { email: string }) => {
   }
 }
 
-const getPaginatedEmails = async ({
+export const getPaginatedEmails = async ({
   list,
   start,
   end,
@@ -161,13 +114,14 @@ const getPaginatedEmails = async ({
   noStore()
   try {
     const emails: string[] = await kv.zrange(list, start, end)
+    const size = await kv.zcount(list, "-inf", "+inf")
     if (emails.length === 0) {
       console.log('The queue is currently empty.')
-      return null
+      return {emails, size}
     }
 
     console.log({ msg: `Emails in the queue: ${emails}`, start, end })
-    return emails
+    return { emails, size }
   } catch (error) {
     console.error(
       'An error occurred while retrieving the first username from the queue:',
@@ -177,92 +131,41 @@ const getPaginatedEmails = async ({
   }
 }
 
-export async function getPaginatedCommensals({
-  restaurantSlug,
-  start,
-  end,
-}: {
-  restaurantSlug: string
-  start: number
-  end: number
-}) {
+// export async function getAllCommensals({
+//   restaurantSlug,
+// }: {
+//   restaurantSlug: string
+// }) {
+//   noStore()
+//   console.log(restaurantSlug + COMMENSAL_LIST)
+//   return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
+// }
+
+export async function updateClient({ data }: { data: CommensalData }) {
   noStore()
-  const emails = await getPaginatedEmails({
-    list: restaurantSlug + COMMENSAL_LIST,
-    start,
-    end,
-  })
-  if (!emails) {
-    return null
+  const updatedData: Omit<CommensalData, 'email'> = {
+    ...data,
+    timesCalled: data.timesCalled + 1,
   }
 
-  const results = (
-    await Promise.all(emails.map((email) => getClientData({ email })))
-  ).filter(
-    (result): result is CommensalData => result !== null
-  ) as CommensalData[]
-
-  return results
+  const email = data.email
+  await kv.del(email)
+  await kv.sadd(email, updatedData)
 }
 
-export async function getPaginatedPickUps({
+// esto se borra despues, es ahora para que siga funcionando la parte que todavia no actualice
+export async function addPickUp({
   restaurantSlug,
-  start,
-  end,
+  email,
+  clientData,
 }: {
   restaurantSlug: string
-  start: number
-  end: number
+  email: string
+  clientData: PickUpData
 }) {
   noStore()
-  const email = await getPaginatedEmails({
-    list: restaurantSlug + PICK_UP_LIST,
-    start,
-    end,
-  })
-  if (!email) {
-    return null
-  }
-  // return getClientData({ email })
-}
-
-export async function getAllCommensals({
-  restaurantSlug,
-}: {
-  restaurantSlug: string
-}) {
-  noStore()
-  console.log(restaurantSlug + COMMENSAL_LIST)
-  return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
-}
-
-export async function getAllPickUps({
-  restaurantSlug,
-}: {
-  restaurantSlug: string
-}) {
-  noStore()
-  return await kv.zrange(restaurantSlug + PICK_UP_LIST, 0, -1)
-}
-
-export async function updateCommensalStatus({ email }: { email: string }) {
-  noStore()
-  try {
-    const data = await getClientData({ email })
-    if (!data) {
-      console.error(`No data found for email ${email}.`)
-      return
-    }
-
-    const updatedData: Omit<CommensalData, 'email'> = {
-      ...data,
-      status: 'called',
-    }
-    await kv.del(email)
-    await kv.sadd(email, updatedData)
-
-    console.log(`Email ${email} updated in the queue.`)
-  } catch (error) {
-    console.error(`An error occurred while removing ${email}:`, error)
-  }
+  const isMember = await kv.smembers(email)
+  if (isMember.length !== 0) return false
+  await addClient({ lists: [restaurantSlug + PICK_UP_LIST], email, clientData })
+  return true
 }

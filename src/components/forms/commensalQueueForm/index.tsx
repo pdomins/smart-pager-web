@@ -1,10 +1,10 @@
 import React, { FormEvent, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useParams, useRouter } from 'next/navigation'
-import { addCommensal } from '@/repositories/queue-repository'
 
 import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
+import { addCommensal } from '@/services/commensal-queue-service'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
