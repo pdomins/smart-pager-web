@@ -136,7 +136,9 @@ export default function RestaurantQueue({
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Clientes Llamados</h2>
             <button
-              onClick={() => {}}
+              onClick={() => {
+                router.push('/management/queue/called')
+              }}
               className="relative text-purple-500 hover:text-purple-700 transition-colors"
             >
               Ver todo

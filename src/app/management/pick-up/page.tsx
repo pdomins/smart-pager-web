@@ -7,7 +7,7 @@ import Loading from '@/components/utils/loading'
 import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import Navbar from '@/components/navigation/restaurants/navbar'
 import { useRouter } from 'next/navigation'
-import WaitingClientListPage from '@/components/restaurants/restaurant/restaurant-queue/view-all/waiting-clients'
+import RestaurantPickUp from '@/components/restaurants/restaurant/restaurant-pickup'
 // import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
@@ -23,7 +23,6 @@ export default function Page() {
             session?.user?.email as string
           )
           setRestaurantData(restaurant)
-
         } catch (error) {
           console.error('Error fetching restaurant data:', error)
         }
@@ -35,12 +34,11 @@ export default function Page() {
     fetchData()
   }, [session])
 
-  // Render the RestaurantQueue only if restaurant data is available
   return (
     <>
       <Navbar />
       {restaurantData ? (
-        <WaitingClientListPage restaurantData={restaurantData} />
+        <RestaurantPickUp restaurantData={restaurantData} />
       ) : (
         <Loading />
       )}
