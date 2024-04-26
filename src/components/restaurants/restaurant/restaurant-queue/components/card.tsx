@@ -3,8 +3,8 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import DoneIcon from '@mui/icons-material/Done'
 import { Tooltip } from '@mui/material'
 import { format } from 'date-fns'
-import { CommensalData } from '@/repositories/queue-repository'
 import { es } from 'date-fns/locale'
+import { CommensalData } from '@/types/queues'
 
 const ClientCard = ({
   client,

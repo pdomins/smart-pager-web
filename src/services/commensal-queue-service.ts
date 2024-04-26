@@ -1,12 +1,15 @@
 import {
-  CommensalData,
-  CommensalDataParams,
   addClient,
   getClientData,
   getPaginatedEmails,
   removeClient,
   updateClient,
 } from '@/repositories/queue-repository'
+import {
+  CommensalData,
+  CommensalDataParams,
+  PaginationResult,
+} from '@/types/queues'
 
 const COMMENSAL_WAITING_LIST = '-waiting-commensal'
 const COMMENSAL_CALLED_LIST = '-called-commensal'
@@ -58,9 +61,10 @@ export async function addCommensal({
   email: string
   clientData: CommensalDataParams
 }) {
-  const data: Omit<CommensalData, 'email'> = {
+  const data = {
     joinedAt: new Date(),
     timesCalled: 0,
+    email,
     ...clientData,
   }
   const response = await addClient({
@@ -112,11 +116,6 @@ export async function removeCommensal({
     })
   }
 }
-
-type PaginationResult = {
-  emails: string[]
-  size: number
-} | null
 
 export async function getPaginatedCommensals({
   restaurantSlug,

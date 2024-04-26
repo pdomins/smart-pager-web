@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ClientCard from '../components/card'
-import { CommensalData } from '@/repositories/queue-repository'
 import Container from '../../../../style/container'
 import Gradient from '../../../../style/gradient'
 import { Restaurant } from '@/types/restaurant'
@@ -16,7 +15,8 @@ import Filter from '../components/filter'
 import AddToQueueDialog from '../components/dialog'
 import { AddCircle } from '@mui/icons-material'
 import { Pagination, Tooltip } from '@mui/material'
-import Spinner from '@/components/utils/spinner'
+import { CommensalData } from '@/types/queues'
+import ClientCardSkeleton from '../components/skeleton-card'
 
 const WaitingClientListPage = ({
   restaurantData,
@@ -125,9 +125,7 @@ const WaitingClientListPage = ({
               <NoClientsMessage message="No hay clientes que coincidan con los filtros seleccionados." />
             )
           ) : (
-            <div className="flex justify-center items-center">
-              <Spinner />
-            </div>
+            <ClientCardSkeleton />
           )}
           <div className="flex pb-10 h-full justify-center items-end">
             <Pagination

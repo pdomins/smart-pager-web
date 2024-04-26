@@ -1,29 +1,10 @@
 'use server'
 
 import { assertAndReturn } from '@/lib/assertions'
+import { CommensalData, PickUpData } from '@/types/queues'
 import { createClient } from '@vercel/kv'
 
 import { unstable_noStore as noStore } from 'next/cache'
-
-const PICK_UP_LIST = '-pickup'
-
-export type CommensalDataParams = {
-  name: string
-  groupSize: string
-  phoneNumber: string
-  description: string
-}
-
-export type CommensalData = CommensalDataParams & {
-  joinedAt: Date
-  email: string
-  timesCalled: number
-}
-
-type PickUpData = {
-  name: string
-  pickupid: string
-}
 
 const kv = createClient({
   url: assertAndReturn(process.env.REDIS_REST_API_URL),
@@ -37,7 +18,7 @@ export async function addClient({
 }: {
   lists: string[]
   email: string
-  clientData: CommensalDataParams | PickUpData
+  clientData: Omit<CommensalData, 'email'> | Omit<PickUpData, 'email'>
 }) {
   noStore()
   const isMember = await kv.smembers(email)
@@ -80,16 +61,15 @@ export async function removeClient({
 export const getClientData = async ({ email }: { email: string }) => {
   noStore()
   try {
-    const rawData = (await kv.smembers(email))[0] as unknown as Omit<
-      CommensalData,
-      'email'
-    > | null
+    const clientData = (await kv.smembers(email))[0] as unknown as
+      | CommensalData
+      | PickUpData
+      | null
 
-    if (!rawData) {
+    if (!clientData) {
       console.log(`No data found for email ${email}.`)
       return null
     }
-    const clientData: CommensalData = { email, ...rawData }
 
     console.log(`Data for email ${email}:`, clientData)
     return clientData
@@ -114,10 +94,10 @@ export const getPaginatedEmails = async ({
   noStore()
   try {
     const emails: string[] = await kv.zrange(list, start, end)
-    const size = await kv.zcount(list, "-inf", "+inf")
+    const size = await kv.zcount(list, '-inf', '+inf')
     if (emails.length === 0) {
       console.log('The queue is currently empty.')
-      return {emails, size}
+      return { emails, size }
     }
 
     console.log({ msg: `Emails in the queue: ${emails}`, start, end })
@@ -141,9 +121,13 @@ export const getPaginatedEmails = async ({
 //   return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
 // }
 
-export async function updateClient({ data }: { data: CommensalData }) {
+export async function updateClient({
+  data,
+}: {
+  data: CommensalData | PickUpData
+}) {
   noStore()
-  const updatedData: Omit<CommensalData, 'email'> = {
+  const updatedData = {
     ...data,
     timesCalled: data.timesCalled + 1,
   }
@@ -151,21 +135,4 @@ export async function updateClient({ data }: { data: CommensalData }) {
   const email = data.email
   await kv.del(email)
   await kv.sadd(email, updatedData)
-}
-
-// esto se borra despues, es ahora para que siga funcionando la parte que todavia no actualice
-export async function addPickUp({
-  restaurantSlug,
-  email,
-  clientData,
-}: {
-  restaurantSlug: string
-  email: string
-  clientData: PickUpData
-}) {
-  noStore()
-  const isMember = await kv.smembers(email)
-  if (isMember.length !== 0) return false
-  await addClient({ lists: [restaurantSlug + PICK_UP_LIST], email, clientData })
-  return true
 }

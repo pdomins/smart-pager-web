@@ -5,7 +5,6 @@ import Gradient from '../../../style/gradient'
 import Container from '../../../style/container'
 import { useCallback, useEffect, useState } from 'react'
 import ClientCard from './components/card'
-import { CommensalData } from '@/repositories/queue-repository'
 import { assertAndReturn } from '@/lib/assertions'
 import Loading from '@/components/utils/loading'
 import { Tooltip } from '@mui/material'
@@ -19,6 +18,8 @@ import {
   removeCommensal,
   retryCallCommensal,
 } from '@/services/commensal-queue-service'
+import { CommensalData } from '@/types/queues'
+import ClientCardSkeleton from './components/skeleton-card'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -110,28 +111,32 @@ export default function RestaurantQueue({
             </div>
           </div>
 
-          {waitingClients && waitingClients?.length > 0 ? (
-            waitingClients.map((client) => (
-              <ClientCard
-                key={client.email}
-                client={client}
-                onCallClient={async () => {
-                  await callCommensal({ restaurantSlug, client })
-                  await getCommensalList()
-                }}
-                onRemoveClient={async () => {
-                  await removeCommensal({
-                    restaurantSlug,
-                    client,
-                  })
-                  await getCommensalList()
+          {waitingClients ? (
+            waitingClients?.length > 0 ? (
+              waitingClients.map((client) => (
+                <ClientCard
+                  key={client.email}
+                  client={client}
+                  onCallClient={async () => {
+                    await callCommensal({ restaurantSlug, client })
+                    await getCommensalList()
+                  }}
+                  onRemoveClient={async () => {
+                    await removeCommensal({
+                      restaurantSlug,
+                      client,
+                    })
+                    await getCommensalList()
 
-                  // add here logic of removed commensals without completion if needed (for metrics)
-                }}
-              />
-            ))
+                    // add here logic of removed commensals without completion if needed (for metrics)
+                  }}
+                />
+              ))
+            ) : (
+              <NoClientsMessage message="No hay clientes esperando en este momento." />
+            )
           ) : (
-            <NoClientsMessage message="No hay clientes esperando en este momento." />
+            <ClientCardSkeleton />
           )}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Clientes Llamados</h2>
@@ -145,37 +150,41 @@ export default function RestaurantQueue({
             </button>
           </div>
 
-          {calledClients && calledClients.length > 0 ? (
-            calledClients.map((client) => (
-              <ClientCard
-                key={client.email}
-                client={client}
-                onCallClient={async () => {
-                  await retryCallCommensal({ client })
-                  await getCommensalList()
-                }}
-                onRemoveClient={async () => {
-                  await removeCommensal({
-                    restaurantSlug,
-                    client,
-                  })
-                  await getCommensalList()
+          {calledClients ? (
+            calledClients.length > 0 ? (
+              calledClients.map((client) => (
+                <ClientCard
+                  key={client.email}
+                  client={client}
+                  onCallClient={async () => {
+                    await retryCallCommensal({ client })
+                    await getCommensalList()
+                  }}
+                  onRemoveClient={async () => {
+                    await removeCommensal({
+                      restaurantSlug,
+                      client,
+                    })
+                    await getCommensalList()
 
-                  // add here logic of removed commensals without completion if needed (for metrics)
-                }}
-                onAcceptClient={async () => {
-                  await removeCommensal({
-                    restaurantSlug,
-                    client,
-                  })
-                  await getCommensalList()
+                    // add here logic of removed commensals without completion if needed (for metrics)
+                  }}
+                  onAcceptClient={async () => {
+                    await removeCommensal({
+                      restaurantSlug,
+                      client,
+                    })
+                    await getCommensalList()
 
-                  // add here logic of removed commensals on acceptance if needed (for metrics)
-                }}
-              />
-            ))
+                    // add here logic of removed commensals on acceptance if needed (for metrics)
+                  }}
+                />
+              ))
+            ) : (
+              <NoClientsMessage message="Aún no se ha llamado ningún cliente." />
+            )
           ) : (
-            <NoClientsMessage message="Aún no se ha llamado ningún cliente." />
+            <ClientCardSkeleton />
           )}
         </div>
       </Container>
