@@ -61,7 +61,7 @@ export async function addCommensal({
   email: string
   clientData: CommensalDataParams
 }) {
-  const data = {
+  const data: CommensalData = {
     joinedAt: new Date(),
     timesCalled: 0,
     email,
@@ -185,7 +185,7 @@ export async function callCommensal({
   try {
     await removeCommensal({ restaurantSlug, client: data })
 
-    const updatedData: Omit<CommensalData, 'email'> = {
+    const updatedData: CommensalData = {
       ...data,
       timesCalled: data.timesCalled + 1,
     }

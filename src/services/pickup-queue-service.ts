@@ -35,7 +35,7 @@ export async function addPickUp({
   email: string
   clientData: PickUpDataParams
 }) {
-  const data = {
+  const data: PickUpData = {
     joinedAt: new Date(),
     timesCalled: 0,
     email,
@@ -120,7 +120,7 @@ export async function callCommensal({
   try {
     await removePickUp({ restaurantSlug, client: data })
 
-    const updatedData: Omit<PickUpData, 'email'> = {
+    const updatedData: PickUpData = {
       ...data,
       timesCalled: data.timesCalled + 1,
     }

@@ -18,7 +18,7 @@ export async function addClient({
 }: {
   lists: string[]
   email: string
-  clientData: Omit<CommensalData, 'email'> | Omit<PickUpData, 'email'>
+  clientData: CommensalData | PickUpData
 }) {
   noStore()
   const isMember = await kv.smembers(email)
