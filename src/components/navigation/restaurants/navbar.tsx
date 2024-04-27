@@ -69,7 +69,7 @@ export default function Navbar() {
         baseButtonStyle +
         ' relative before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-violet-700/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max',
       textStyle: 'relative text-purple-700 font-semibold',
-      label: 'Cerrar sesión',
+      label: 'Cerrar Sesión',
     },
   ]
 
