@@ -14,15 +14,15 @@ export default function Navbar() {
   const baseButtonStyle = 'flex h-11 items-center justify-center px-6'
 
   const unsignedlinks = [
-    {
-      action: () =>
-        signIn('google', {
-          callbackUrl: '/management/sign-up',
-        }),
-      style: baseButtonStyle,
-      textStyle: '',
-      label: 'Registrarse',
-    },
+    // {
+    //   action: () =>
+    //     signIn('google', {
+    //       callbackUrl: '/management/sign-up',
+    //     }),
+    //   style: baseButtonStyle,
+    //   textStyle: '',
+    //   label: 'Registrarse',
+    // },
     {
       action: () =>
         signIn('google', {

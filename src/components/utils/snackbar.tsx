@@ -10,12 +10,16 @@ export default function Snackbar({
   text,
   type,
   variant = 'standard',
+  verticalPosition = 'top',
+  horizontalPosition = 'center',
 }: {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   text: string
   type: 'error' | 'info' | 'success' | 'warning'
   variant?: 'filled' | 'standard' | 'outlined'
+  verticalPosition?: 'top' | 'bottom'
+  horizontalPosition?: 'right' | 'left' | 'center'
 }) {
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -31,16 +35,19 @@ export default function Snackbar({
   return (
     <Box sx={{ width: 500 }}>
       <SnackbarMUI
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{
+          vertical: verticalPosition,
+          horizontal: horizontalPosition,
+        }}
         open={isOpen}
         onClose={handleClose}
         TransitionComponent={Grow}
-        autoHideDuration={8000}
+        autoHideDuration={5000}
       >
         <Alert
           severity={type}
           variant={variant}
-          sx={{ bgcolor: `${variant === 'outlined' && 'background.paper'}` }}
+          sx={{ bgcolor: `${variant === 'outlined' && ' background.paper'}` }}
           onClose={() => setIsOpen(false)}
         >
           {text}
