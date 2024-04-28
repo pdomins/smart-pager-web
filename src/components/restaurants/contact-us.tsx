@@ -1,5 +1,6 @@
 import { Dialog } from '@mui/material'
-import { Dispatch, FormEvent, SetStateAction } from 'react'
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
+import Spinner from '../utils/spinner'
 
 export type MailParams = {
   email: string
@@ -17,15 +18,19 @@ const ContactUsDialog = ({
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>
   mailContent: MailParams
   setMailContent: React.Dispatch<React.SetStateAction<MailParams>>
-  onSubmit: () => void
+  onSubmit: () => Promise<void>
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleClose = () => {
+    setIsSubmitting(false)
     setIsOpenDialog(false)
   }
-  const handleSend = (e: FormEvent<HTMLFormElement>) => {
+  const handleSend = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    await onSubmit()
     handleClose()
-    onSubmit()
   }
 
   const isSubmittable = !!mailContent.message && !!mailContent.email
@@ -80,13 +85,19 @@ const ContactUsDialog = ({
                 required
               />
             </label>
-            <button
-              className="bg-violet-700 w-full hover:bg-violet-800 text-white py-2 px-4 rounded-full transition-colors disabled:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-75"
-              type="submit"
-              disabled={!isSubmittable}
-            >
-              Send Email
-            </button>
+            {!isSubmitting ? (
+              <button
+                className="bg-violet-700 w-full hover:bg-violet-800 text-white my-3 py-2 px-4 rounded-full transition-colors disabled:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-75"
+                type="submit"
+                disabled={!isSubmittable}
+              >
+                Send Email
+              </button>
+            ) : (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            )}
           </form>
         </div>
       </div>
