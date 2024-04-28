@@ -50,7 +50,7 @@ export async function sendPickUpReadyEmail({
     html: PickUpReadyHTML({
       name,
       restaurantName,
-      orderNumber: otherAttrs.pickupId,
+      orderNumber: otherAttrs.pickUpId,
     }),
   })
 }

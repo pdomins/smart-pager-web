@@ -52,10 +52,10 @@ export async function addPickUp({
 
 export async function removePickUp({
   restaurantSlug,
-  client: data,
+  order: data,
 }: {
   restaurantSlug: string
-  client: PickUpData
+  order: PickUpData
 }) {
   if (data.timesCalled === 0) {
     // waiting
@@ -110,15 +110,15 @@ export async function getPaginatedPickUps({
   return { queue: results, size: result.size }
 }
 
-export async function callCommensal({
-  client: data,
+export async function callPickUp({
+  order: data,
   restaurantSlug,
 }: {
   restaurantSlug: string
-  client: PickUpData
+  order: PickUpData
 }) {
   try {
-    await removePickUp({ restaurantSlug, client: data })
+    await removePickUp({ restaurantSlug, order: data })
 
     const updatedData: PickUpData = {
       ...data,
@@ -138,9 +138,9 @@ export async function callCommensal({
 }
 
 export async function retryCallPickUp({
-  client: data,
+  order: data,
 }: {
-  client: PickUpData
+  order: PickUpData
 }) {
   try {
     await updateClient({ data })

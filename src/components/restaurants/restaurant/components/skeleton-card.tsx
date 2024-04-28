@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ClientCardSkeleton = () => {
+const SkeletonCard = () => {
   return (
     <div className="animate-pulse bg-white/40 shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">
       <div className="flex-1">
@@ -20,4 +20,4 @@ const ClientCardSkeleton = () => {
   )
 }
 
-export default ClientCardSkeleton
+export default SkeletonCard

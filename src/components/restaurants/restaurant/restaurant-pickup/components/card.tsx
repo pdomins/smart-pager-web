@@ -4,45 +4,31 @@ import DoneIcon from '@mui/icons-material/Done'
 import { Tooltip } from '@mui/material'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { CommensalData } from '@/types/queues'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { PickUpData } from '@/types/queues'
 
-const ClientCard = ({
-  client,
+const PickUpCard = ({
+  order,
   onCallClient,
   onRemoveClient,
   onAcceptClient,
 }: {
-  client: CommensalData
+  order: PickUpData
   onCallClient: () => void
   onRemoveClient: () => void
   onAcceptClient?: () => void
 }) => {
-  const {
-    name,
-    groupSize: commensals,
-    description,
-    timesCalled,
-    joinedAt: reservationTime,
-  } = client
+  const { name, pickUpId, timesCalled, joinedAt: reservationTime } = order
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">
       <div className="flex-1">
-        <div className="flex items-start">
-          <p className="text-lg font-bold">{name}</p>
-          {description && (
-            <Tooltip
-              title={'Comentario del cliente: ' + description}
-              placement="right"
-              arrow
-            >
-              <button className="relative text-violet-500 pl-1">
-                <InfoOutlinedIcon />
-              </button>
-            </Tooltip>
+        <p className="text-lg font-bold">
+          {pickUpId !== '' && (
+            <>
+              <span className="text-purple-500">{pickUpId}</span> -{' '}
+            </>
           )}
-        </div>
-        <p>Personas: {commensals}</p>
+          {name}
+        </p>
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">
             Horario: {format(reservationTime, 'PPPpp', { locale: es })}
@@ -87,4 +73,4 @@ const ClientCard = ({
   )
 }
 
-export default ClientCard
+export default PickUpCard

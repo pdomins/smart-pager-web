@@ -5,7 +5,7 @@ import Gradient from '../../../../style/gradient'
 import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
 import { assertAndReturn } from '@/lib/assertions'
-import NoClientsMessage from '../components/no-clients'
+import EmptyCardWithMessage from '../../components/empty-card'
 import {
   callCommensal,
   getPaginatedCommensals,
@@ -15,7 +15,7 @@ import Filter from '../components/filter'
 import AddToQueueDialog from '../components/dialog'
 import { Pagination } from '@mui/material'
 import { CommensalData } from '@/types/queues'
-import ClientCardSkeleton from '../components/skeleton-card'
+import SkeletonCard from '../../components/skeleton-card'
 
 const CalledClientListPage = ({
   restaurantData,
@@ -119,10 +119,10 @@ const CalledClientListPage = ({
                 />
               ))
             ) : (
-              <NoClientsMessage message="No hay clientes que coincidan con los filtros seleccionados." />
+              <EmptyCardWithMessage message="No hay clientes que coincidan con los filtros seleccionados." />
             )
           ) : (
-            <ClientCardSkeleton />
+            <SkeletonCard />
           )}
           <div className="flex pb-10 h-full justify-center items-end">
             <Pagination

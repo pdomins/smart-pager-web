@@ -18,7 +18,7 @@ export type CommensalData = CommensalDataParams & {
 
 export type PickUpDataParams = {
   name: string
-  pickupId: string
+  pickUpId: string
   phoneNumber: string
 }
 

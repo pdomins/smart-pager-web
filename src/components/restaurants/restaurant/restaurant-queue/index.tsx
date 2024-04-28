@@ -10,7 +10,7 @@ import Loading from '@/components/utils/loading'
 import { Tooltip } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
 import AddToQueueDialog from './components/dialog'
-import NoClientsMessage from './components/no-clients'
+import EmptyCardWithMessage from '../components/empty-card'
 import { useRouter } from 'next/navigation'
 import {
   callCommensal,
@@ -19,7 +19,7 @@ import {
   retryCallCommensal,
 } from '@/services/commensal-queue-service'
 import { CommensalData } from '@/types/queues'
-import ClientCardSkeleton from './components/skeleton-card'
+import SkeletonCard from '../components/skeleton-card'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -133,10 +133,10 @@ export default function RestaurantQueue({
                 />
               ))
             ) : (
-              <NoClientsMessage message="No hay clientes esperando en este momento." />
+              <EmptyCardWithMessage message="No hay clientes esperando en este momento." />
             )
           ) : (
-            <ClientCardSkeleton />
+            <SkeletonCard />
           )}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Clientes Llamados</h2>
@@ -181,10 +181,10 @@ export default function RestaurantQueue({
                 />
               ))
             ) : (
-              <NoClientsMessage message="Aún no se ha llamado ningún cliente." />
+              <EmptyCardWithMessage message="Aún no se ha llamado ningún cliente." />
             )
           ) : (
-            <ClientCardSkeleton />
+            <SkeletonCard />
           )}
         </div>
       </Container>
