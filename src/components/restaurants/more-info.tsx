@@ -4,6 +4,7 @@ import Gradient from '../style/gradient'
 import ContactUsDialog, { MailParams } from './contact-us'
 import { sendContactUsEmail } from '@/repositories/email-repository'
 import Snackbar from '../utils/snackbar'
+import { HTTP_RESPONSE_STATUS } from '@/types/https'
 
 export default function RestautantMoreInfo() {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -12,10 +13,15 @@ export default function RestautantMoreInfo() {
     message: '',
   })
   const [isSuccessfullySent, setIsSuccessfullySent] = useState(false)
+  const [hasError, setHasError] = useState(false)
 
-  const sendEmail = () => {
-    sendContactUsEmail({ ...mailContent })
-    setIsSuccessfullySent(true)
+  const sendEmail = async () => {
+    const ans = await sendContactUsEmail({ ...mailContent })
+    if (ans.status === HTTP_RESPONSE_STATUS.SUCCESS) {
+      setIsSuccessfullySent(true)
+    } else {
+      setHasError(true)
+    }
   }
 
   return (
@@ -33,6 +39,13 @@ export default function RestautantMoreInfo() {
         variant="filled"
         setIsOpen={setIsSuccessfullySent}
         text="¡Tu mail se ha enviado correctamente! Nos comunicaremos con vos a la brevedad."
+      />
+      <Snackbar
+        type="error"
+        isOpen={hasError}
+        variant="filled"
+        setIsOpen={setHasError}
+        text="Ha ocurrido un error con tu mail. Por favor, intenta nuevamente mas tarde."
       />
       <div className="relative" id="info">
         <Gradient />

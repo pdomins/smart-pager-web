@@ -15,7 +15,7 @@ async function sendEmail({
   subject: string
   html: string
 }) {
-  await fetch(`/api/emails/send`, {
+  return await fetch(`/api/emails/send`, {
     method: 'POST',
     body: JSON.stringify({
       recipient,
@@ -31,7 +31,7 @@ export async function sendTableReadyEmail({
 }: CommensalData & { restaurantName: string }) {
   const { name, email } = otherAttrs
 
-  await sendEmail({
+  return await sendEmail({
     recipient: email,
     subject: '¡Tu mesa está lista!',
     html: TableReadyHTML({ name, restaurantName }),
@@ -61,7 +61,7 @@ export async function sendAddedToQueueEmail({
 }: CommensalData & { restaurantName: string }) {
   const { name, email } = otherAttrs
 
-  await sendEmail({
+  return await sendEmail({
     recipient: email,
     subject: '¡Te encontrás en la lista de espera!',
     html: AddedToQueueHTML({ name, restaurantName }),
@@ -75,7 +75,7 @@ export async function sendContactUsEmail({
   email: string
   message: string
 }) {
-  await sendEmail({
+  return await sendEmail({
     recipient: 'smartpager.pf@gmail.com',
     subject: `INTERNO - Nuevo Cliente: ${email} `,
     html: ContactUsHTML({ email, message }),
