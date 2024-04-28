@@ -1,3 +1,7 @@
+import { HTTP_RESPONSE_STATUS } from '@/types/https'
+// import { request } from 'http'
+import { NextResponse } from 'next/server'
+
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
@@ -11,8 +15,8 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-export async function POST(request: Request) {
-  const { html, subject, recipient } = await request.json()
+export async function POST(req: Request) {
+  const { html, subject, recipient } = await req.json()
   const mailOptions = {
     from: 'No Reply @SmartPager <smartpager.pf@gmail.com>',
     to: recipient,
@@ -21,15 +25,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email: ', error)
-      } else {
-        console.log('Email sent: ', info.response)
-      }
-    })
+    await transporter.sendMail(mailOptions)
+    return NextResponse.json({ status: HTTP_RESPONSE_STATUS.SUCCESS })
   } catch (error) {
-    console.log('ERROR: ' + error)
+    console.error(error)
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: HTTP_RESPONSE_STATUS.INTERNAL_SERVER_ERROR }
+    )
   }
-  return Response.json({})
 }
