@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer'
 const transporter = nodemailer.createTransport({
   service: process.env.NODEMAILER_SERVICE,
   host: process.env.NODEMAILER_HOST,
-  port: process.env.NODEMAILER_PORT,
+  port: Number(process.env.NODEMAILER_PORT) || 0,
   secure: true,
   auth: {
     user: process.env.NODEMAILER_USER,
