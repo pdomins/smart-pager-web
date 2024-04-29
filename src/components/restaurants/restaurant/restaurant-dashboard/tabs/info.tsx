@@ -10,6 +10,7 @@ import RestaurantForm, {
 } from '@/components/restaurants/sign-up/forms/restaurant-form'
 import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
 import Spinner from '@/components/utils/spinner'
+import { defaultWeek } from '@/lib/dates'
 
 const EditButtons = ({
   isEditing,
@@ -61,9 +62,7 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
 
   const initialState = {
     name: restaurantData.name,
-    openingTime: null,
-    closingTime: null,
-    isTimeError: false,
+    weeklyCalendar: defaultWeek(),
     averageTimePerTable: null,
     selectedFile: null,
   }

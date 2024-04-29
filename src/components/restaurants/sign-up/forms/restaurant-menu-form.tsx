@@ -28,7 +28,7 @@ const RestaurantMenuForm = ({
   return (
     <label className="block">
       <span className="text-gray-700">
-        Cargar menú: <span className="text-red-500">*</span>
+        Cargar menú:
       </span>
       <input
         type="file"
@@ -37,7 +37,7 @@ const RestaurantMenuForm = ({
         accept=".pdf"
         className="form-input bg-white text-gray-400 mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
         onChange={handleFileChange}
-        required
+        // required
         disabled={disabled}
       />
     </label>

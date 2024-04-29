@@ -1,0 +1,40 @@
+/* Estilo base para el checkbox */
+.form_checkbox {
+  height: 20px; /* Ajusta la altura del checkbox */
+  width: 20px; /* Ajusta el ancho del checkbox */
+  appearance: none; /* Desactiva el estilo predeterminado */
+  border: 2px solid #ccc; /* Borde gris para el estado no marcado */
+  border-radius: 4px; /* Bordes redondeados */
+  background-color: #fff; /* Fondo blanco */
+  cursor: pointer; /* Cambia el cursor a tipo puntero */
+  transition:
+    background 0.3s,
+    border-color 0.3s; /* Transiciones suaves */
+  position: relative; /* Needed for positioning the pseudo-element */
+}
+
+/* Estilo para cuando el checkbox está marcado */
+.form_checkbox:checked {
+  background-color: #895df6; /* Fondo color personalizado */
+  border-color: transparent;
+  /* border-color: #6d29d9; /* Borde color personalizado */
+}
+
+/* Creando la "marca de verificación" cuando el checkbox está marcado */
+.form_checkbox:checked::before {
+  content: ''; /* Necesario para generar el pseudo-elemento */
+  position: absolute;
+  left: 5px; /* Centra la marca en el checkbox */
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white; /* El color de la marca de verificación */
+  border-width: 0 2px 2px 0; /* Tamaños del borde para formar una marca */
+  transform: rotate(45deg); /* Rota el pseudo-elemento para formar una "V" */
+}
+
+/* Opcional: estilo para cuando el checkbox está enfocado */
+.form_checkbox:focus {
+  outline: none; /* Elimina el contorno predeterminado */
+  box-shadow: 0 0 0 3px rgba(137, 93, 246, 0.25); /* Sombra alrededor */
+}

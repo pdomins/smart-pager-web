@@ -7,6 +7,7 @@ import { Coordinates } from '../../maps'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantForm, { FormState } from './forms/restaurant-form'
+import { defaultWeek } from '@/lib/dates'
 
 export default function RestaurantSignUp({
   restaurantData,
@@ -15,9 +16,7 @@ export default function RestaurantSignUp({
 }) {
   const initialState = {
     name: null,
-    openingTime: null,
-    closingTime: null,
-    isTimeError: false,
+    weeklyCalendar: defaultWeek(),
     averageTimePerTable: null,
     selectedFile: null,
   }
@@ -54,8 +53,7 @@ export default function RestaurantSignUp({
         console.log({
           msg: 'Updated values',
           name: formState.name,
-          openingTime: formState.openingTime,
-          closingTime: formState.closingTime,
+          weeklyCalendar: formState.weeklyCalendar,
           averageTimePerTable: formState.averageTimePerTable,
           coordinates,
           selectedFile: formState.selectedFile,
@@ -75,12 +73,11 @@ export default function RestaurantSignUp({
 
   const isSubmittable =
     formState.name &&
-    formState.openingTime &&
-    formState.closingTime &&
-    !formState.isTimeError &&
+    // formState.openingTimes &&
+    // formState.closingTimes &&
+    // !formState.isTimeErrors &&
     formState.averageTimePerTable &&
     // coordinates &&
-    formState.selectedFile &&
     address
 
   return (

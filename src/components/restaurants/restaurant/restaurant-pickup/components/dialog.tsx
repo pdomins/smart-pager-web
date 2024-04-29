@@ -31,6 +31,7 @@ const AddPickUpDialog = ({
     setName(undefined)
     setPhone(undefined)
     setPickUpId('')
+    setDescription('')
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
