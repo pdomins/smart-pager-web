@@ -12,8 +12,7 @@ const SkeletonCard = () => {
         </div> */}
       </div>
       <div className="flex justify-end pr-2">
-        <div className="w-14 h-11 bg-gray-200 rounded py-2 px-4 rounded mr-2">
-        </div>
+        <div className="w-14 h-11 bg-gray-200 rounded py-2 px-4 rounded mr-2"></div>
         <div className="w-14 h-11 bg-gray-200 rounded py-2 px-4 rounded"></div>
       </div>
     </div>

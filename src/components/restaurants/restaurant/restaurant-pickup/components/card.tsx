@@ -2,8 +2,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import DoneIcon from '@mui/icons-material/Done'
 import { Tooltip } from '@mui/material'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
+import { differenceInMinutes, intervalToDuration } from 'date-fns'
 import { PickUpData } from '@/types/queues'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
@@ -25,6 +24,20 @@ const PickUpCard = ({
     joinedAt: reservationTime,
     description,
   } = order
+
+  const diffMinutes = differenceInMinutes(new Date(), reservationTime)
+
+  const duration = intervalToDuration({
+    start: 0,
+    end: diffMinutes * 60 * 1000,
+  })
+
+  const hours = duration.hours || 0
+  const minutes = duration.minutes || 0
+
+  const formattedDuration =
+    hours > 0 ? `${hours}h ${minutes}min` : `${minutes}min`
+
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">
       <div className="flex-1">
@@ -50,9 +63,7 @@ const PickUpCard = ({
           )}
         </div>
         <div className="flex space-x-1 ">
-          <p className="text-sm mt-2">
-            Horario: {format(reservationTime, 'PPPpp', { locale: es })}
-          </p>
+          <p className="text-sm mt-2">Tiempo en espera: {formattedDuration}</p>
           {timesCalled > 0 && (
             <p className="text-sm mt-2">
               {' '}

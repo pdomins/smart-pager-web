@@ -86,7 +86,9 @@ export default function RestaurantDashboard({
           <RestaurantMenu restaurantData={restaurantData} />
         )}
         {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
-        {activeTab === 'info' && <RestaurantInfo restaurantData={restaurantData} />}
+        {activeTab === 'info' && (
+          <RestaurantInfo restaurantData={restaurantData} />
+        )}
       </Container>
     </div>
   )

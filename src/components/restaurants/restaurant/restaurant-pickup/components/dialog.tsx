@@ -23,7 +23,6 @@ const AddPickUpDialog = ({
   const [pickUpId, setPickUpId] = useState<string>('')
   const [description, setDescription] = useState<string>('')
 
-
   const isSubmittable = email && name && phone && pattern.test(phone)
 
   const handleClose = () => {
@@ -61,7 +60,7 @@ const AddPickUpDialog = ({
         name,
         phoneNumber: phone,
         pickUpId,
-        description
+        description,
       },
     })
 

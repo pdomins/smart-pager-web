@@ -20,7 +20,7 @@ const Filter = ({
         id="groupSize"
         value={groupSize || ''}
         onChange={(e) => fun(e.target.value)}
-        className="flex relative border hover:border-violet-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+        className="flex bg-white/50 relative border hover:border-violet-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
       >
         <option value="">-</option>
         <option value="1">1</option>

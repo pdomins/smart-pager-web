@@ -18,7 +18,7 @@ export default function RootLayout({
       document.body.removeChild(script)
     }
   }, [])
-  
+
   return (
     <html lang="es">
       <body suppressHydrationWarning={true}>

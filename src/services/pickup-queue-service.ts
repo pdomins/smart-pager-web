@@ -137,11 +137,7 @@ export async function callPickUp({
   }
 }
 
-export async function retryCallPickUp({
-  order: data,
-}: {
-  order: PickUpData
-}) {
+export async function retryCallPickUp({ order: data }: { order: PickUpData }) {
   try {
     await updateClient({ data })
 
