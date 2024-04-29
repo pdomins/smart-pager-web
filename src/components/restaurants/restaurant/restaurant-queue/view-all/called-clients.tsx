@@ -10,7 +10,7 @@ import {
   callCommensal,
   getPaginatedCommensals,
   removeCommensal,
-} from '@/services/commensal-queue-service'
+} from '@/services/kv/commensal-queue-service'
 import Filter from '../components/filter'
 import AddToQueueDialog from '../components/dialog'
 import { Pagination } from '@mui/material'

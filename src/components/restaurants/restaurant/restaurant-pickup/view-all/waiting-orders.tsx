@@ -10,7 +10,7 @@ import {
   callPickUp,
   getPaginatedPickUps,
   removePickUp,
-} from '@/services/pickup-queue-service'
+} from '@/services/kv/pickup-queue-service'
 import { AddCircle } from '@mui/icons-material'
 import { Pagination, Tooltip } from '@mui/material'
 import { PickUpData } from '@/types/queues'

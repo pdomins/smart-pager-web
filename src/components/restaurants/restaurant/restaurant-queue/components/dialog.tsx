@@ -2,7 +2,7 @@
 'use client'
 import CommensalQueueInnerForm from '@/components/forms/commensalQueueForm/form'
 import { pattern } from '@/lib/phone'
-import { addCommensal } from '@/services/commensal-queue-service'
+import { addCommensal } from '@/services/kv/commensal-queue-service'
 import { Dialog } from '@mui/material'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 

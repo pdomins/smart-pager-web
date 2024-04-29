@@ -2,7 +2,7 @@
 
 import PickUpQueueInnerForm from '@/components/forms/pickUpQueueForm/form'
 import { pattern } from '@/lib/phone'
-import { addPickUp } from '@/services/pickup-queue-service'
+import { addPickUp } from '@/services/kv/pickup-queue-service'
 import { Dialog } from '@mui/material'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 

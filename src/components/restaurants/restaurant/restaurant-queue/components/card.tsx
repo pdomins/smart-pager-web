@@ -37,7 +37,7 @@ const ClientCard = ({
   const minutes = duration.minutes || 0
 
   const formattedDuration =
-    hours > 0 ? `${hours}h ${minutes}min` : `${minutes}min`
+    hours > 0 ? `${hours} hr ${minutes} min` : `${minutes} min`
 
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">

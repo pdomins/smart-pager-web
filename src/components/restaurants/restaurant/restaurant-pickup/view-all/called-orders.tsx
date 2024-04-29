@@ -9,7 +9,7 @@ import {
   callPickUp,
   getPaginatedPickUps,
   removePickUp,
-} from '@/services/pickup-queue-service'
+} from '@/services/kv/pickup-queue-service'
 
 import { Pagination } from '@mui/material'
 import { PickUpData } from '@/types/queues'

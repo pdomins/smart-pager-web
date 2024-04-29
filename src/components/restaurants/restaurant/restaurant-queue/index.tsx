@@ -13,13 +13,13 @@ import AddToQueueDialog from './components/dialog'
 import EmptyCardWithMessage from '../components/empty-card'
 import { useRouter } from 'next/navigation'
 import {
-  callCommensal,
   getPaginatedCommensals,
   removeCommensal,
   retryCallCommensal,
-} from '@/services/commensal-queue-service'
+} from '@/services/kv/commensal-queue-service'
 import { CommensalData } from '@/types/queues'
 import SkeletonCard from '../components/skeleton-card'
+import callCommensal from '@/services/queue-service'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -118,7 +118,11 @@ export default function RestaurantQueue({
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
-                    await callCommensal({ restaurantSlug, client })
+                    await callCommensal({
+                      restaurantSlug,
+                      restaurantName: restaurantData.name || restaurantSlug,
+                      client,
+                    })
                     await getCommensalList()
                   }}
                   onRemoveClient={async () => {

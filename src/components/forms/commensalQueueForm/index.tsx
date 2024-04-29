@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 
 import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
-import { addCommensal } from '@/services/commensal-queue-service'
+import { addCommensal } from '@/services/kv/commensal-queue-service'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,

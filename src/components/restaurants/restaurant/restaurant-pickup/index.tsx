@@ -20,7 +20,7 @@ import {
   getPaginatedPickUps,
   removePickUp,
   retryCallPickUp,
-} from '@/services/pickup-queue-service'
+} from '@/services/kv/pickup-queue-service'
 import AddPickUpDialog from './components/dialog'
 
 export default function RestaurantQueue({
