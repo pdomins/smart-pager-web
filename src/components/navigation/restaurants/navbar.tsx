@@ -4,14 +4,18 @@
 
 import Container from '@/components/style/container'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useState } from 'react'
+
 export default function Navbar() {
   const { data: session } = useSession()
   const router = useRouter()
+  const pathname = usePathname()
+
   const [isToggleActive, setIsToggleActive] = useState(false)
 
   const baseButtonStyle = 'flex h-11 items-center justify-center px-6'
+  const activeTab = 'text-violet-500'
 
   const unsignedlinks = [
     // {
@@ -41,33 +45,31 @@ export default function Navbar() {
       action: () => {
         router.push('/management')
       },
-      style: baseButtonStyle,
-      textStyle: '',
+      style: `${baseButtonStyle}`,
+      textStyle: `${pathname === '/management' && activeTab}`,
       label: 'Mi Restaurante',
     },
     {
       action: () => {
         router.push('/management/queue')
       },
-      style: baseButtonStyle,
-      textStyle: '',
+      style: `${baseButtonStyle}`,
+      textStyle: `${pathname.startsWith('/management/queue') && activeTab}`,
       label: 'Lista de Comensales',
     },
     {
       action: () => {
         router.push('/management/pick-up')
       },
-      style: baseButtonStyle,
-      textStyle: '',
+      style: `${baseButtonStyle}`,
+      textStyle: `${pathname.startsWith('/management/pick-up') && activeTab}`,
       label: 'Lista de Pedidos',
     },
     {
       action: () => {
         signOut({ callbackUrl: '/' })
       },
-      style:
-        baseButtonStyle +
-        ' relative before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-violet-700/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max',
+      style: `${baseButtonStyle}  relative before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-violet-700/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max`,
       textStyle: 'relative text-purple-700 font-semibold',
       label: 'Cerrar Sesión',
     },

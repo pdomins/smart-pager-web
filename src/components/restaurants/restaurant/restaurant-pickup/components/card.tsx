@@ -5,30 +5,50 @@ import { Tooltip } from '@mui/material'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { PickUpData } from '@/types/queues'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
 const PickUpCard = ({
   order,
-  onCallClient,
-  onRemoveClient,
-  onAcceptClient,
+  onCallOrder,
+  onRemoveOrder,
+  onAcceptOrder,
 }: {
   order: PickUpData
-  onCallClient: () => void
-  onRemoveClient: () => void
-  onAcceptClient?: () => void
+  onCallOrder: () => void
+  onRemoveOrder: () => void
+  onAcceptOrder?: () => void
 }) => {
-  const { name, pickUpId, timesCalled, joinedAt: reservationTime } = order
+  const {
+    name,
+    pickUpId,
+    timesCalled,
+    joinedAt: reservationTime,
+    description,
+  } = order
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">
       <div className="flex-1">
-        <p className="text-lg font-bold">
-          {pickUpId !== '' && (
-            <>
-              <span className="text-purple-500">{pickUpId}</span> -{' '}
-            </>
+        <div className="flex items-start">
+          <p className="text-lg font-bold">
+            {pickUpId !== '' && (
+              <>
+                <span className="text-purple-500">{pickUpId}</span> -{' '}
+              </>
+            )}
+            {name}
+          </p>
+          {description && (
+            <Tooltip
+              title={'Descripción del pedido: ' + description}
+              placement="right"
+              arrow
+            >
+              <button className="relative text-violet-500 pl-1">
+                <InfoOutlinedIcon />
+              </button>
+            </Tooltip>
           )}
-          {name}
-        </p>
+        </div>
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">
             Horario: {format(reservationTime, 'PPPpp', { locale: es })}
@@ -42,10 +62,10 @@ const PickUpCard = ({
         </div>
       </div>
       <div className="flex-initial">
-        {onAcceptClient && (
-          <Tooltip title="Cliente atendido" placement="top" arrow>
+        {onAcceptOrder && (
+          <Tooltip title="Pedido retirado" placement="top" arrow>
             <button
-              onClick={onAcceptClient}
+              onClick={onAcceptOrder}
               className="relative bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
             >
               <DoneIcon />
@@ -54,15 +74,15 @@ const PickUpCard = ({
         )}
         <Tooltip title="Llamar cliente" placement="top" arrow>
           <button
-            onClick={onCallClient}
+            onClick={onCallOrder}
             className="relative bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
           >
             <NotificationsActiveIcon />
           </button>
         </Tooltip>
-        <Tooltip title="Remover cliente" placement="top" arrow>
+        <Tooltip title="Remover pedido" placement="top" arrow>
           <button
-            onClick={onRemoveClient}
+            onClick={onRemoveOrder}
             className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >
             <CloseIcon />

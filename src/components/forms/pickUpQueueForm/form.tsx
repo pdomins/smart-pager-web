@@ -12,6 +12,8 @@ type PickUpQueueFormParams = {
   setPhone: React.Dispatch<React.SetStateAction<string | undefined>>
   pickUpId: string
   setPickUpId: React.Dispatch<React.SetStateAction<string>>
+  description: string
+  setDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
 const PickUpQueueInnerForm = ({
@@ -21,6 +23,8 @@ const PickUpQueueInnerForm = ({
   setName,
   pickUpId,
   setPickUpId,
+  description,
+  setDescription,
   phone,
   setPhone,
 }: PickUpQueueFormParams) => {
@@ -88,6 +92,17 @@ const PickUpQueueInnerForm = ({
             outline: 'none', // focus:outline-none
             borderColor: '#DDEBF6', //'#D4E2EC',
           }}
+        />
+      </div>
+
+      {/* Descripción */}
+      <div className="w-full px-3 mb-6 md:mb-0">
+        <LabelField label="Descripción" />
+        <textarea
+          className="appearance-none block w-full bg-white-200 text-gray-700 border shadow rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          placeholder="Detalles adicionales"
+          value={description || ' '}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
     </>

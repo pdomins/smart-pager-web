@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { CommensalData } from '@/types/queues'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import PeopleIcon from '@mui/icons-material/People'
 
 const ClientCard = ({
   client,
@@ -41,8 +42,12 @@ const ClientCard = ({
               </button>
             </Tooltip>
           )}
+          <button className="flex pl-2">
+            <PeopleIcon />
+            <p className="text-lg font-bold pl-1">{commensals}</p>
+          </button>
         </div>
-        <p>Personas: {commensals}</p>
+        {/* <p>Personas: {commensals}</p> */}
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">
             Horario: {format(reservationTime, 'PPPpp', { locale: es })}

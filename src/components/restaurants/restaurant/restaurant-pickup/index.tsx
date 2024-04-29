@@ -91,7 +91,7 @@ export default function RestaurantQueue({
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Ordenes en curso</h2>
             <div className="flex justify-end items-end space-x-2">
-              <Tooltip title={'Agregar orden'} placement="top" arrow>
+              <Tooltip title={'Agregar pedido'} placement="top" arrow>
                 <button
                   onClick={() => {
                     setIsOpenDialog(true)
@@ -119,11 +119,11 @@ export default function RestaurantQueue({
                 <PickUpCard
                   key={order.email}
                   order={order}
-                  onCallClient={async () => {
+                  onCallOrder={async () => {
                     await callPickUp({ restaurantSlug, order })
                     await getPickUpList()
                   }}
-                  onRemoveClient={async () => {
+                  onRemoveOrder={async () => {
                     await removePickUp({
                       restaurantSlug,
                       order,
@@ -135,7 +135,7 @@ export default function RestaurantQueue({
                 />
               ))
             ) : (
-              <EmptyCardWithMessage message="No hay ordenes pendientes en este momento." />
+              <EmptyCardWithMessage message="No hay ordenes en curso en este momento." />
             )
           ) : (
             <SkeletonCard />
@@ -158,11 +158,11 @@ export default function RestaurantQueue({
                 <PickUpCard
                   key={order.email}
                   order={order}
-                  onCallClient={async () => {
+                  onCallOrder={async () => {
                     await retryCallPickUp({ order })
                     await getPickUpList()
                   }}
-                  onRemoveClient={async () => {
+                  onRemoveOrder={async () => {
                     await removePickUp({
                       restaurantSlug,
                       order,
@@ -171,7 +171,7 @@ export default function RestaurantQueue({
 
                     // add here logic of removed PickUps without completion if needed (for metrics)
                   }}
-                  onAcceptClient={async () => {
+                  onAcceptOrder={async () => {
                     await removePickUp({
                       restaurantSlug,
                       order,

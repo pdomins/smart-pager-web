@@ -21,6 +21,8 @@ const AddPickUpDialog = ({
   const [name, setName] = useState<string>()
   const [phone, setPhone] = useState<string>()
   const [pickUpId, setPickUpId] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+
 
   const isSubmittable = email && name && phone && pattern.test(phone)
 
@@ -59,6 +61,7 @@ const AddPickUpDialog = ({
         name,
         phoneNumber: phone,
         pickUpId,
+        description
       },
     })
 
@@ -85,6 +88,8 @@ const AddPickUpDialog = ({
               setPhone={setPhone}
               pickUpId={pickUpId}
               setPickUpId={setPickUpId}
+              description={description}
+              setDescription={setDescription}
             />
             <div className="px-3">
               <button

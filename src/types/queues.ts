@@ -20,6 +20,7 @@ export type PickUpDataParams = {
   name: string
   pickUpId: string
   phoneNumber: string
+  description: string
 }
 
 export type PickUpData = PickUpDataParams & {
