@@ -4,6 +4,8 @@ import RestaurantLocationForm from './restaurant-location-form'
 import RestaurantMenuForm from './restaurant-menu-form'
 import RestaurantNameForm from './restaurant-name-form'
 import RestaurantOpeningAndClosingTimesForm from './restaurant-opening-and-closing-times-form'
+import { RestaurantTypeForm } from './restaurant-type'
+import { FoodType } from '@/lib/food'
 
 export type DayOfWeekInfo = {
   openingTime: string | null
@@ -19,6 +21,7 @@ export type WeeklyCalendar = {
 export type FormState = {
   name: string | null
   weeklyCalendar: WeeklyCalendar
+  restaurantType: FoodType | null
   averageTimePerTable: string | null
   selectedFile: File | null
 }
@@ -31,6 +34,7 @@ const RestaurantForm = ({
   showMap,
   setShowMap,
   setAddress,
+
   disabled = false,
   showMenuForm = true,
 }: {
@@ -61,12 +65,13 @@ const RestaurantForm = ({
       />
       <RestaurantOpeningAndClosingTimesForm
         weeklyCalendar={formState.weeklyCalendar}
-        // openingTime={formState.openingTime || ''}
-        // closingTime={formState.closingTime || ''}
-        // isTimeError={formState.isTimeError}
         setFormState={setFormState}
         disabled={disabled}
       />
+      <RestaurantTypeForm 
+        restaurantType={formState.restaurantType || ''}
+        setFormState={setFormState}
+        disabled={disabled}/>
       <RestaurantAverageTimePerTableForm
         averageTimePerTable={formState.averageTimePerTable || ''}
         setFormState={setFormState}

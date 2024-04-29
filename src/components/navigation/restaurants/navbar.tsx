@@ -1,6 +1,7 @@
 'use client'
-// import Image from 'next/image'
+import Image from 'next/image'
 // import Hand from 'public/hand.png'
+import Cloche from 'public/cloche.png'
 
 import Container from '@/components/style/container'
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -82,21 +83,21 @@ export default function Navbar() {
       <Container>
         <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 md:gap-0 md:py-4">
           <div className="relative z-20 flex w-full justify-between md:px-0 lg:w-max">
-            <div className="flex items-center content-center">
-              {/* <Image
-                src={Hand.src}
+            <button
+              className="text-2xl font-bold text-gray-700 pl-1 flex items-end content-center" // text-violet-900
+              onClick={() => router.replace('/')}
+            >
+              <Image
+                src={Cloche.src}
                 alt="Logo"
-                width={80}
-                height={80}
+                width={40}
+                height={40}
                 unoptimized={true}
-              /> */}
-              <button
-                className="text-2xl font-bold text-violet-900"
-                onClick={() => router.replace('/')}
-              >
-                Smart Pager
-              </button>
-            </div>
+                loading="lazy"
+                className="mr-1"
+              />
+              Smart Pager
+            </button>
 
             <div className="relative flex max-h-10 items-center lg:hidden">
               <button

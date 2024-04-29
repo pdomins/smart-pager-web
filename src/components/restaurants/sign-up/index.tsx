@@ -19,6 +19,7 @@ export default function RestaurantSignUp({
     weeklyCalendar: defaultWeek(),
     averageTimePerTable: null,
     selectedFile: null,
+    restaurantType: null,
   }
 
   const [formState, setFormState] = useState<FormState>(initialState)

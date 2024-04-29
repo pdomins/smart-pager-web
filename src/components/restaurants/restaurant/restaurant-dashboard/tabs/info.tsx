@@ -65,6 +65,7 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
     weeklyCalendar: defaultWeek(),
     averageTimePerTable: null,
     selectedFile: null,
+    restaurantType: null,
   }
 
   const resetInitialState = () => {

@@ -20,11 +20,10 @@ export default function SelfServiceQueueManager({
       <Gradient />
       <div className="text-center p-4">
         <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">
-          Manejá tu <span className="text-purple-800">espera</span> con
-          facilidad.
+          ¿Estás seguro que queres <span className="text-purple-800">salir</span> de la fila?
         </h1>
         <p className="mt-4 text-gray-700">
-          Salí de la fila con solo un clic. Tu tiempo, tu control.
+          Una vez que estés fuera, vas a tener que anotarte otra vez.
         </p>
       </div>
       <div className="mt-8 flex flex-col items-center gap-y-4">
