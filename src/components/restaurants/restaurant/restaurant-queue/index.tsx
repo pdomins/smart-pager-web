@@ -36,6 +36,7 @@ export default function RestaurantQueue({
     return <Loading />
   }
   const restaurantSlug = assertAndReturn(restaurantData.slug)
+  const restaurantName = assertAndReturn(restaurantData.name)
 
   const getCommensalList = useCallback(async () => {
     const waitingClients =
@@ -121,13 +122,17 @@ export default function RestaurantQueue({
                   onCallClient={async () => {
                     await callCommensal({
                       restaurantSlug,
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                       client,
                     })
                     await getCommensalList()
                   }}
                   onRemoveClient={async () => {
-                    await cancelCommensal({ restaurantSlug, client })
+                    await cancelCommensal({
+                      restaurantSlug,
+                      restaurantName,
+                      client,
+                    })
                     await getCommensalList()
                   }}
                 />
@@ -158,13 +163,17 @@ export default function RestaurantQueue({
                   client={client}
                   onCallClient={async () => {
                     await retryCallCommensal({
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                       client,
                     })
                     await getCommensalList()
                   }}
                   onRemoveClient={async () => {
-                    await cancelCommensal({ restaurantSlug, client })
+                    await cancelCommensal({
+                      restaurantSlug,
+                      restaurantName,
+                      client,
+                    })
                     await getCommensalList()
                   }}
                   onAcceptClient={async () => {

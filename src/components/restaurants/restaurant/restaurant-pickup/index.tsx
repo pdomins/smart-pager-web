@@ -38,6 +38,7 @@ export default function RestaurantQueue({
     return <Loading />
   }
   const restaurantSlug = assertAndReturn(restaurantData.slug)
+  const restaurantName = assertAndReturn(restaurantData.name)
 
   const getPickUpList = useCallback(async () => {
     const waitingOrders =
@@ -121,15 +122,15 @@ export default function RestaurantQueue({
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
-                    await callPickUp({
-                      restaurantSlug,
-                      restaurantName: restaurantData.name || restaurantSlug,
-                      order,
-                    })
+                    await callPickUp({ restaurantSlug, restaurantName, order })
                     await getPickUpList()
                   }}
                   onRemoveOrder={async () => {
-                    await cancelPickUp({ restaurantSlug, order })
+                    await cancelPickUp({
+                      restaurantSlug,
+                      restaurantName,
+                      order,
+                    })
                     await getPickUpList()
                   }}
                 />
@@ -161,12 +162,16 @@ export default function RestaurantQueue({
                   onCallOrder={async () => {
                     await retryCallPickUp({
                       order,
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                     })
                     await getPickUpList()
                   }}
                   onRemoveOrder={async () => {
-                    await cancelPickUp({ restaurantSlug, order })
+                    await cancelPickUp({
+                      restaurantSlug,
+                      restaurantName,
+                      order,
+                    })
                     await getPickUpList()
                   }}
                   onAcceptOrder={async () => {

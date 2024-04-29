@@ -41,6 +41,7 @@ const CalledPickUpListPage = ({
   }
 
   const restaurantSlug = assertAndReturn(restaurantData.slug)
+  const restaurantName = assertAndReturn(restaurantData.name)
 
   const fetchOrders = useCallback(async () => {
     const results =
@@ -87,13 +88,17 @@ const CalledPickUpListPage = ({
                   order={order}
                   onCallOrder={async () => {
                     await retryCallPickUp({
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                       order,
                     })
                     await fetchOrders()
                   }}
                   onRemoveOrder={async () => {
-                    await cancelPickUp({ restaurantSlug, order })
+                    await cancelPickUp({
+                      restaurantName,
+                      restaurantSlug,
+                      order,
+                    })
                     await fetchOrders()
                   }}
                   onAcceptOrder={async () => {

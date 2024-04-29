@@ -39,6 +39,7 @@ const WaitingClientListPage = ({
   }
 
   const restaurantSlug = assertAndReturn(restaurantData.slug)
+  const restaurantName = assertAndReturn(restaurantData.name)
 
   const fetchClients = useCallback(async () => {
     const results =
@@ -106,13 +107,17 @@ const WaitingClientListPage = ({
                   onCallClient={async () => {
                     await callCommensal({
                       restaurantSlug,
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                       client,
                     })
                     await fetchClients()
                   }}
                   onRemoveClient={async () => {
-                    await cancelCommensal({ restaurantSlug, client })
+                    await cancelCommensal({
+                      restaurantSlug,
+                      restaurantName,
+                      client,
+                    })
                     await fetchClients()
 
                     // add here logic of removed commensals without completion if needed (for metrics)

@@ -41,6 +41,7 @@ const CalledClientListPage = ({
   }
 
   const restaurantSlug = assertAndReturn(restaurantData.slug)
+  const restaurantName = assertAndReturn(restaurantData.name)
 
   const fetchClients = useCallback(async () => {
     const results =
@@ -96,13 +97,17 @@ const CalledClientListPage = ({
                   client={client}
                   onCallClient={async () => {
                     await retryCallCommensal({
-                      restaurantName: restaurantData.name || restaurantSlug,
+                      restaurantName,
                       client,
                     })
                     await fetchClients()
                   }}
                   onRemoveClient={async () => {
-                    await cancelCommensal({ restaurantSlug, client })
+                    await cancelCommensal({
+                      restaurantSlug,
+                      restaurantName,
+                      client,
+                    })
                     await fetchClients()
                   }}
                   onAcceptClient={async () => {
