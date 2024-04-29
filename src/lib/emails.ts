@@ -77,7 +77,7 @@ export const TableReadyHTML = ({
         <a href="URL_DE_TU_RESTAURANTE" class="button">Ver menú</a>
       </div>
       <div class="footer">
-        <div>Smart Pager</div>
+        <div><strong>Smart Pager</strong></div>
         <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
       </div>
     </div>
@@ -87,11 +87,20 @@ export const TableReadyHTML = ({
 
 export const AddedToQueueHTML = ({
   name,
+  email,
   restaurantName,
+  restaurantSlug,
+  authToken,
 }: {
   name: string
+  email: string
   restaurantName: string
+  restaurantSlug: string
+  authToken: string
 }) => {
+  // src/app/restaurants/[restaurant]/queued/commensal/[email]/remove/page.tsx
+  const removeFromListUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/restaurants/${restaurantSlug}/queued/commensal/${email}/remove?authToken=${authToken}`
+
   return `
     <html lang="es">
     <head>
@@ -140,13 +149,16 @@ export const AddedToQueueHTML = ({
         }
         .button-unsubscribe {
           display: inline-block;
-          padding: 10px 20px;
-          background-color: rgba(255,0,0,0.6);
-          color: #ffffff !important;
+          padding: 1px;
+          background-color: #fffffff;
+          color:rgba(255,0,0,0.6) !important;
           border-radius: 20px;
           text-decoration: none;
           font-weight: bold;
           font-family: 'Nunito', sans-serif;
+        }
+        .anchor{
+          color:rgba(255,0,0,0.6) !important;
         }
         .footer {
           text-align: center;
@@ -171,11 +183,12 @@ export const AddedToQueueHTML = ({
       <div class="content">
         <p>¡Hola ${name}!</p>
         <p>Te confirmamos que te has añadido exitosamente a la lista de espera en <strong>${restaurantName}</strong>. Te notificaremos cuando tu mesa esté lista.</p>
-        <a href="URL_PARA_DESANOTARSE" class="button-unsubscribe"><i class="fa fa-times"></i> Desanotarse</a>
+      
         <p>¡Gracias por elegirnos y esperamos atenderte pronto!</p>
+        <div class="button-unsubscribe"><i class="fa fa-times"></i>Si queres desanotarte, <a href="${removeFromListUrl}" class="anchor"> <u>hace click acá</u></a></div>
       </div>
       <div class="footer">
-        <div>Smart Pager</div>
+        <div><strong>Smart Pager</strong></div>
         <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
       </div>
     </div>
@@ -257,7 +270,7 @@ export const PickUpReadyHTML = ({
         <div class="order-number">${orderNumber}</div>
       </div>
       <div class="footer">
-        <div>Smart Pager</div>
+        <div><strong>Smart Pager</strong></div>
         <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
       </div>
     </div>
@@ -329,7 +342,7 @@ export const ContactUsHTML = ({
         <p><strong>Mensaje:</strong></p>
         <p>${message}</p>
         <div class="footer">
-            <div>Smart Pager</div>
+            <div><strong>Smart Pager</strong></div>
         </div>
     </div>
     </body>

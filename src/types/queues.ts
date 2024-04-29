@@ -14,6 +14,7 @@ export type CommensalData = CommensalDataParams & {
   joinedAt: Date
   email: string
   timesCalled: number
+  authToken: string
 }
 
 export type PickUpDataParams = {

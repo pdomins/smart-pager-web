@@ -123,3 +123,19 @@ export async function cancelPickUp({
 
   // add here logic of removed pickups without completion if needed (for metrics)
 }
+
+export async function removeCommensalFromEmail({
+  restaurantSlug,
+  client,
+}: {
+  restaurantSlug: string
+  client: CommensalData
+}) {
+  console.log('here')
+  await kvRemoveCommensal({
+    restaurantSlug,
+    client,
+  })
+
+  // metrics -> removed by client
+}

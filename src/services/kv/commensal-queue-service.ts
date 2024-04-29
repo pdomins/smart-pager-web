@@ -1,3 +1,4 @@
+import uuid from '@/lib/uuid'
 import {
   addClient,
   getClientData,
@@ -61,10 +62,12 @@ export async function addCommensal({
   email: string
   clientData: CommensalDataParams
 }) {
+  const authToken = uuid()
   const data: CommensalData = {
     joinedAt: new Date(),
     timesCalled: 0,
     email,
+    authToken,
     ...clientData,
   }
   const response = await addClient({
@@ -80,7 +83,7 @@ export async function addCommensal({
   })
   console.log(`Email ${email} added to the queue.`)
 
-  return response
+  return { response, authToken }
 }
 
 export async function removeCommensal({

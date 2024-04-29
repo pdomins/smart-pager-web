@@ -82,7 +82,7 @@ export default function RestaurantClientPage() {
             <div className="flex flex-col items-center gap-4">
               <button
                 onClick={toggleCommensalFormVisibility}
-                className="relative w-full bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 rounded rounded-full"
+                className="relative w-full bg-violet-700 hover:bg-violet-800 text-white font-bold py-2 rounded rounded-full"
               >
                 Anotarse para Comer
               </button>

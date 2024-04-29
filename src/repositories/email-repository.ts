@@ -56,18 +56,18 @@ export async function sendPickUpReadyEmail({
 }
 
 export async function sendAddedToQueueEmail({
-  restaurantName,
-  name,
-  email,
+  ...params
 }: {
   restaurantName: string
+  restaurantSlug: string
   name: string
   email: string
+  authToken: string
 }) {
   return await sendEmail({
-    recipient: email,
+    recipient: params.email,
     subject: '¡Te encontrás en la lista de espera!',
-    html: AddedToQueueHTML({ name, restaurantName }),
+    html: AddedToQueueHTML({ ...params }),
   })
 }
 
