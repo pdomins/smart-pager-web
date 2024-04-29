@@ -57,10 +57,13 @@ export async function sendPickUpReadyEmail({
 
 export async function sendAddedToQueueEmail({
   restaurantName,
-  ...otherAttrs
-}: CommensalData & { restaurantName: string }) {
-  const { name, email } = otherAttrs
-
+  name,
+  email,
+}: {
+  restaurantName: string
+  name: string
+  email: string
+}) {
   return await sendEmail({
     recipient: email,
     subject: '¡Te encontrás en la lista de espera!',
@@ -77,7 +80,7 @@ export async function sendContactUsEmail({
 }) {
   return await sendEmail({
     recipient: 'smartpager.pf@gmail.com',
-    subject: `INTERNO - Nuevo Cliente: ${email} `,
+    subject: `EXTERNO - Nuevo Cliente: ${email} `,
     html: ContactUsHTML({ email, message }),
   })
 }

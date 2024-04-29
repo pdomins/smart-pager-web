@@ -89,7 +89,7 @@ export default function RestaurantClientPage() {
               {menuUrl && (
                 <button
                   onClick={viewMenu}
-                  className="relative w-full bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 rounded rounded-full"
+                  className="relative w-full bg-violet-700/10 hover:bg-violet-700/15 text-purple-700 font-bold py-2 rounded rounded-full"
                 >
                   Ver Menú
                 </button>

@@ -5,6 +5,9 @@ import { useParams, useRouter } from 'next/navigation'
 import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
 import { addCommensal } from '@/services/kv/commensal-queue-service'
+import { sendAddedToQueueEmail } from '@/repositories/email-repository'
+import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import Spinner from '@/components/utils/spinner'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
@@ -20,42 +23,42 @@ export default function CommensalQueueForm({
   const [phone, setPhone] = useState<string>()
   const [description, setDescription] = useState<string>('')
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
 
     if (!restaurantSlug || typeof restaurantSlug !== 'string') {
       console.error('Restaurant slug is missing')
       return
     }
+    const restaurant = await getRestaurantBySlug(restaurantSlug)
+    const restaurantName = restaurant?.name || restaurantSlug
 
     if (!isSubmittable) return
 
-    console.log({
-      restaurantSlug,
-      email,
-      clientData: {
-        name,
-        groupSize: commensals,
-        description,
-        phoneNumber: phone,
-      },
-    })
+    try {
+      const success = await addCommensal({
+        restaurantSlug,
+        email,
+        clientData: {
+          name,
+          groupSize: commensals,
+          description,
+          phoneNumber: phone,
+        },
+      })
 
-    const success = await addCommensal({
-      restaurantSlug,
-      email,
-      clientData: {
-        name,
-        groupSize: commensals,
-        description,
-        phoneNumber: phone,
-      },
-    })
+      await sendAddedToQueueEmail({ restaurantName, name, email })
 
-    if (success) {
-      router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
-    } else {
-      console.error('Failed to add commensal')
+      if (success) {
+        router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
+      } else {
+        console.error('Failed to add commensal')
+      }
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -93,15 +96,21 @@ export default function CommensalQueueForm({
             setPhone={setPhone}
           />
           {/* Botón de enviar */}
-          <div className="px-3">
-            <button
-              type="submit"
-              className="bg-violet-500 hover:bg-violet-700 text-white font-bold mt-4 py-2 rounded rounded-full w-full disabled:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-75"
-              disabled={!isSubmittable}
-            >
-              Anotarse
-            </button>
-          </div>
+          {isSubmitting ? (
+            <div className="flex justify-center">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="px-3">
+              <button
+                type="submit"
+                className="bg-violet-500 hover:bg-violet-700 text-white font-bold mt-4 py-2 rounded rounded-full w-full disabled:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-75"
+                disabled={!isSubmittable}
+              >
+                Anotarse
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>
