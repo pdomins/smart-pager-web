@@ -6,17 +6,14 @@ import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
 import { assertAndReturn } from '@/lib/assertions'
 import EmptyCardWithMessage from '../../components/empty-card'
-import {
-  callCommensal,
-  getPaginatedCommensals,
-  removeCommensal,
-} from '@/services/kv/commensal-queue-service'
+import { getPaginatedCommensals } from '@/services/kv/commensal-queue-service'
 import Filter from '../components/filter'
 import AddToQueueDialog from '../components/dialog'
 import { AddCircle } from '@mui/icons-material'
 import { Pagination, Tooltip } from '@mui/material'
 import { CommensalData } from '@/types/queues'
 import SkeletonCard from '../../components/skeleton-card'
+import { callCommensal, cancelCommensal } from '@/services/queue-service'
 
 const WaitingClientListPage = ({
   restaurantData,
@@ -107,14 +104,15 @@ const WaitingClientListPage = ({
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
-                    await callCommensal({ restaurantSlug, client })
+                    await callCommensal({
+                      restaurantSlug,
+                      restaurantName: restaurantData.name || restaurantSlug,
+                      client,
+                    })
                     await fetchClients()
                   }}
                   onRemoveClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await cancelCommensal({ restaurantSlug, client })
                     await fetchClients()
 
                     // add here logic of removed commensals without completion if needed (for metrics)

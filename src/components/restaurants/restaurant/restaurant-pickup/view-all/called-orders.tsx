@@ -5,11 +5,12 @@ import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
 import { assertAndReturn } from '@/lib/assertions'
 import EmptyCardWithMessage from '../../components/empty-card'
+import { getPaginatedPickUps } from '@/services/kv/pickup-queue-service'
 import {
-  callPickUp,
-  getPaginatedPickUps,
-  removePickUp,
-} from '@/services/kv/pickup-queue-service'
+  acceptPickUp,
+  cancelPickUp,
+  retryCallPickUp,
+} from '@/services/queue-service'
 
 import { Pagination } from '@mui/material'
 import { PickUpData } from '@/types/queues'
@@ -85,26 +86,19 @@ const CalledPickUpListPage = ({
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
-                    await callPickUp({ restaurantSlug, order })
+                    await retryCallPickUp({
+                      restaurantName: restaurantData.name || restaurantSlug,
+                      order,
+                    })
                     await fetchOrders()
                   }}
                   onRemoveOrder={async () => {
-                    await removePickUp({
-                      restaurantSlug,
-                      order,
-                    })
+                    await cancelPickUp({ restaurantSlug, order })
                     await fetchOrders()
-
-                    // add here logic of removed pickups without completion if needed (for metrics)
                   }}
                   onAcceptOrder={async () => {
-                    await removePickUp({
-                      restaurantSlug,
-                      order,
-                    })
+                    await acceptPickUp({ restaurantSlug, order })
                     await fetchOrders()
-
-                    // add here logic of removed pickups on acceptance if needed (for metrics)
                   }}
                 />
               ))

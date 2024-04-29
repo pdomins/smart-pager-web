@@ -12,14 +12,15 @@ import { AddCircle } from '@mui/icons-material'
 import AddToQueueDialog from './components/dialog'
 import EmptyCardWithMessage from '../components/empty-card'
 import { useRouter } from 'next/navigation'
-import {
-  getPaginatedCommensals,
-  removeCommensal,
-  retryCallCommensal,
-} from '@/services/kv/commensal-queue-service'
+import { getPaginatedCommensals } from '@/services/kv/commensal-queue-service'
 import { CommensalData } from '@/types/queues'
 import SkeletonCard from '../components/skeleton-card'
-import callCommensal from '@/services/queue-service'
+import {
+  callCommensal,
+  acceptCommensal,
+  cancelCommensal,
+  retryCallCommensal,
+} from '@/services/queue-service'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -126,13 +127,8 @@ export default function RestaurantQueue({
                     await getCommensalList()
                   }}
                   onRemoveClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await cancelCommensal({ restaurantSlug, client })
                     await getCommensalList()
-
-                    // add here logic of removed commensals without completion if needed (for metrics)
                   }}
                 />
               ))
@@ -161,26 +157,19 @@ export default function RestaurantQueue({
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
-                    await retryCallCommensal({ client })
+                    await retryCallCommensal({
+                      restaurantName: restaurantData.name || restaurantSlug,
+                      client,
+                    })
                     await getCommensalList()
                   }}
                   onRemoveClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await cancelCommensal({ restaurantSlug, client })
                     await getCommensalList()
-
-                    // add here logic of removed commensals without completion if needed (for metrics)
                   }}
                   onAcceptClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await acceptCommensal({ restaurantSlug, client })
                     await getCommensalList()
-
-                    // add here logic of removed commensals on acceptance if needed (for metrics)
                   }}
                 />
               ))

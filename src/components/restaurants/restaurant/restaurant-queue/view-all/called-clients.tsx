@@ -6,17 +6,17 @@ import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
 import { assertAndReturn } from '@/lib/assertions'
 import EmptyCardWithMessage from '../../components/empty-card'
-import {
-  callCommensal,
-  getPaginatedCommensals,
-  removeCommensal,
-} from '@/services/kv/commensal-queue-service'
+import { getPaginatedCommensals } from '@/services/kv/commensal-queue-service'
 import Filter from '../components/filter'
 import AddToQueueDialog from '../components/dialog'
 import { Pagination } from '@mui/material'
 import { CommensalData } from '@/types/queues'
 import SkeletonCard from '../../components/skeleton-card'
-
+import {
+  acceptCommensal,
+  cancelCommensal,
+  retryCallCommensal,
+} from '@/services/queue-service'
 const CalledClientListPage = ({
   restaurantData,
 }: {
@@ -95,26 +95,19 @@ const CalledClientListPage = ({
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
-                    await callCommensal({ restaurantSlug, client })
+                    await retryCallCommensal({
+                      restaurantName: restaurantData.name || restaurantSlug,
+                      client,
+                    })
                     await fetchClients()
                   }}
                   onRemoveClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await cancelCommensal({ restaurantSlug, client })
                     await fetchClients()
-
-                    // add here logic of removed commensals without completion if needed (for metrics)
                   }}
                   onAcceptClient={async () => {
-                    await removeCommensal({
-                      restaurantSlug,
-                      client,
-                    })
+                    await acceptCommensal({ restaurantSlug, client })
                     await fetchClients()
-
-                    // add here logic of removed commensals on acceptance if needed (for metrics)
                   }}
                 />
               ))

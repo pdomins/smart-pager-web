@@ -6,16 +6,13 @@ import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
 import { assertAndReturn } from '@/lib/assertions'
 import EmptyCardWithMessage from '../../components/empty-card'
-import {
-  callPickUp,
-  getPaginatedPickUps,
-  removePickUp,
-} from '@/services/kv/pickup-queue-service'
+import { getPaginatedPickUps } from '@/services/kv/pickup-queue-service'
 import { AddCircle } from '@mui/icons-material'
 import { Pagination, Tooltip } from '@mui/material'
 import { PickUpData } from '@/types/queues'
 import SkeletonCard from '../../components/skeleton-card'
 import AddPickUpDialog from '../components/dialog'
+import { callPickUp, cancelPickUp } from '@/services/queue-service'
 
 const WaitingPickUpListPage = ({
   restaurantData,
@@ -97,17 +94,16 @@ const WaitingPickUpListPage = ({
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
-                    await callPickUp({ restaurantSlug, order })
-                    await fetchOrders()
-                  }}
-                  onRemoveOrder={async () => {
-                    await removePickUp({
+                    await callPickUp({
                       restaurantSlug,
+                      restaurantName: restaurantData.name || restaurantSlug,
                       order,
                     })
                     await fetchOrders()
-
-                    // add here logic of removed pickups without completion if needed (for metrics)
+                  }}
+                  onRemoveOrder={async () => {
+                    await cancelPickUp({ restaurantSlug, order })
+                    await fetchOrders()
                   }}
                 />
               ))

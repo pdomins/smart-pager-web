@@ -15,13 +15,14 @@ import { PickUpData } from '@/types/queues'
 import PickUpCard from './components/card'
 import EmptyCardWithMessage from '../components/empty-card'
 import SkeletonCard from '../components/skeleton-card'
-import {
-  callPickUp,
-  getPaginatedPickUps,
-  removePickUp,
-  retryCallPickUp,
-} from '@/services/kv/pickup-queue-service'
+import { getPaginatedPickUps } from '@/services/kv/pickup-queue-service'
 import AddPickUpDialog from './components/dialog'
+import {
+  acceptPickUp,
+  callPickUp,
+  cancelPickUp,
+  retryCallPickUp,
+} from '@/services/queue-service'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -120,17 +121,16 @@ export default function RestaurantQueue({
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
-                    await callPickUp({ restaurantSlug, order })
-                    await getPickUpList()
-                  }}
-                  onRemoveOrder={async () => {
-                    await removePickUp({
+                    await callPickUp({
                       restaurantSlug,
+                      restaurantName: restaurantData.name || restaurantSlug,
                       order,
                     })
                     await getPickUpList()
-
-                    // add here logic of removed PickUps without completion if needed (for metrics)
+                  }}
+                  onRemoveOrder={async () => {
+                    await cancelPickUp({ restaurantSlug, order })
+                    await getPickUpList()
                   }}
                 />
               ))
@@ -159,26 +159,19 @@ export default function RestaurantQueue({
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
-                    await retryCallPickUp({ order })
+                    await retryCallPickUp({
+                      order,
+                      restaurantName: restaurantData.name || restaurantSlug,
+                    })
                     await getPickUpList()
                   }}
                   onRemoveOrder={async () => {
-                    await removePickUp({
-                      restaurantSlug,
-                      order,
-                    })
+                    await cancelPickUp({ restaurantSlug, order })
                     await getPickUpList()
-
-                    // add here logic of removed PickUps without completion if needed (for metrics)
                   }}
                   onAcceptOrder={async () => {
-                    await removePickUp({
-                      restaurantSlug,
-                      order,
-                    })
+                    await acceptPickUp({ restaurantSlug, order })
                     await getPickUpList()
-
-                    // add here logic of removed PickUps on acceptance if needed (for metrics)
                   }}
                 />
               ))
