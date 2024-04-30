@@ -1,6 +1,6 @@
 import Snackbar from '@/components/utils/snackbar'
 import { useState } from 'react'
-import { WeeklyCalendar, FormState } from './restaurant-form'
+import { WeeklyCalendar, RestaurantFormState } from './restaurant-form'
 import { daysOfWeek } from '@/lib/dates'
 import styles from './styles.module.css'
 
@@ -10,7 +10,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
   disabled = false,
 }: {
   weeklyCalendar: WeeklyCalendar
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
   const [showForm, setShowForm] = useState(false)
@@ -108,9 +108,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
                       <span className="text-red-500">*</span>
                       <input
                         type="time"
-                        className={`${
-                          weeklyCalendar[day].isTimeError && 'border-red-300'
-                        } form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                        className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
                         value={weeklyCalendar[day].openingTime || ''}
                         onChange={(e) => {
                           setFormState((prev) => ({
@@ -137,9 +135,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
                       Horario de cierre: <span className="text-red-500">*</span>
                       <input
                         type="time"
-                        className={`${
-                          weeklyCalendar[day].isTimeError && 'border-red-300'
-                        } form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                        className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
                         value={weeklyCalendar[day].closingTime || ''}
                         onChange={(e) => {
                           setFormState((prev) => ({

@@ -6,13 +6,13 @@ import Loading from '@/components/utils/loading'
 import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import { Restaurant } from '@/types/restaurant'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 export default function Page() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
+  const [restaurantData, setRestaurantData] = useState<Restaurant>()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,8 +21,10 @@ export default function Page() {
           const restaurant = await getRestaurantByEmail(
             session?.user?.email as string
           )
+          if (!restaurant) return notFound()
+
           setRestaurantData(restaurant)
-          if (restaurant && restaurant.slug) {
+          if (restaurant.slug) {
             // router.push('/management')
           }
         } catch (error) {

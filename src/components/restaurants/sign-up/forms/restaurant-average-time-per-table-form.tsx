@@ -1,4 +1,4 @@
-import { FormState } from './restaurant-form'
+import { RestaurantFormState } from './restaurant-form'
 
 const RestaurantAverageTimePerTableForm = ({
   averageTimePerTable,
@@ -6,7 +6,7 @@ const RestaurantAverageTimePerTableForm = ({
   disabled = false,
 }: {
   averageTimePerTable: string
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
   return (

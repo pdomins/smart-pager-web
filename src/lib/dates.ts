@@ -15,7 +15,6 @@ export const defaultWeek = () => {
     acc[day] = {
       openingTime: null,
       closingTime: null,
-      isTimeError: false,
       isOpen: true,
     }
     return acc

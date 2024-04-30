@@ -7,7 +7,7 @@ ALTER TABLE "Restaurants" ALTER COLUMN "name" DROP NOT NULL;
 CREATE TABLE "Location" (
     "id" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "coordinates" geometry(Point, 4326) NOT NULL,
+    "coordinates" geometry NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

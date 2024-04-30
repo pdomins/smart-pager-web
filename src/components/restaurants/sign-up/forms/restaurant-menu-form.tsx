@@ -1,10 +1,10 @@
-import { FormState } from './restaurant-form'
+import { RestaurantFormState } from './restaurant-form'
 
 const RestaurantMenuForm = ({
   setFormState,
   disabled = false,
 }: {
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

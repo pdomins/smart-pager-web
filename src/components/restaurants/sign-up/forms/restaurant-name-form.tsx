@@ -1,4 +1,4 @@
-import { FormState } from './restaurant-form'
+import { RestaurantFormState } from './restaurant-form'
 
 const RestaurantNameForm = ({
   name,
@@ -6,7 +6,7 @@ const RestaurantNameForm = ({
   disabled = false,
 }: {
   name: string
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
   return (

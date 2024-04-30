@@ -10,7 +10,6 @@ import { FoodType } from '@/lib/food'
 export type DayOfWeekInfo = {
   openingTime: string | null
   closingTime: string | null
-  isTimeError: boolean
   isOpen: boolean
 }
 
@@ -18,7 +17,7 @@ export type WeeklyCalendar = {
   [day: string]: DayOfWeekInfo
 }
 
-export type FormState = {
+export type RestaurantFormState = {
   name: string | null
   weeklyCalendar: WeeklyCalendar
   restaurantType: FoodType | null
@@ -38,8 +37,8 @@ const RestaurantForm = ({
   disabled = false,
   showMenuForm = true,
 }: {
-  formState: FormState
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>
+  formState: RestaurantFormState
+  setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   coordinates: Coordinates
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
   showMap: boolean

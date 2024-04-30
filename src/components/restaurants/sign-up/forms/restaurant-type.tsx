@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import useOnclickOutside from 'react-cool-onclickoutside'
 import { FoodType, foodTypes } from '@/lib/food'
-import { FormState } from './restaurant-form'
+import { RestaurantFormState } from './restaurant-form'
 
 export const RestaurantTypeForm = ({
   restaurantType,
@@ -15,13 +15,14 @@ export const RestaurantTypeForm = ({
   disabled = false,
 }: {
   restaurantType: string
-  setFormState: Dispatch<SetStateAction<FormState>>
+  setFormState: Dispatch<SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
   const [suggestions, setSuggestions] = useState<FoodType[]>(
     foodTypes.slice(0, 10)
   )
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [hasError, setHasError] = useState(false)
 
   const ref = useOnclickOutside(() => {
     setIsOpen(false)
@@ -45,6 +46,7 @@ export const RestaurantTypeForm = ({
       restaurantType: value,
     }))
     setIsOpen(true)
+    setHasError(false)
 
     if (value.length > 0) {
       const matchedSuggestions = foodTypes
@@ -62,6 +64,11 @@ export const RestaurantTypeForm = ({
       restaurantType: type,
     }))
     setIsOpen(false)
+    setHasError(false)
+  }
+
+  const validateFoodType = () => {
+    setHasError(!foodTypes.includes(restaurantType as FoodType))
   }
 
   return (
@@ -74,7 +81,8 @@ export const RestaurantTypeForm = ({
           type="text"
           value={restaurantType}
           onChange={handleInputChange}
-          className="px-4 py-2 w-full rounded-l-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors"
+          onBlur={validateFoodType}
+          className={`${hasError && 'border-red-500'} px-4 py-2 w-full rounded-l-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
           placeholder="Ejemplo: Comida vegetariana"
           required
           disabled={disabled}
@@ -82,12 +90,17 @@ export const RestaurantTypeForm = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className="px-4 py-2 rounded-r-full bg-gray-300 text-gray-700 hover:bg-gray-400 focus:outline-none transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+          className={`${hasError && 'bg-red-500'} px-4 py-2 rounded-r-full bg-gray-300 text-gray-700 hover:bg-gray-400 focus:outline-none transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-75`}
           disabled={disabled}
         >
           ▼
         </button>
       </div>
+      {hasError && (
+        <div className="text-red-500 text-sm italic">
+          Por favor, selecciona una opción de la lista
+        </div>
+      )}
       {isOpen && (
         <ul
           className="w-full bg-white shadow-lg rounded mt-2 absolute z-50 overflow-hidden border border-gray-200"

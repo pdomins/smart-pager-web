@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import DoneIcon from '@mui/icons-material/Done'
 import { Coordinates } from '@/components/maps'
 import RestaurantForm, {
-  FormState,
+  RestaurantFormState,
 } from '@/components/restaurants/sign-up/forms/restaurant-form'
 import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
 import Spinner from '@/components/utils/spinner'
@@ -72,7 +72,7 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
     setFormState(initialState)
   }
 
-  const [formState, setFormState] = useState<FormState>(initialState)
+  const [formState, setFormState] = useState<RestaurantFormState>(initialState)
   // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
@@ -88,6 +88,8 @@ const RestaurantInfo = ({ restaurantData }: { restaurantData: Restaurant }) => {
       const res = await updateRestaurantDetails({
         id: restaurantData.id,
         name: (formState.name || restaurantData.name) as string,
+        coordinates,
+        address: address || '',
       })
       restaurantData = res
     } finally {

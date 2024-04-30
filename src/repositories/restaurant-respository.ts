@@ -1,7 +1,10 @@
 'use server'
 import prisma from '@/lib/prisma'
 import { toKebabCase } from '@/lib/string'
-import { Restaurant } from '@/types/restaurant'
+import uuid from '@/lib/uuid'
+import { CoordinatesWithAddress } from '@/types/location'
+import { UpdateRestaurantData } from '@/types/restaurant'
+import { sql } from '@vercel/postgres'
 import { unstable_noStore as noStore } from 'next/cache'
 
 export async function getRestaurants() {
@@ -118,12 +121,20 @@ export async function getRestaurantMenuBySlug(slug: string) {
 export async function updateRestaurantDetails({
   id,
   name,
-  // ...data
+  coordinates,
+  address,
+  ...dataToUpdate
 }: {
   id: number
   name: string
-} & Partial<Omit<Restaurant, 'id' | 'name' | 'slug' | 'email'>>) {
+} & Partial<UpdateRestaurantData> &
+  CoordinatesWithAddress) {
   const slug = toKebabCase(name) + '-' + id //TODO update this, seq ids are no good
+  const locationId = uuid()
+
+  await sql`
+  INSERT INTO "Location" ("id", "coordinates", "address")
+  VALUES (${locationId}, ST_Point(${coordinates?.lng}, ${coordinates?.lat}), ${address});`
 
   const result = await prisma.restaurant.update({
     where: {
@@ -132,7 +143,8 @@ export async function updateRestaurantDetails({
     data: {
       name,
       slug,
-      // ...data,
+      locationId,
+      ...dataToUpdate,
     },
   })
 

@@ -6,13 +6,15 @@ import { Coordinates } from '../../maps'
 // import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
-import RestaurantForm, { FormState } from './forms/restaurant-form'
+import RestaurantForm, { RestaurantFormState } from './forms/restaurant-form'
 import { defaultWeek } from '@/lib/dates'
+import { update } from '@/services/restaurant-service'
+import { foodTypes, FoodType } from '@/lib/food'
 
 export default function RestaurantSignUp({
   restaurantData,
 }: {
-  restaurantData: Restaurant | null
+  restaurantData: Restaurant
 }) {
   const initialState = {
     name: null,
@@ -22,7 +24,7 @@ export default function RestaurantSignUp({
     restaurantType: null,
   }
 
-  const [formState, setFormState] = useState<FormState>(initialState)
+  const [formState, setFormState] = useState<RestaurantFormState>(initialState)
   // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
@@ -34,31 +36,12 @@ export default function RestaurantSignUp({
     try {
       if (isSubmittable) {
         setIsLoading(true)
-        console.log(restaurantData)
-        /** TODO wait for vercel blob storage be available again
-        
-        const response = await fetch(`/api/restaurants/upload?filename=${restaurantData?.id}`, {
-          method: 'POST',
-          body: selectedFile,
-        })
 
-        const responseData = await response.json()
-        const menuURL = responseData.url
-        */
-
-        // await updateRestaurantDetails({
-        //   id: 1,
-        //   name,
-        //   menu: 'reestableceme-el-blob-vercel.pdf', (menuURL)
-        // })
-        console.log({
-          msg: 'Updated values',
-          name: formState.name,
-          weeklyCalendar: formState.weeklyCalendar,
-          averageTimePerTable: formState.averageTimePerTable,
+        await update({
+          id: restaurantData.id,
           coordinates,
-          selectedFile: formState.selectedFile,
           address,
+          ...formState,
         })
 
         // router.push('/management')
@@ -72,13 +55,25 @@ export default function RestaurantSignUp({
     }
   }
 
+  const isValidCalendar = () => {
+    for (const day in formState.weeklyCalendar) {
+      const dayInfo = formState.weeklyCalendar[day]
+      if (dayInfo.isOpen) {
+        if (!dayInfo.openingTime || !dayInfo.closingTime) {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
   const isSubmittable =
     formState.name &&
-    // formState.openingTimes &&
-    // formState.closingTimes &&
-    // !formState.isTimeErrors &&
+    formState.restaurantType &&
+    foodTypes.includes(formState.restaurantType as FoodType) &&
+    isValidCalendar() &&
     formState.averageTimePerTable &&
-    // coordinates &&
+    coordinates &&
     address
 
   return (
@@ -109,7 +104,7 @@ export default function RestaurantSignUp({
               />
 
               {isLoading ? (
-                <div className="mt-4 px-6 py-2">
+                <div className="flex justify-center">
                   <Spinner />
                 </div>
               ) : (
