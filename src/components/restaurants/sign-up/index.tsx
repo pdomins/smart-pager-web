@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react'
-import Container from '../../style/container'
-import Gradient from '../../style/gradient'
+import Gradient from '@/components/style/gradient'
+import Container from '@/components/style/container'
 // import { useRouter } from 'next/navigation'
 import { Coordinates } from '../../maps'
 // import { updateRestaurantDetails } from '@/repositories/restaurant-respository'

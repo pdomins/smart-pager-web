@@ -23,10 +23,14 @@ export default function Page() {
           )
           if (!restaurant) return notFound()
 
-          setRestaurantData(restaurant)
           if (restaurant.slug) {
-            // router.push('/management')
+            const redirectPath = restaurant.authorized
+              ? '/management'
+              : '/management/sign-up/success'
+            router.push(redirectPath)
           }
+
+          setRestaurantData(restaurant)
         } catch (error) {
           console.error('Error fetching restaurant data:', error)
         }
@@ -41,7 +45,7 @@ export default function Page() {
   return (
     <>
       <Navbar />
-      {!restaurantData ? (
+      {!restaurantData || restaurantData?.slug ? (
         <Loading />
       ) : (
         <RestaurantSignUp restaurantData={restaurantData} />
