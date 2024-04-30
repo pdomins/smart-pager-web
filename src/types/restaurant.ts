@@ -1,5 +1,5 @@
-import { Restaurants } from '@prisma/client'
+import { Restaurant as PersistedRestaurant } from '@prisma/client'
 
-type Restaurant = Omit<Restaurants, 'createdAt' | 'updatedAt'>
+type Restaurant = Omit<PersistedRestaurant, 'createdAt' | 'updatedAt'>
 
 export { type Restaurant }

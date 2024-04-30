@@ -5,13 +5,13 @@ import { Restaurant } from '@/types/restaurant'
 import { unstable_noStore as noStore } from 'next/cache'
 
 export async function getRestaurants() {
-  return await prisma.restaurants.findMany()
+  return await prisma.restaurant.findMany()
 }
 
 export async function getRestaurantById(id: number) {
   noStore()
 
-  const result = await prisma.restaurants.findFirst({
+  const result = await prisma.restaurant.findFirst({
     where: {
       id,
     },
@@ -23,7 +23,7 @@ export async function getRestaurantById(id: number) {
 export async function getRestaurantByEmail(email: string) {
   noStore()
 
-  const result = await prisma.restaurants.findFirst({
+  const result = await prisma.restaurant.findFirst({
     where: {
       email,
     },
@@ -35,7 +35,7 @@ export async function getRestaurantByEmail(email: string) {
 export async function getRestaurantBySlug(slug: string) {
   noStore()
 
-  const result = await prisma.restaurants.findFirst({
+  const result = await prisma.restaurant.findFirst({
     where: {
       slug,
     },
@@ -45,7 +45,7 @@ export async function getRestaurantBySlug(slug: string) {
 }
 
 export async function createRestaurant(email: string, name: string) {
-  const result = await prisma.restaurants.create({
+  const result = await prisma.restaurant.create({
     data: {
       email,
       name,
@@ -56,7 +56,7 @@ export async function createRestaurant(email: string, name: string) {
 }
 
 export async function deleteRestaurant(id: number) {
-  const result = await prisma.restaurants.delete({
+  const result = await prisma.restaurant.delete({
     where: {
       id,
     },
@@ -65,7 +65,7 @@ export async function deleteRestaurant(id: number) {
 }
 
 export async function deleteRestaurantByEmail(email: string) {
-  const result = await prisma.restaurants.delete({
+  const result = await prisma.restaurant.delete({
     where: {
       email,
     },
@@ -74,7 +74,7 @@ export async function deleteRestaurantByEmail(email: string) {
 }
 
 export async function updateRestaurantMenu(id: number, menuURL: string) {
-  const result = await prisma.restaurants.update({
+  const result = await prisma.restaurant.update({
     where: {
       id,
     },
@@ -88,7 +88,7 @@ export async function updateRestaurantMenu(id: number, menuURL: string) {
 export async function getRestaurantMenu(id: number) {
   noStore()
 
-  const { menu } = await prisma.restaurants.findFirstOrThrow({
+  const { menu } = await prisma.restaurant.findFirstOrThrow({
     where: {
       id,
     },
@@ -103,7 +103,7 @@ export async function getRestaurantMenu(id: number) {
 export async function getRestaurantMenuBySlug(slug: string) {
   noStore()
 
-  const { menu } = await prisma.restaurants.findFirstOrThrow({
+  const { menu } = await prisma.restaurant.findFirstOrThrow({
     where: {
       slug,
     },
@@ -118,21 +118,21 @@ export async function getRestaurantMenuBySlug(slug: string) {
 export async function updateRestaurantDetails({
   id,
   name,
-  ...data
+  // ...data
 }: {
   id: number
   name: string
 } & Partial<Omit<Restaurant, 'id' | 'name' | 'slug' | 'email'>>) {
   const slug = toKebabCase(name) + '-' + id //TODO update this, seq ids are no good
 
-  const result = await prisma.restaurants.update({
+  const result = await prisma.restaurant.update({
     where: {
       id,
     },
     data: {
       name,
       slug,
-      ...data,
+      // ...data,
     },
   })
 
