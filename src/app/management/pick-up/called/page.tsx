@@ -8,7 +8,6 @@ import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import Navbar from '@/components/navigation/restaurants/navbar'
 import { useRouter } from 'next/navigation'
 import CalledPickUpListPage from '@/components/restaurants/restaurant/restaurant-pickup/view-all/called-orders'
-// import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
   const { data: session, status } = useSession()
@@ -34,7 +33,6 @@ export default function Page() {
     fetchData()
   }, [session])
 
-  // Render the RestaurantQueue only if restaurant data is available
   return (
     <>
       <Navbar />

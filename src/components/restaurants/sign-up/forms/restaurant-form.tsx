@@ -1,7 +1,6 @@
 import { Coordinates } from '@/components/maps'
 import RestaurantAverageTimePerTableForm from './restaurant-average-time-per-table-form'
 import RestaurantLocationForm from './restaurant-location-form'
-// import RestaurantMenuForm from './restaurant-menu-form'
 import RestaurantNameForm from './restaurant-name-form'
 import RestaurantOpeningAndClosingTimesForm from './restaurant-opening-and-closing-times-form'
 import { RestaurantTypeForm } from './restaurant-type'

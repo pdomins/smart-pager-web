@@ -27,7 +27,6 @@ export default function RestaurantSignUp({
   }
 
   const [formState, setFormState] = useState<RestaurantFormState>(initialState)
-  // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
   const [address, setAddress] = useState<string | null>(null)

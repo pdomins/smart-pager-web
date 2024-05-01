@@ -16,35 +16,6 @@ const RestaurantOpeningAndClosingTimesForm = ({
   const [showForm, setShowForm] = useState(false)
   const [showIsTimeError, setShowIsTimeError] = useState(false)
 
-  // const validateTimes = (
-  //   day: string,
-  //   opening: string | null,
-  //   closing: string | null
-  // ) => {
-  //   const parseTime = (timeStr: string | null) => {
-  //     if (!timeStr) return null
-  //     return new Date(`2024-01-01T${timeStr.split(' ').join('')}`)
-  //   }
-
-  //   const openingDate = parseTime(opening)
-  //   const closingDate = parseTime(closing)
-  //   const isTimeError =
-  //     openingDate && closingDate ? openingDate >= closingDate : false
-
-  //   console.log(isTimeError)
-  //   setShowIsTimeError(isTimeError)
-  //   setFormState((prev) => ({
-  //     ...prev,
-  //     weeklyCalendar: {
-  //       ...prev.weeklyCalendar,
-  //       [day]: {
-  //         ...prev.weeklyCalendar[day],
-  //         isTimeError,
-  //       },
-  //     },
-  //   }))
-  // }
-
   const toggleDayOpen = (day: string, isOpen: boolean) => {
     setFormState((prev) => ({
       ...prev,
@@ -121,11 +92,6 @@ const RestaurantOpeningAndClosingTimesForm = ({
                               },
                             },
                           }))
-                          // validateTimes(
-                          //   day,
-                          //   e.target.value,
-                          //   weeklyCalendar[day].closingTime
-                          // )
                         }}
                         required
                         disabled={disabled}
@@ -148,11 +114,6 @@ const RestaurantOpeningAndClosingTimesForm = ({
                               },
                             },
                           }))
-                          // validateTimes(
-                          //   day,
-                          //   weeklyCalendar[day].openingTime,
-                          //   e.target.value
-                          // )
                         }}
                         required
                         disabled={disabled}

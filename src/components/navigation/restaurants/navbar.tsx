@@ -1,6 +1,6 @@
 'use client'
+
 import Image from 'next/image'
-// import Hand from 'public/hand.png'
 import Cloche from 'public/cloche.png'
 
 import Container from '@/components/style/container'

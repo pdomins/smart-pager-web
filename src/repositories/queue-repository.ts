@@ -111,16 +111,6 @@ export const getPaginatedEmails = async ({
   }
 }
 
-// export async function getAllCommensals({
-//   restaurantSlug,
-// }: {
-//   restaurantSlug: string
-// }) {
-//   noStore()
-//   console.log(restaurantSlug + COMMENSAL_LIST)
-//   return await kv.zrange(restaurantSlug + COMMENSAL_LIST, 0, -1)
-// }
-
 export async function updateClient({
   data,
 }: {

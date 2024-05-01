@@ -52,7 +52,7 @@ export default function RestaurantClientPage() {
   }, [])
 
   const toggleCommensalFormVisibility = () => {
-    setShowCommensalForm(!showCommensalForm) // Toggle the visibility state
+    setShowCommensalForm(!showCommensalForm)
   }
 
   if (!restaurantData) return <Loading />

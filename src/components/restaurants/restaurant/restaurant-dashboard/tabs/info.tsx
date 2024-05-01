@@ -82,7 +82,6 @@ const RestaurantInfo = ({
 
   const [formState, setFormState] = useState<RestaurantFormState>(initialState)
   const [successfullyUpdated, setSuccessfullyUpdated] = useState(false)
-  // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(
     restaurantData.coordinates

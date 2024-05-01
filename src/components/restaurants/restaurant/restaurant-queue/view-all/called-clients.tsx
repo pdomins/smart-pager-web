@@ -58,7 +58,7 @@ const CalledClientListPage = ({
 
   useEffect(() => {
     fetchClients()
-  }, [fetchClients, page, groupSize]) // aca podemos hacer polling tambien
+  }, [fetchClients, page, groupSize]) // TODO aca podemos hacer polling tambien
 
   const selectGroupSize = (value: string) => {
     if (value === groupSize) return
