@@ -42,9 +42,15 @@ export default function RestaurantMenu({
 
     const file = inputFileRef.current.files[0]
 
+    const maxSizeInBytes = 2 * 1024 * 1024 // 2 MB
+
     if (!file.name.toLowerCase().endsWith('.pdf')) {
       alert('El archivo debe estar en formato PDF.') //TODO MODAL?
       return
+    }
+
+    if (file.size > maxSizeInBytes) {
+      alert('El archivo debe tener un tamaño menor a 2MB.')
     }
 
     const response = await fetch(
@@ -100,7 +106,8 @@ export default function RestaurantMenu({
       <form onSubmit={onSubmit}>
         <div className="mb-4">
           <label className="block text-gray-600 font-medium">
-            Elige un archivo en formato PDF - Esto es lo que verán sus clientes:
+            Elige un archivo en formato PDF con tamaño menor a 2MB - Esto es lo
+            que verán sus clientes:
           </label>
           <input
             type="file"

@@ -57,7 +57,7 @@ const CalledPickUpListPage = ({
 
   useEffect(() => {
     fetchOrders()
-  }, [fetchOrders, page]) // aca podemos hacer polling tambien
+  }, [fetchOrders, page]) // TODO aca podemos hacer polling tambien
 
   return (
     <div className="relative" id="called-orders">

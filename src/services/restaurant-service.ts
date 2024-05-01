@@ -7,6 +7,7 @@ export async function update({
   ...data
 }: { id: number } & RestaurantFormState & CoordinatesWithAddress) {
   const name = data.name || ''
+
   const dataToUpdate = {
     coordinates: data.coordinates,
     address: data.address,
@@ -16,6 +17,6 @@ export async function update({
   }
 
   const updatedValues = await updateRestaurant({ id, name, ...dataToUpdate })
-  console.log(data)
+
   return updatedValues
 }

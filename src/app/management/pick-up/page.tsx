@@ -8,7 +8,6 @@ import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import Navbar from '@/components/navigation/restaurants/navbar'
 import { useRouter } from 'next/navigation'
 import RestaurantPickUp from '@/components/restaurants/restaurant/restaurant-pickup'
-// import RestaurantService from '@/services/restaurant.service'
 
 export default function Page() {
   const { data: session, status } = useSession()

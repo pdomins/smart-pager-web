@@ -1,7 +1,6 @@
 import { Coordinates } from '@/components/maps'
 import RestaurantAverageTimePerTableForm from './restaurant-average-time-per-table-form'
 import RestaurantLocationForm from './restaurant-location-form'
-import RestaurantMenuForm from './restaurant-menu-form'
 import RestaurantNameForm from './restaurant-name-form'
 import RestaurantOpeningAndClosingTimesForm from './restaurant-opening-and-closing-times-form'
 import { RestaurantTypeForm } from './restaurant-type'
@@ -22,7 +21,6 @@ export type RestaurantFormState = {
   weeklyCalendar: WeeklyCalendar
   restaurantType: FoodType | null
   averageTimePerTable: string | null
-  selectedFile: File | null
 }
 
 const RestaurantForm = ({
@@ -35,7 +33,6 @@ const RestaurantForm = ({
   address,
   setAddress,
   disabled = false,
-  showMenuForm = true,
 }: {
   formState: RestaurantFormState
   setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
@@ -46,7 +43,6 @@ const RestaurantForm = ({
   address: string | null
   setAddress: React.Dispatch<React.SetStateAction<string | null>>
   disabled?: boolean
-  showMenuForm?: boolean
 }) => {
   return (
     <>
@@ -79,9 +75,6 @@ const RestaurantForm = ({
         setFormState={setFormState}
         disabled={disabled}
       />
-      {showMenuForm && (
-        <RestaurantMenuForm setFormState={setFormState} disabled={disabled} />
-      )}
     </>
   )
 }

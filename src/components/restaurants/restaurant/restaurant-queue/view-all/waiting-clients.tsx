@@ -56,7 +56,7 @@ const WaitingClientListPage = ({
 
   useEffect(() => {
     fetchClients()
-  }, [fetchClients, page, groupSize]) // aca podemos hacer polling tambien
+  }, [fetchClients, page, groupSize]) // TODO aca podemos hacer polling tambien
 
   const selectGroupSize = (value: string) => {
     if (value === groupSize) return
@@ -119,8 +119,6 @@ const WaitingClientListPage = ({
                       client,
                     })
                     await fetchClients()
-
-                    // add here logic of removed commensals without completion if needed (for metrics)
                   }}
                 />
               ))

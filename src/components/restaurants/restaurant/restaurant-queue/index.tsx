@@ -63,7 +63,7 @@ export default function RestaurantQueue({
     getCommensalList()
 
     const intervalId = setInterval(() => {
-      // getCommensalList()
+      getCommensalList()
     }, 300000) // poll every 5 mins
 
     return () => clearInterval(intervalId)

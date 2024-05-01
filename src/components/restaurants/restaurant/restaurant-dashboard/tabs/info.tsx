@@ -73,7 +73,6 @@ const RestaurantInfo = ({
     name: restaurantData.name,
     weeklyCalendar: restaurantData.operatingHours as unknown as WeeklyCalendar,
     averageTimePerTable: restaurantData.avgTimePerTable,
-    selectedFile: null,
     restaurantType: restaurantData.type as FoodType,
   }
 
@@ -83,7 +82,6 @@ const RestaurantInfo = ({
 
   const [formState, setFormState] = useState<RestaurantFormState>(initialState)
   const [successfullyUpdated, setSuccessfullyUpdated] = useState(false)
-  // const router = useRouter()
   const [showMap, setShowMap] = useState(false)
   const [coordinates, setCoordinates] = useState<Coordinates>(
     restaurantData.coordinates
@@ -184,7 +182,6 @@ const RestaurantInfo = ({
             setShowMap={setShowMap}
             address={address}
             setAddress={setAddress}
-            showMenuForm={false}
             disabled={!isEditing}
           />
         </form>

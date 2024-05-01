@@ -137,8 +137,6 @@ export async function getRestaurantWithLocationByEmail(email: string) {
   return null
 }
 
-/// Update functions
-
 const removePreviousLocationIfExists = async ({
   restaurantId,
 }: {

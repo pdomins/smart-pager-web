@@ -1,5 +1,4 @@
 import { HTTP_RESPONSE_STATUS } from '@/types/https'
-// import { request } from 'http'
 import { NextResponse } from 'next/server'
 
 import nodemailer from 'nodemailer'

@@ -65,7 +65,7 @@ export default function RestaurantQueue({
     getPickUpList()
 
     const intervalId = setInterval(() => {
-      // getPickUpList()
+      getPickUpList()
     }, 300000) // poll every 5 mins
 
     return () => clearInterval(intervalId)

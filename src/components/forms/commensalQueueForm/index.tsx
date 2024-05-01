@@ -39,7 +39,7 @@ export default function CommensalQueueForm({
     if (!isSubmittable) return
 
     try {
-      const {response: success, authToken} = await addCommensal({
+      const { response: success, authToken } = await addCommensal({
         restaurantSlug,
         email,
         clientData: {
@@ -50,7 +50,13 @@ export default function CommensalQueueForm({
         },
       })
 
-      await sendAddedToQueueEmail({ restaurantSlug, restaurantName, name, email, authToken })
+      await sendAddedToQueueEmail({
+        restaurantSlug,
+        restaurantName,
+        name,
+        email,
+        authToken,
+      })
 
       if (success) {
         router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
