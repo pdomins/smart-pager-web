@@ -1,4 +1,4 @@
-import { ContactUsHTML } from '@/lib/emails'
+import { ContactUsHTML, NewRestaurantHTML } from '@/lib/emails'
 import {
   PickUpCanceledHTML,
   PickUpReadyHTML,
@@ -43,6 +43,22 @@ export async function sendContactUsEmail({
     recipient: 'smartpager.pf@gmail.com',
     subject: `EXTERNO - Nuevo Cliente: ${email} `,
     html: ContactUsHTML({ email, message }),
+  })
+}
+
+export async function sendNewRestaurantEmail({
+  email,
+  name,
+  id,
+}: {
+  id: number
+  email: string
+  name: string
+}) {
+  return await sendEmail({
+    recipient: 'smartpager.pf@gmail.com',
+    subject: `EXTERNO - Nuevo Restaurante Registrado: ${email} `,
+    html: NewRestaurantHTML({ email, name, id }),
   })
 }
 

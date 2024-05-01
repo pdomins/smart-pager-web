@@ -91,7 +91,7 @@ const ContactUsDialog = ({
                 type="submit"
                 disabled={!isSubmittable}
               >
-                Send Email
+                ¡Enviar!
               </button>
             ) : (
               <div className="flex justify-center">
