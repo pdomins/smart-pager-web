@@ -8,12 +8,16 @@ import RestaurantForm, { RestaurantFormState } from './forms/restaurant-form'
 import { defaultWeek } from '@/lib/dates'
 import { update } from '@/services/restaurant-service'
 import { foodTypes, FoodType } from '@/lib/food'
+import { sendNewRestaurantEmail } from '@/repositories/email-repository'
+import { useRouter } from 'next/navigation'
 
 export default function RestaurantSignUp({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
+  const router = useRouter()
+  
   const initialState = {
     name: null,
     weeklyCalendar: defaultWeek(),
@@ -42,7 +46,13 @@ export default function RestaurantSignUp({
           ...formState,
         })
 
-        // router.push('/management')
+        await sendNewRestaurantEmail({
+          id: restaurantData.id,
+          email: restaurantData.email,
+          name: formState.name || '',
+        })
+
+        router.push('/management/sign-up/success')
       }
     } catch (error) {
       alert('Error al cargar los datos, por favor intente nuevamente.')
