@@ -1,4 +1,4 @@
-import { assertAndReturn } from "../assertions"
+import { assertAndReturn } from '../assertions'
 
 const baseUrl = assertAndReturn(process.env.NEXT_PUBLIC_BASE_URL)
 
@@ -452,5 +452,3 @@ export const ReservationCanceledHTML = ({
       </html>
   `
 }
-
-

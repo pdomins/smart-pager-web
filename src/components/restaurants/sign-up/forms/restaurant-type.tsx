@@ -104,7 +104,7 @@ export const RestaurantTypeForm = ({
       {isOpen && (
         <ul
           className="w-full bg-white shadow-lg rounded mt-2 absolute z-50 overflow-hidden border border-gray-200"
-          style={{ maxHeight: '250px', overflowY: 'auto' }}
+          style={{ maxHeight: '200px', overflowY: 'auto' }}
         >
           {suggestions.map((type, index) => (
             <li

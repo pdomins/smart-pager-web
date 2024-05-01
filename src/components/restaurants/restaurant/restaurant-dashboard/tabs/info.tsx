@@ -73,7 +73,6 @@ const RestaurantInfo = ({
     name: restaurantData.name,
     weeklyCalendar: restaurantData.operatingHours as unknown as WeeklyCalendar,
     averageTimePerTable: restaurantData.avgTimePerTable,
-    selectedFile: null,
     restaurantType: restaurantData.type as FoodType,
   }
 
@@ -184,7 +183,6 @@ const RestaurantInfo = ({
             setShowMap={setShowMap}
             address={address}
             setAddress={setAddress}
-            showMenuForm={false}
             disabled={!isEditing}
           />
         </form>

@@ -19,15 +19,15 @@ export default function Navbar() {
   const activeTab = 'text-violet-500'
 
   const unsignedlinks = [
-    // {
-    //   action: () =>
-    //     signIn('google', {
-    //       callbackUrl: '/management/sign-up',
-    //     }),
-    //   style: baseButtonStyle,
-    //   textStyle: '',
-    //   label: 'Registrarse',
-    // },
+    {
+      action: () =>
+        signIn('google', {
+          callbackUrl: '/management/sign-up',
+        }),
+      style: baseButtonStyle,
+      textStyle: '',
+      label: 'Registrarse',
+    },
     {
       action: () =>
         signIn('google', {
@@ -66,6 +66,14 @@ export default function Navbar() {
       textStyle: `${pathname.startsWith('/management/pick-up') && activeTab}`,
       label: 'Lista de Pedidos',
     },
+    // {
+    //   action: () => {
+    //     // router.push('/management/pick-up')
+    //   },
+    //   style: `${baseButtonStyle}`,
+    //   textStyle: `${pathname.startsWith('/management/dashboard') && activeTab}`,
+    //   label: 'Dashboard',
+    // },
     {
       action: () => {
         signOut({ callbackUrl: '/' })
@@ -77,7 +85,11 @@ export default function Navbar() {
   ]
 
   const links =
-    status === 'loading' ? [] : session ? signedLinks : unsignedlinks
+    status === 'loading'
+      ? []
+      : session && session.user?.name === 'true'
+        ? signedLinks
+        : unsignedlinks
 
   return (
     <nav className="absolute z-10 w-full border-b border-black/5 lg:border-transparent">

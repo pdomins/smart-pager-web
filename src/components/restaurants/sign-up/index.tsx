@@ -17,7 +17,7 @@ export default function RestaurantSignUp({
   restaurantData: Restaurant
 }) {
   const router = useRouter()
-  
+
   const initialState = {
     name: null,
     weeklyCalendar: defaultWeek(),

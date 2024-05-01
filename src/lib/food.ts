@@ -29,4 +29,4 @@ export const foodTypes = [
   'Comida Sin TACC', // Trigo, Avena, Cebada y Centeno
 ] as const
 
-export type FoodType = typeof foodTypes[number];
+export type FoodType = (typeof foodTypes)[number]

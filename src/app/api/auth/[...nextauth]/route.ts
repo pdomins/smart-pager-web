@@ -6,6 +6,7 @@ import {
 } from '@/repositories/restaurant-respository'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { redirect } from 'next/navigation'
 
 const handler = NextAuth({
   providers: [
@@ -22,11 +23,14 @@ const handler = NextAuth({
       const restaurant = await getRestaurantByEmail(user.email) //TODO: call the service, maybe use id
       if (!restaurant) {
         //i.e. the user is new
-        createRestaurant(user.email, user.name ?? '')
-        console.log('new user')
-      } else {
-        console.log('old user') //TODO: might wanna do something here
+        await createRestaurant(user.email, '')
+        redirect('/management/sign-up')
+        // console.log('new user')
       }
+      //  else {
+      //   // console.log('old user') //TODO: might wanna do something here
+      //   redirect('/management')
+      // }
       return true
     },
     // async redirect({ url, baseUrl }) {
@@ -34,10 +38,15 @@ const handler = NextAuth({
     // //   return `${baseUrl}/restaurants/1`
     //     return baseUrl
     // },
-    // async session({ session, user, token }) {
-    //     // console.log("session: ", session, user, token)
-    //   return session
-    // },
+    async session({ session }) {
+      // console.log("session: ", session, user, token)
+      if (session.user && session.user.email) {
+        const restaurant = await getRestaurantByEmail(session.user.email) //TODO: call the service, maybe use id
+
+        session.user.name = String(restaurant?.authorized)
+      }
+      return session
+    },
     // async jwt({ token, user, account, profile, isNewUser }) {
     //     // console.log("token: ", token, "user: ", user,"account: ", account,"profile: ", profile,"is new: ", isNewUser)
     //   return token

@@ -1,11 +1,11 @@
 export const ContactUsHTML = ({
-    email,
-    message,
-  }: {
-    email: string
-    message: string
-  }) => {
-    return `
+  email,
+  message,
+}: {
+  email: string
+  message: string
+}) => {
+  return `
       <html lang="en">
       <head>
       <meta charset="UTF-8">
@@ -65,18 +65,18 @@ export const ContactUsHTML = ({
       </div>
       </body>
       </html>`
-  }
+}
 
-  export const NewRestaurantHTML = ({
-    email,
-    name,
-    id,
-  }: {
-    email: string
-    name: string
-    id: number
-  }) => {
-    return `
+export const NewRestaurantHTML = ({
+  email,
+  name,
+  id,
+}: {
+  email: string
+  name: string
+  id: number
+}) => {
+  return `
       <html lang="en">
       <head>
       <meta charset="UTF-8">
@@ -137,4 +137,4 @@ export const ContactUsHTML = ({
       </div>
       </body>
       </html>`
-  }
+}
