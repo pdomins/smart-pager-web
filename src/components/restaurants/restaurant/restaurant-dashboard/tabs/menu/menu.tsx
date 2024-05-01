@@ -100,7 +100,7 @@ export default function RestaurantMenu({
       <form onSubmit={onSubmit}>
         <div className="mb-4">
           <label className="block text-gray-600 font-medium">
-            Elige un archivo en formato PDF con tamaño menor a 5MB - Esto es lo que verán sus clientes:
+            Elige un archivo en formato PDF - Esto es lo que verán sus clientes:
           </label>
           <input
             type="file"
