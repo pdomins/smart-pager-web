@@ -4,14 +4,17 @@ import usePlacesAutocomplete, {
 } from 'use-places-autocomplete'
 import { Coordinates } from '.'
 import useOnclickOutside from 'react-cool-onclickoutside'
+import { useEffect } from 'react'
 
 const PlacesAutocomplete = ({
   setCoordinates,
+  address,
   setAddress,
   isRequired,
   disabled = false,
 }: {
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
+  address: string | null
   setAddress: React.Dispatch<React.SetStateAction<string | null>>
   isRequired: boolean
   disabled?: boolean
@@ -28,6 +31,11 @@ const PlacesAutocomplete = ({
     debounce: 50,
     cache: 86400,
   })
+
+  useEffect(() => {
+    if (address) setValue(address, false)
+  }, [])
+
   const ref = useOnclickOutside(() => {
     clearSuggestions()
   })
@@ -50,7 +58,7 @@ const PlacesAutocomplete = ({
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0])
         setCoordinates({ lat, lng })
-        console.log('📍 Coordinates: ', { lat, lng })
+        // console.log('📍 Coordinates: ', { lat, lng })
       })
     }
 

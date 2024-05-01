@@ -1,4 +1,4 @@
-import { Restaurant } from '@/types/restaurant'
+import { RestaurantWithCoordinates } from '@/types/restaurant'
 import { useQRCode } from 'next-qrcode'
 import React, { useState } from 'react'
 import qrframe from '../../../../../app/images/printqr.png'
@@ -7,7 +7,7 @@ import QRCode from 'qrcode-svg'
 export default function RestaurantQR({
   restaurantData,
 }: {
-  restaurantData: Restaurant
+  restaurantData: RestaurantWithCoordinates
 }) {
   const { Canvas } = useQRCode() // esto no setea un QR nuevo cada vez? no deberia estar guardado siempre el mismo?
   const [qrUrl, setQrUrl] = useState(

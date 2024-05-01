@@ -1,6 +1,6 @@
 'use client'
 
-import { Restaurant } from '@/types/restaurant'
+import { RestaurantWithCoordinates } from '@/types/restaurant'
 import Gradient from '../../../style/gradient'
 import Container from '../../../style/container'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ import RestaurantInfo from './tabs/info'
 export default function RestaurantDashboard({
   restaurantData,
 }: {
-  restaurantData: Restaurant
+  restaurantData: RestaurantWithCoordinates
 }) {
   const [activeTab, setActiveTab] = useState('menu')
 

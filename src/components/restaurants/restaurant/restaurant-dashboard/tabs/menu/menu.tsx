@@ -3,14 +3,14 @@ import {
   updateRestaurantMenu,
   getRestaurantMenu,
 } from '@/repositories/restaurant-respository'
-import { Restaurant } from '@/types/restaurant'
+import { RestaurantWithCoordinates } from '@/types/restaurant'
 import Spinner from '@/components/utils/spinner'
 import ViewMenu from './pdf'
 
 export default function RestaurantMenu({
   restaurantData,
 }: {
-  restaurantData: Restaurant
+  restaurantData: RestaurantWithCoordinates
 }) {
   const inputFileRef = useRef<HTMLInputElement>(null)
   const [menu, setMenu] = useState<string | null>(null)

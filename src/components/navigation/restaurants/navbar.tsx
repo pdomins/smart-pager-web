@@ -9,7 +9,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 export default function Navbar() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -76,7 +76,8 @@ export default function Navbar() {
     },
   ]
 
-  const links = session ? signedLinks : unsignedlinks
+  const links =
+    status === 'loading' ? [] : session ? signedLinks : unsignedlinks
 
   return (
     <nav className="absolute z-10 w-full border-b border-black/5 lg:border-transparent">

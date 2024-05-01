@@ -32,8 +32,8 @@ const RestaurantForm = ({
   setCoordinates,
   showMap,
   setShowMap,
+  address,
   setAddress,
-
   disabled = false,
   showMenuForm = true,
 }: {
@@ -43,6 +43,7 @@ const RestaurantForm = ({
   setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>
   showMap: boolean
   setShowMap: React.Dispatch<React.SetStateAction<boolean>>
+  address: string | null
   setAddress: React.Dispatch<React.SetStateAction<string | null>>
   disabled?: boolean
   showMenuForm?: boolean
@@ -59,6 +60,7 @@ const RestaurantForm = ({
         setCoordinates={setCoordinates}
         showMap={showMap}
         setShowMap={setShowMap}
+        address={address}
         setAddress={setAddress}
         disabled={disabled}
       />
@@ -67,10 +69,11 @@ const RestaurantForm = ({
         setFormState={setFormState}
         disabled={disabled}
       />
-      <RestaurantTypeForm 
+      <RestaurantTypeForm
         restaurantType={formState.restaurantType || ''}
         setFormState={setFormState}
-        disabled={disabled}/>
+        disabled={disabled}
+      />
       <RestaurantAverageTimePerTableForm
         averageTimePerTable={formState.averageTimePerTable || ''}
         setFormState={setFormState}

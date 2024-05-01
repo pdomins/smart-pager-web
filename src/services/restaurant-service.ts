@@ -1,5 +1,5 @@
 import { RestaurantFormState } from '@/components/restaurants/sign-up/forms/restaurant-form'
-import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
+import { updateRestaurant } from '@/repositories/restaurant-respository'
 import { CoordinatesWithAddress } from '@/types/location'
 
 export async function update({
@@ -7,7 +7,6 @@ export async function update({
   ...data
 }: { id: number } & RestaurantFormState & CoordinatesWithAddress) {
   const name = data.name || ''
-  console.log(id)
   //  TODO wait for vercel blob storage be available again
 
   //   const response = await fetch(
@@ -30,19 +29,7 @@ export async function update({
     menu: undefined,
   }
 
-  /**
-    id: number;
-    name: string | null;
-    email: string;
-    slug: string | null;
-    authorized: boolean;
-    menu: string | null;
-    type: string | null;
-    avgTimePerTable: string | null;
-    operatingHours: Prisma.JsonValue;
-    locationId: string | null;
-   */
-
-  await updateRestaurantDetails({ id, name, ...dataToUpdate })
+  const updatedValues = await updateRestaurant({ id, name, ...dataToUpdate })
   console.log(data)
+  return updatedValues
 }

@@ -1,9 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 import Gradient from '@/components/style/gradient'
 import Container from '@/components/style/container'
-// import { useRouter } from 'next/navigation'
 import { Coordinates } from '../../maps'
-// import { updateRestaurantDetails } from '@/repositories/restaurant-respository'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantForm, { RestaurantFormState } from './forms/restaurant-form'
@@ -45,8 +43,6 @@ export default function RestaurantSignUp({
         })
 
         // router.push('/management')
-      } else {
-        alert('Por favor, complete todos los campos requeridos')
       }
     } catch (error) {
       alert('Error al cargar los datos, por favor intente nuevamente.')
@@ -100,6 +96,7 @@ export default function RestaurantSignUp({
                 setCoordinates={setCoordinates}
                 showMap={showMap}
                 setShowMap={setShowMap}
+                address={address}
                 setAddress={setAddress}
               />
 
