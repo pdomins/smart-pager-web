@@ -15,6 +15,21 @@ export async function POST(request: Request): Promise<NextResponse> {
     return new NextResponse('Request body is missing', { status: 400 })
   }
 
+  const contentLength = request.headers.get('Content-Length')
+
+  let maxSize = 1 * 1024 * 1024
+
+  if (filename.endsWith('.pdf')) {
+    maxSize = 5 * 1024 * 1024 // Extended limit for PDF files
+  }
+
+  if (contentLength && parseInt(contentLength) > maxSize) {
+    return new NextResponse(
+      `File size exceeds ${maxSize / 1024 / 1024}MB limit`,
+      { status: 400 }
+    )
+  }
+
   const blob = await put(filename, request.body, {
     access: 'public',
     cacheControlMaxAge: 0,
