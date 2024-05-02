@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'
+import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-information'
 import { useSession } from 'next-auth/react'
 import { RestaurantWithCoordinates } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
