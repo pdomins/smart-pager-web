@@ -56,7 +56,7 @@ export default function Navbar() {
       },
       style: `${baseButtonStyle}`,
       textStyle: `${pathname.startsWith('/management/queue') && activeTab}`,
-      label: 'Lista de Comensales',
+      label: 'Comensales',
     },
     {
       action: () => {
@@ -64,16 +64,16 @@ export default function Navbar() {
       },
       style: `${baseButtonStyle}`,
       textStyle: `${pathname.startsWith('/management/pick-up') && activeTab}`,
-      label: 'Lista de Pedidos',
+      label: 'Pedidos',
     },
-    // {
-    //   action: () => {
-    //     // router.push('/management/pick-up')
-    //   },
-    //   style: `${baseButtonStyle}`,
-    //   textStyle: `${pathname.startsWith('/management/dashboard') && activeTab}`,
-    //   label: 'Dashboard',
-    // },
+    {
+      action: () => {
+        router.push('/management/dashboard')
+      },
+      style: `${baseButtonStyle}`,
+      textStyle: `${pathname.startsWith('/management/dashboard') && activeTab}`,
+      label: 'Dashboard',
+    },
     {
       action: () => {
         signOut({ callbackUrl: '/' })
@@ -151,7 +151,7 @@ export default function Navbar() {
                 : ''
             } invisible absolute top-full left-0 z-20 w-full origin-top-right translate-y-1 scale-90 flex-col flex-wrap justify-end gap-6 rounded-3xl border border-gray-100 bg-white p-8 opacity-0 shadow-2xl shadow-gray-600/10 transition-all duration-300 lg:visible lg:relative lg:flex lg:w-7/12 lg:translate-y-0 lg:scale-100 lg:flex-row lg:items-center lg:gap-0 lg:border-none lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none`}
           >
-            <div className="w-full text-gray-600  lg:w-auto lg:pr-4 lg:pt-0">
+            <div className="w-full text-gray-600 lg:w-auto lg:pr-4 lg:pt-0">
               <ul className="flex flex-col gap-6 tracking-wide lg:flex-row lg:gap-0 lg:text-sm">
                 {links.map((link) => (
                   <li key={link.label}>

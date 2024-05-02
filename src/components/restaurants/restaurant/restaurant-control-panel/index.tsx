@@ -8,7 +8,7 @@ import RestaurantQR from './tabs/qr'
 import RestaurantMenu from './tabs/menu/menu'
 import RestaurantInfo from './tabs/info'
 
-export default function RestaurantDashboard({
+export default function RestaurantControlPanel({
   restaurantData,
 }: {
   restaurantData: RestaurantWithCoordinates
@@ -16,7 +16,7 @@ export default function RestaurantDashboard({
   const [activeTab, setActiveTab] = useState('menu')
 
   return (
-    <div className="relative" id="dashboard">
+    <div className="relative" id="control-panel">
       <Gradient />
       <Container>
         <div className="text-center pt-20 pb-10">

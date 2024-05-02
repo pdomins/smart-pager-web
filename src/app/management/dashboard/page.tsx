@@ -1,25 +1,24 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-import RestaurantControlPanel from '@/components/restaurants/restaurant/restaurant-control-panel'
 import { useSession } from 'next-auth/react'
-import { RestaurantWithCoordinates } from '@/types/restaurant'
+import { Restaurant } from '@/types/restaurant'
 import Loading from '@/components/utils/loading'
-import { getRestaurantWithLocationByEmail } from '@/repositories/restaurant-respository'
-import { useRouter } from 'next/navigation'
+import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import Navbar from '@/components/navigation/restaurants/navbar'
+import { useRouter } from 'next/navigation'
+import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'
 
 export default function Page() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [restaurantData, setRestaurantData] =
-    useState<RestaurantWithCoordinates | null>(null)
+  const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       if (status === 'authenticated' && session?.user?.email) {
         try {
-          const restaurant = await getRestaurantWithLocationByEmail(
+          const restaurant = await getRestaurantByEmail(
             session?.user?.email as string
           )
           setRestaurantData(restaurant)
@@ -38,7 +37,7 @@ export default function Page() {
     <>
       <Navbar />
       {restaurantData ? (
-        <RestaurantControlPanel restaurantData={restaurantData} />
+        <RestaurantDashboard restaurantData={restaurantData} />
       ) : (
         <Loading />
       )}
