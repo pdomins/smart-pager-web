@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import Container from '../style/container'
 import { useRouter } from 'next/navigation'

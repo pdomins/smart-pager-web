@@ -2,6 +2,12 @@ import React from 'react'
 import Link from 'next/link'
 import Container from '@/components/style/container'
 import Gradient from '@/components/style/gradient'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Error 404 - Smart Pager',
+  description: 'smartpager.com.ar',
+}
 
 export default function NotFound() {
   return (
