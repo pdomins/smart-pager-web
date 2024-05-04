@@ -6,7 +6,6 @@ import {
 } from '@/repositories/restaurant-respository'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { redirect } from 'next/navigation'
 
 const handler = NextAuth({
   providers: [
@@ -24,13 +23,10 @@ const handler = NextAuth({
       if (!restaurant) {
         //i.e. the user is new
         await createRestaurant(user.email, '')
-        redirect('/management/sign-up')
-        // console.log('new user')
+        console.log('new user')
+      } else {
+        console.log('old user') //TODO: might wanna do something here
       }
-      //  else {
-      //   // console.log('old user') //TODO: might wanna do something here
-      //   redirect('/management')
-      // }
       return true
     },
     // async redirect({ url, baseUrl }) {
