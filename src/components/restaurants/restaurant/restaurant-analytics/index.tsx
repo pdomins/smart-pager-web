@@ -86,14 +86,14 @@ export const chartData = {
     },
   ],
 }
-export default function RestaurantDashboard({
+export default function RestaurantAnalytics({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
   console.log(restaurantData)
   return (
-    <div className="relative" id="dashboard">
+    <div className="relative" id="analytics">
       <Gradient />
       <Container>
         <div className="text-center pt-20 pb-10">

@@ -68,11 +68,11 @@ export default function Navbar() {
     },
     {
       action: () => {
-        router.push('/management/dashboard')
+        router.push('/management/analytics')
       },
       style: `${baseButtonStyle}`,
-      textStyle: `${pathname.startsWith('/management/dashboard') && activeTab}`,
-      label: 'Dashboard',
+      textStyle: `${pathname.startsWith('/management/analytics') && activeTab}`,
+      label: 'Analíticas',
     },
     {
       action: () => {

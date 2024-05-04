@@ -7,7 +7,7 @@ import Loading from '@/components/utils/loading'
 import { getRestaurantByEmail } from '@/repositories/restaurant-respository'
 import Navbar from '@/components/navigation/restaurants/navbar'
 import { useRouter } from 'next/navigation'
-import RestaurantDashboard from '@/components/restaurants/restaurant/restaurant-dashboard'
+import RestaurantAnalytics from '@/components/restaurants/restaurant/restaurant-analytics'
 
 export default function Page() {
   const { data: session, status } = useSession()
@@ -37,7 +37,7 @@ export default function Page() {
     <>
       <Navbar />
       {restaurantData ? (
-        <RestaurantDashboard restaurantData={restaurantData} />
+        <RestaurantAnalytics restaurantData={restaurantData} />
       ) : (
         <Loading />
       )}

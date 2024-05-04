@@ -54,7 +54,7 @@ export default function Navbar() {
                   className="bg-amber-300 text-black rounded-md px-3 py-2 text-sm font-medium"
                   aria-current="page"
                 >
-                  Dashboard
+                  Analytics
                 </a>
                 <a
                   href="#"
@@ -89,7 +89,7 @@ export default function Navbar() {
             className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
             aria-current="page"
           >
-            Dashboard
+            Analytics
           </a>
           <a
             href="#"
