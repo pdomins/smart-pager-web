@@ -91,7 +91,7 @@ export default function RestaurantQueue({
         </div>
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Ordenes en curso</h2>
+            <h2 className="text-xl font-semibold">Ordenes en Espera</h2>
             <div className="flex justify-end items-end space-x-2">
               <Tooltip title={'Agregar pedido'} placement="top" arrow>
                 <button
