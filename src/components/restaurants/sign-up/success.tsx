@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import Gradient from '@/components/style/gradient'

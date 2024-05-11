@@ -1,4 +1,4 @@
-'use order'
+'use client'
 
 import { Restaurant } from '@/types/restaurant'
 import Gradient from '../../../style/gradient'
@@ -24,7 +24,7 @@ import {
   retryCallPickUp,
 } from '@/services/queue-service'
 
-export default function RestaurantQueue({
+export default function RestaurantPickUp({
   restaurantData,
 }: {
   restaurantData: Restaurant

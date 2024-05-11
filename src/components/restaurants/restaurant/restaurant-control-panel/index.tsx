@@ -9,11 +9,12 @@ import RestaurantMenu from './tabs/menu/menu'
 import RestaurantInfo from './tabs/info'
 
 export default function RestaurantControlPanel({
-  restaurantData,
+  restaurantData: restaurant,
 }: {
   restaurantData: RestaurantWithCoordinates
 }) {
   const [activeTab, setActiveTab] = useState('menu')
+  const [restaurantData, setRestaurantData] = useState(restaurant)
 
   return (
     <div className="relative" id="control-panel">
@@ -24,7 +25,7 @@ export default function RestaurantControlPanel({
             Panel de <span className="text-purple-800">Control</span>
           </h1>
           <p className="mt-4 text-gray-700">
-            Gestiona tu restaurante de manera eficiente.
+            Gestiona a <span className="text-purple-800 font-semibold	">{restaurantData.name}</span> de manera eficiente.
           </p>
         </div>
 
@@ -87,7 +88,10 @@ export default function RestaurantControlPanel({
         )}
         {activeTab === 'qr' && <RestaurantQR restaurantData={restaurantData} />}
         {activeTab === 'info' && (
-          <RestaurantInfo restaurantData={restaurantData} />
+          <RestaurantInfo
+            restaurantData={restaurantData}
+            setRestaurantData={setRestaurantData}
+          />
         )}
       </Container>
     </div>

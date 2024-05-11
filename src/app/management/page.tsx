@@ -1,47 +1,20 @@
-'use client'
-import { useState, useEffect } from 'react'
-
 import RestaurantControlPanel from '@/components/restaurants/restaurant/restaurant-control-panel'
-import { useSession } from 'next-auth/react'
-import { RestaurantWithCoordinates } from '@/types/restaurant'
-import Loading from '@/components/utils/loading'
-import { getRestaurantWithLocationByEmail } from '@/repositories/restaurant-respository'
-import { useRouter } from 'next/navigation'
 import Navbar from '@/components/navigation/restaurants/navbar'
 
-export default function Page() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [restaurantData, setRestaurantData] =
-    useState<RestaurantWithCoordinates | null>(null)
+import { Metadata } from 'next'
+import { getAuthenticatedServerProps } from '@/lib/authentication'
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (status === 'authenticated' && session?.user?.email) {
-        try {
-          const restaurant = await getRestaurantWithLocationByEmail(
-            session?.user?.email as string
-          )
-          setRestaurantData(restaurant)
-        } catch (error) {
-          console.error('Error fetching restaurant data:', error)
-        }
-      } else if (status === 'unauthenticated') {
-        router.push('/')
-      }
-    }
-
-    fetchData()
-  }, [session])
+export const metadata: Metadata = {
+  title: 'Panel de Control - Smart Pager',
+  description: 'smartpager.com.ar',
+}
+export default async function Page() {
+  const { restaurantData } = await getAuthenticatedServerProps()
 
   return (
     <>
       <Navbar />
-      {restaurantData ? (
-        <RestaurantControlPanel restaurantData={restaurantData} />
-      ) : (
-        <Loading />
-      )}
+      <RestaurantControlPanel restaurantData={restaurantData} />
     </>
   )
 }

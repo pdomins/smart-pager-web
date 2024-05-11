@@ -1,19 +1,19 @@
 import Navbar from '@/components/navigation/restaurants/navbar'
-import { Metadata } from 'next'
-import CalledClientListPage from '@/components/restaurants/restaurant/restaurant-queue/view-all/called-clients'
+import RestaurantAnalytics from '@/components/restaurants/restaurant/restaurant-analytics'
 import { getAuthenticatedServerProps } from '@/lib/authentication'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Clientes Llamados - Smart Pager',
+  title: 'Analíticas - Smart Pager',
   description: 'smartpager.com.ar',
 }
+
 export default async function Page() {
   const { restaurantData } = await getAuthenticatedServerProps()
-
   return (
     <>
       <Navbar />
-      <CalledClientListPage restaurantData={restaurantData} />
+      <RestaurantAnalytics restaurantData={restaurantData} />
     </>
   )
 }

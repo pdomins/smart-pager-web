@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useCallback, useEffect, useState } from 'react'
 import ClientCard from '../components/card'
 import Container from '../../../../style/container'

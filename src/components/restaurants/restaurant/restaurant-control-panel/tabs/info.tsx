@@ -64,8 +64,10 @@ const EditButtons = ({
 
 const RestaurantInfo = ({
   restaurantData,
+  setRestaurantData,
 }: {
   restaurantData: RestaurantWithCoordinates
+  setRestaurantData: Dispatch<SetStateAction<RestaurantWithCoordinates>>
 }) => {
   const [isEditing, setIsEditing] = useState(false)
 
@@ -103,7 +105,7 @@ const RestaurantInfo = ({
           address,
           ...formState,
         })
-        restaurantData = res
+        setRestaurantData(res)
         setSuccessfullyUpdated(true)
       }
     } finally {
