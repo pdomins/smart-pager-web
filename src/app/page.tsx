@@ -18,7 +18,7 @@ export default async function Page() {
     )
     if (restaurantData && restaurantData.authorized) redirect('/management')
   }
-  
+
   return (
     <>
       <Navbar />

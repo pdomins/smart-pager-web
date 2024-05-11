@@ -8,6 +8,8 @@ import {
 } from '@/repositories/restaurant-respository'
 import Loading from '../utils/loading'
 import Gradient from '../style/gradient'
+import { daysOfWeek, isRestaurantOpen } from '@/lib/dates'
+import { WeeklyCalendar } from '../restaurants/sign-up/forms/restaurant-form'
 
 export default function RestaurantClientPage() {
   const [showCommensalForm, setShowCommensalForm] = useState(false)
@@ -56,6 +58,7 @@ export default function RestaurantClientPage() {
   }
 
   if (!restaurantData) return <Loading />
+  const calendar = restaurantData.operatingHours as WeeklyCalendar
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -63,7 +66,7 @@ export default function RestaurantClientPage() {
       {!showCommensalForm && (
         <div className="py-5 text-center">
           <h1 className="text-3xl md:text-4xl font-bold">
-            Bienvenido a {restaurantData?.name}
+            Bienvenido a {restaurantData.name}
           </h1>
           <p className="mt-2 text-gray-700">
             Tu experincia gastronómica comienza aquí.
@@ -71,33 +74,67 @@ export default function RestaurantClientPage() {
         </div>
       )}
 
-      <div className="flex-grow flex flex-col items-center justify-center px-4">
-        {showCommensalForm && (
-          <CommensalQueueForm
-            toggleCommensalFormVisibility={toggleCommensalFormVisibility}
-          />
-        )}
-        {!showCommensalForm && (
+      {isRestaurantOpen(calendar) ? (
+        <div className="flex-grow flex flex-col items-center justify-center px-4">
+          {showCommensalForm && (
+            <CommensalQueueForm
+              toggleCommensalFormVisibility={toggleCommensalFormVisibility}
+            />
+          )}
+          {!showCommensalForm && (
+            <div className="w-full max-w-md">
+              <div className="flex flex-col items-center gap-4">
+                <button
+                  onClick={toggleCommensalFormVisibility}
+                  className="relative w-full bg-violet-700 hover:bg-violet-800 text-white font-bold py-2 rounded rounded-full"
+                >
+                  Anotarse para Comer
+                </button>
+                {menuUrl && (
+                  <button
+                    onClick={viewMenu}
+                    className="relative w-full bg-violet-700/10 hover:bg-violet-700/15 text-purple-700 font-bold py-2 rounded rounded-full"
+                  >
+                    Ver Menú
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex-grow flex flex-col items-center justify-center px-4">
           <div className="w-full max-w-md">
             <div className="flex flex-col items-center gap-4">
-              <button
-                onClick={toggleCommensalFormVisibility}
-                className="relative w-full bg-violet-700 hover:bg-violet-800 text-white font-bold py-2 rounded rounded-full"
-              >
-                Anotarse para Comer
-              </button>
-              {menuUrl && (
-                <button
-                  onClick={viewMenu}
-                  className="relative w-full bg-violet-700/10 hover:bg-violet-700/15 text-purple-700 font-bold py-2 rounded rounded-full"
-                >
-                  Ver Menú
-                </button>
-              )}
+              <div className="bg-violet-500/10 text-gray-800 p-4 rounded-md shadow">
+                <p className="text-lg pb-4 text-center font-semibold">
+                  El restaurante se encuentra cerrado, lo sentimos.
+                </p>
+                <div className="text-center">
+                  <p className="font-bold text-xl pb-2">
+                    Horarios de Atención:
+                  </p>
+                  {daysOfWeek.map((day) => {
+                    const info = calendar[day]
+                    return (
+                      <p key={day}>
+                        <span className="font-semibold">{day}:</span>{' '}
+                        {info.isOpen ? (
+                          <span className="text-violet-600">
+                            {info.openingTime} - {info.closingTime}
+                          </span>
+                        ) : (
+                          'Cerrado'
+                        )}
+                      </p>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

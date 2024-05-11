@@ -25,7 +25,11 @@ export default function RestaurantControlPanel({
             Panel de <span className="text-purple-800">Control</span>
           </h1>
           <p className="mt-4 text-gray-700">
-            Gestiona a <span className="text-purple-800 font-semibold	">{restaurantData.name}</span> de manera eficiente.
+            Gestiona a{' '}
+            <span className="text-purple-800 font-semibold	">
+              {restaurantData.name}
+            </span>{' '}
+            de manera eficiente.
           </p>
         </div>
 
