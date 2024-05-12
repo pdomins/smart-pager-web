@@ -78,7 +78,6 @@ export const TableReadyHTML = ({
         <p>¡Hola ${name}!</p>
         <p>Estamos encantados de informarte que tu mesa en <strong>${restaurantName}</strong> está lista. Por favor, acércate a la recepción para ser atendido.</p>
         <p>¡Gracias por tu paciencia y que disfrutes de tu comida!</p>
-        <a href="URL_DE_TU_RESTAURANTE" class="button">Ver menú</a>
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
