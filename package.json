@@ -44,7 +44,8 @@
     "react-pdf": "^8.0.2",
     "react-phone-input-2": "^2.15.1",
     "use-places-autocomplete": "^4.0.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

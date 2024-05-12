@@ -50,15 +50,14 @@ export default function CommensalQueueForm({
         },
       })
 
-      await sendAddedToQueueEmail({
-        restaurantSlug,
-        restaurantName,
-        name,
-        email,
-        authToken,
-      })
-
       if (success) {
+        await sendAddedToQueueEmail({
+          restaurantSlug,
+          restaurantName,
+          name,
+          email,
+          authToken,
+        })
         router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
       } else {
         console.error('Failed to add commensal')
