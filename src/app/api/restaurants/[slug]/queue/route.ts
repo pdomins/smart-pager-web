@@ -67,3 +67,10 @@ export async function POST(
   )
 }
 export async function DELETE() {}
+
+export async function GET() {
+  return NextResponse.json(
+    { msg: 'hola dax' },
+    { status: HTTP_RESPONSE_STATUS.SUCCESS }
+  )
+}
