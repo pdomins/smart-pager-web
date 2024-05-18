@@ -20,7 +20,7 @@ export const foodTypes = [
   'Comida árabe',
   'Comida armenia',
   'Comida peruana',
-  'Casa de Empanadas', // para lugares especializados en empanadas
+  'Casa de empanadas', // para lugares especializados en empanadas
   'Comida rápida',
   'Comida venezolana',
   'Comida vegana',
