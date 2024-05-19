@@ -57,7 +57,7 @@ export async function POST(
     },
   } = data
 
-  const success = await addCommensal({
+  const { response } = await addCommensal({
     restaurantSlug,
     email,
     clientData: {
@@ -68,7 +68,7 @@ export async function POST(
     },
   })
 
-  if (!success) {
+  if (!response) {
     return NextResponse.json(
       { msg: 'Client already in queue' },
       { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
@@ -118,7 +118,6 @@ export async function DELETE(
     { status: HTTP_RESPONSE_STATUS.SUCCESS }
   )
 }
-
 
 // TODO DELETE ME AFTER
 export async function GET() {

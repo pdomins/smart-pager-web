@@ -6,8 +6,11 @@ import { toKebabCase } from '@/lib/string'
 import uuid from '@/lib/uuid'
 import { CoordinatesWithAddress } from '@/types/location'
 import { UpdateRestaurantData } from '@/types/restaurant'
+import { Prisma } from '@prisma/client'
 import { sql } from '@vercel/postgres'
 import { unstable_noStore as noStore } from 'next/cache'
+
+type Restaurants = Awaited<ReturnType<typeof getRestaurants>>
 
 export async function getRestaurants({
   page,
@@ -17,11 +20,11 @@ export async function getRestaurants({
   pageSize: number
 }) {
   const skip = page * pageSize
-  return await prisma.restaurant.findMany({
+  const restaurants = await prisma.restaurant.findMany({
     skip,
     take: pageSize,
     orderBy: {
-      name: 'desc', // promoted
+      sponsored: 'desc',
     },
     select: {
       slug: true,
@@ -31,7 +34,7 @@ export async function getRestaurants({
       type: true,
       menu: true,
       avgTimePerTable: true,
-      // TODO add photo
+      picture: true,
       location: {
         select: {
           address: true,
@@ -41,6 +44,59 @@ export async function getRestaurants({
       },
     },
   })
+  return restaurants
+}
+
+type RawRestaurantResult = {
+  slug: string
+  name: string
+  email: string
+  operatingHours: Prisma.JsonValue
+  type: string
+  menu: string
+  avgTimePerTable: string
+  picture: string
+  address: string
+  latitude: number
+  longitude: number
+}
+
+export async function getRestaurantsSearch({
+  page,
+  pageSize,
+  search,
+}: {
+  page: number
+  pageSize: number
+  search: string
+}) {
+  const skip = page * pageSize
+  const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
+    SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, l.address, l.latitude, l.longitude
+    FROM "Restaurant" r
+    JOIN "Location" l ON r."locationId" = l.id
+    WHERE similarity(r.name, ${search}) > 0.2
+    ORDER BY similarity(r.name, ${search}) DESC, r.sponsored DESC
+    LIMIT ${pageSize} OFFSET ${skip}
+  `
+
+  const results: Restaurants = rawResults.map((row) => ({
+    slug: row.slug,
+    name: row.name,
+    email: row.email,
+    operatingHours: row.operatingHours,
+    type: row.type,
+    menu: row.menu,
+    avgTimePerTable: row.avgTimePerTable,
+    picture: row.picture,
+    location: {
+      address: row.address,
+      latitude: row.latitude,
+      longitude: row.longitude,
+    },
+  }))
+
+  return results
 }
 
 export async function getRestaurantById(id: number) {
@@ -90,7 +146,7 @@ export async function getRestaurantBySlug(slug: string) {
       type: true,
       menu: true,
       avgTimePerTable: true,
-      // TODO add photo
+      picture: true,
       location: {
         select: {
           address: true,

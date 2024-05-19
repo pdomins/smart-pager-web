@@ -1,4 +1,4 @@
-import { getRestaurants } from '@/repositories/restaurant-respository'
+import { searchRestaurants } from '@/services/restaurant-service'
 import { HTTP_RESPONSE_STATUS } from '@/types/https'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -6,11 +6,9 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const page = Number(searchParams.get('page')) || 0
   const pageSize = Number(searchParams.get('pageSize')) || 10
-  const search = searchParams.get('search')
+  const search = searchParams.get('search') || undefined
 
-  console.log(search) // TODO
-
-  const restaurants = await getRestaurants({ page, pageSize })
+  const restaurants = await searchRestaurants({ page, pageSize, search })
 
   return NextResponse.json(
     { restaurants },

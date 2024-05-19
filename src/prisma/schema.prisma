@@ -7,7 +7,7 @@ datasource db {
   provider   = "postgresql"
   url        = env("POSTGRES_PRISMA_URL")
   directUrl  = env("POSTGRES_URL_NON_POOLING")
-  extensions = [postgis]
+  extensions = [postgis, pg_trgm]
 }
 
 model Restaurant {
@@ -16,8 +16,10 @@ model Restaurant {
   name       String?
   slug       String?
   authorized Boolean @default(false)
+  sponsored  Boolean @default(false)
 
   menu            String?
+  picture         String?
   type            String?
   avgTimePerTable String?
   operatingHours  Json?
@@ -27,6 +29,8 @@ model Restaurant {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([name(ops: raw("gin_trgm_ops"))], type: Gin)
 }
 
 model Location {
