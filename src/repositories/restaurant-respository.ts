@@ -9,8 +9,38 @@ import { UpdateRestaurantData } from '@/types/restaurant'
 import { sql } from '@vercel/postgres'
 import { unstable_noStore as noStore } from 'next/cache'
 
-export async function getRestaurants() {
-  return await prisma.restaurant.findMany()
+export async function getRestaurants({
+  page,
+  pageSize,
+}: {
+  page: number
+  pageSize: number
+}) {
+  const skip = page * pageSize
+  return await prisma.restaurant.findMany({
+    skip,
+    take: pageSize,
+    orderBy: {
+      name: 'desc', // promoted
+    },
+    select: {
+      slug: true,
+      name: true,
+      email: true,
+      operatingHours: true,
+      type: true,
+      menu: true,
+      avgTimePerTable: true,
+      // TODO add photo
+      location: {
+        select: {
+          address: true,
+          latitude: true,
+          longitude: true,
+        },
+      },
+    },
+  })
 }
 
 export async function getRestaurantById(id: number) {
@@ -43,6 +73,23 @@ export async function getRestaurantBySlug(slug: string) {
   const result = await prisma.restaurant.findFirstOrThrow({
     where: {
       slug,
+    },
+    select: {
+      slug: true,
+      name: true,
+      email: true,
+      operatingHours: true,
+      type: true,
+      menu: true,
+      avgTimePerTable: true,
+      // TODO add photo
+      location: {
+        select: {
+          address: true,
+          latitude: true,
+          longitude: true,
+        },
+      },
     },
   })
 
