@@ -67,6 +67,14 @@ export async function getRestaurantByEmail(email: string) {
   return result
 }
 
+export async function getFullRestaurantBySlug(slug: string) {
+  noStore()
+
+  return await prisma.restaurant.findFirstOrThrow({
+    where: { slug },
+  })
+}
+
 export async function getRestaurantBySlug(slug: string) {
   noStore()
 

@@ -3,7 +3,7 @@ import CommensalQueueForm from '../forms/commensalQueueForm'
 import { useParams, useRouter } from 'next/navigation'
 import { Restaurant } from '@/types/restaurant'
 import {
-  getRestaurantBySlug,
+  getFullRestaurantBySlug,
   getRestaurantMenuBySlug,
 } from '@/repositories/restaurant-respository'
 import Loading from '../utils/loading'
@@ -39,7 +39,7 @@ export default function RestaurantClientPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const restaurant = await getRestaurantBySlug(restaurantSlug.restaurant)
+        const restaurant = await getFullRestaurantBySlug(restaurantSlug.restaurant)
         if (!restaurant) {
           router.push('/404')
           return

@@ -6,7 +6,7 @@ import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
 import { addCommensal } from '@/services/kv/commensal-queue-service'
 import { sendAddedToQueueEmail } from '@/repositories/email-repository'
-import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
 import Spinner from '@/components/utils/spinner'
 
 export default function CommensalQueueForm({
@@ -33,7 +33,7 @@ export default function CommensalQueueForm({
       console.error('Restaurant slug is missing')
       return
     }
-    const restaurant = await getRestaurantBySlug(restaurantSlug)
+    const restaurant = await getFullRestaurantBySlug(restaurantSlug)
     const restaurantName = restaurant?.name || restaurantSlug
 
     if (!isSubmittable) return

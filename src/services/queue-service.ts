@@ -20,7 +20,7 @@ import {
   sendTableReadyRemainderEmail,
 } from '@/repositories/email-repository'
 import { getClientData as kvGetClientData } from '@/repositories/queue-repository'
-import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
 
 export async function callCommensal({
   restaurantName,
@@ -173,12 +173,12 @@ export async function handleClientLeftQueue({
   if (!client) return client
 
   await kvRemoveCommensal({ restaurantSlug, client })
-  const restaurant = await getRestaurantBySlug(restaurantSlug)
+  const { name } = await getFullRestaurantBySlug(restaurantSlug)
 
   await sendReservationCanceledByClientEmail({
     client,
     restaurantSlug,
-    restaurantName: restaurant.name || '',
+    restaurantName: name || '',
   })
 
   // add here logic of removed clients if needed (for metrics)
