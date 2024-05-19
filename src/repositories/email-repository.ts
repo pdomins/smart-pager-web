@@ -1,3 +1,4 @@
+import { assertAndReturn } from '@/lib/assertions'
 import { ContactUsHTML, NewRestaurantHTML } from '@/lib/emails'
 import {
   PickUpCanceledHTML,
@@ -10,8 +11,11 @@ import {
   AddedToQueueHTML,
   TableCanceledHTML,
   ReservationCanceledHTML,
+  ReservationCanceledByClientHTML,
 } from '@/lib/emails/queue'
 import { CommensalData, PickUpData } from '@/types/queues'
+
+const BASE_URL = assertAndReturn(process.env.NEXT_PUBLIC_BASE_URL)
 
 async function sendEmail({
   recipient,
@@ -24,6 +28,9 @@ async function sendEmail({
 }) {
   return await fetch(`/api/emails/send`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       recipient,
       subject,
@@ -32,6 +39,27 @@ async function sendEmail({
   })
 }
 
+async function sendEmailFromEndpoint({
+  recipient,
+  subject,
+  html,
+}: {
+  recipient: string
+  subject: string
+  html: string
+}) {
+  return await fetch(`${BASE_URL}/api/emails/send`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      recipient,
+      subject,
+      html,
+    }),
+  })
+}
 export async function sendContactUsEmail({
   email,
   message,
@@ -135,6 +163,27 @@ export async function sendReservationCanceledEmail({
     recipient: email,
     subject: `Tu reserva fue cancelada`,
     html: ReservationCanceledHTML({ name, restaurantName, restaurantSlug }),
+  })
+}
+
+export async function sendReservationCanceledByClientEmail({
+  client,
+  restaurantName,
+  restaurantSlug,
+}: {
+  client: CommensalData
+  restaurantName: string
+  restaurantSlug: string
+}) {
+  const { email, name } = client
+  return await sendEmailFromEndpoint({
+    recipient: email,
+    subject: `Te desanotaste de la lista!`,
+    html: ReservationCanceledByClientHTML({
+      name,
+      restaurantName,
+      restaurantSlug,
+    }),
   })
 }
 

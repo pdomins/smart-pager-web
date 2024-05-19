@@ -40,7 +40,7 @@ export async function getRestaurantByEmail(email: string) {
 export async function getRestaurantBySlug(slug: string) {
   noStore()
 
-  const result = await prisma.restaurant.findFirst({
+  const result = await prisma.restaurant.findFirstOrThrow({
     where: {
       slug,
     },

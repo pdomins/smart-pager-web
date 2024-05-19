@@ -451,3 +451,92 @@ export const ReservationCanceledHTML = ({
       </html>
   `
 }
+
+export const ReservationCanceledByClientHTML = ({
+  name,
+  restaurantName,
+  restaurantSlug,
+}: {
+  name: string
+  restaurantName: string
+  restaurantSlug: string
+}) => {
+  // src/app/restaurants/[restaurant]/page.tsx
+  const restaurantUrl = `${baseUrl}/restaurants/${restaurantSlug}`
+
+  return `
+      <html lang="es">
+      <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Cancelaste tu Reserva</title>
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+      <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 20px;
+          }
+          .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          }
+          .header {
+            background: linear-gradient(90deg, rgba(255,183,178,0.8) 0%, rgba(255,223,178,0.8) 100%);
+            color: #3A4D63;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Nunito', sans-serif;
+          }
+          .content {
+            text-align: center;
+            padding: 20px;
+            color: #4a5568;
+          }
+          .button {
+            display: inline-block;
+            padding: 1px;
+            background-color: #fffffff;
+            color:rgba(255,170,170) !important;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Nunito', sans-serif;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Nunito', sans-serif;
+          }
+          .text-footer {
+            font-size: 12px;
+            color: #777777;
+          }
+      </style>
+      </head>
+      <body>
+      <div class="container">
+        <div class="header">
+          <h1>Cancelaste tu reserva en ${restaurantName}</h1>
+        </div>
+        <div class="content">
+          <p>¡Hola ${name}!</p>
+          <p>Queremos informarte que te desanotaste de la fila para <strong>${restaurantName}</strong>.
+                  <p>Si crees que esto es un error o deseas hacer otra reserva, por favor no dudes en ponerte en contacto con nosotros o <a href=${restaurantUrl} class="button"><u>haz clic aquí para reservar nuevamente</u></a>.</p>
+      
+        </div>
+        <div class="footer">
+          <div><strong>Smart Pager</strong></div>
+          <p class="text-footer">Por favor, contáctanos al (11) 1234-5678 para más información o para hacer una nueva reserva.</p>
+        </div>
+      </div>
+      </body>
+      </html>
+  `
+}

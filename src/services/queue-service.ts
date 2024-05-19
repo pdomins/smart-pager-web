@@ -13,11 +13,14 @@ import {
   sendPickUpCanceledEmail,
   sendPickUpReadyEmail,
   sendPickUpReadyRetryEmail,
+  sendReservationCanceledByClientEmail,
   sendReservationCanceledEmail,
   sendTableCanceledEmail,
   sendTableReadyEmail,
   sendTableReadyRemainderEmail,
 } from '@/repositories/email-repository'
+import { getClientData as kvGetClientData } from '@/repositories/queue-repository'
+import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
 
 export async function callCommensal({
   restaurantName,
@@ -156,4 +159,28 @@ export async function cancelPickUp({
   await sendPickUpCanceledEmail({ restaurantName, ...order })
 
   // add here logic of removed pickups without completion if needed (for metrics)
+}
+
+export async function handleClientLeftQueue({
+  email,
+  restaurantSlug,
+}: {
+  email: string
+  restaurantSlug: string
+}) {
+  const client = (await kvGetClientData({ email })) as CommensalData | null
+
+  if (!client) return client
+
+  await kvRemoveCommensal({ restaurantSlug, client })
+  const restaurant = await getRestaurantBySlug(restaurantSlug)
+
+  await sendReservationCanceledByClientEmail({
+    client,
+    restaurantSlug,
+    restaurantName: restaurant.name || '',
+  })
+
+  // add here logic of removed clients if needed (for metrics)
+  return client
 }
