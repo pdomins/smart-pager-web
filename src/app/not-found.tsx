@@ -2,7 +2,7 @@ import React from 'react'
 import Container from '@/components/style/container'
 import Gradient from '@/components/style/gradient'
 import { Metadata } from 'next'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Error 404 - Smart Pager',
@@ -17,7 +17,7 @@ export default function NotFound() {
   const handleNavigation = () => {
     router.push('/');
   };
-  
+
   return (
     <div className="relative" id="error">
       <Gradient />
