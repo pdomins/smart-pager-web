@@ -1,8 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
 import Container from '@/components/style/container'
 import Gradient from '@/components/style/gradient'
 import { Metadata } from 'next'
+import { useRouter } from 'next/router'
 
 export const metadata: Metadata = {
   title: 'Error 404 - Smart Pager',
@@ -10,6 +10,14 @@ export const metadata: Metadata = {
 }
 
 export default function NotFound() {
+
+  const router = useRouter();
+
+
+  const handleNavigation = () => {
+    router.push('/');
+  };
+  
   return (
     <div className="relative" id="error">
       <Gradient />
@@ -33,9 +41,9 @@ export default function NotFound() {
             <p className="mt-8 text-gray-700">
               Parece que la página que estás buscando no existe. Pero no te
               preocupes, siempre puedes
-              <span className="text-violet-700">
+              <span className="text-violet-700" onClick={handleNavigation}>
                 {' '}
-                <Link href="/">volver al inicio</Link>{' '}
+                volver al inicio{' '}
               </span>
               y explorar desde allí.
             </p>
