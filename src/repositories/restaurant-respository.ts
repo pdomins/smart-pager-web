@@ -38,6 +38,7 @@ export async function getRestaurants({
       menu: true,
       avgTimePerTable: true,
       picture: true,
+      sponsored: true,
       location: {
         select: {
           address: true,
@@ -59,6 +60,7 @@ type RawRestaurantResult = {
   menu: string
   avgTimePerTable: string
   picture: string
+  sponsored: boolean
   address: string
   latitude: number
   longitude: number
@@ -75,7 +77,7 @@ export async function getRestaurantsSearch({
 }) {
   const skip = page * pageSize
   const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
-    SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, l.address, l.latitude, l.longitude
+    SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
     FROM "Restaurant" r
     JOIN "Location" l ON r."locationId" = l.id
     WHERE similarity(r.name, ${search}) > 0.2 AND r.authorized = true
@@ -92,6 +94,7 @@ export async function getRestaurantsSearch({
     menu: row.menu,
     avgTimePerTable: row.avgTimePerTable,
     picture: row.picture,
+    sponsored: row.sponsored,
     location: {
       address: row.address,
       latitude: row.latitude,
