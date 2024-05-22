@@ -23,6 +23,9 @@ export async function getRestaurants({
   const restaurants = await prisma.restaurant.findMany({
     skip,
     take: pageSize,
+    where: {
+      authorized: true,
+    },
     orderBy: {
       sponsored: 'desc',
     },
@@ -75,7 +78,7 @@ export async function getRestaurantsSearch({
     SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, l.address, l.latitude, l.longitude
     FROM "Restaurant" r
     JOIN "Location" l ON r."locationId" = l.id
-    WHERE similarity(r.name, ${search}) > 0.2
+    WHERE similarity(r.name, ${search}) > 0.2 AND r.authorized = true
     ORDER BY similarity(r.name, ${search}) DESC, r.sponsored DESC
     LIMIT ${pageSize} OFFSET ${skip}
   `
