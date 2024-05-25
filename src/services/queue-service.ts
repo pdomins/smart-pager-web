@@ -1,5 +1,6 @@
-import { CommensalData, PickUpData } from '@/types/queues'
+import { CommensalData, CommensalDataParams, PickUpData } from '@/types/queues'
 import {
+  addCommensal as kvAddCommensal,
   callCommensal as kvCallCommensal,
   removeCommensal as kvRemoveCommensal,
   retryCallCommensal as kvRetryCallCommensal,
@@ -13,11 +14,13 @@ import {
   sendPickUpCanceledEmail,
   sendPickUpReadyEmail,
   sendPickUpReadyRetryEmail,
-  sendReservationCanceledByClientEmail,
+  sendReservationCanceledFromAppEmail,
   sendReservationCanceledEmail,
   sendTableCanceledEmail,
   sendTableReadyEmail,
   sendTableReadyRemainderEmail,
+  sendAddedToQueueFromAppEmail,
+  sendAddedToQueueEmail,
 } from '@/repositories/email-repository'
 import { getClientData as kvGetClientData } from '@/repositories/queue-repository'
 import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
@@ -161,7 +164,7 @@ export async function cancelPickUp({
   // add here logic of removed pickups without completion if needed (for metrics)
 }
 
-export async function handleClientLeftQueue({
+export async function removeClientFromQueueFromApp({
   email,
   restaurantSlug,
 }: {
@@ -175,7 +178,7 @@ export async function handleClientLeftQueue({
   await kvRemoveCommensal({ restaurantSlug, client })
   const { name } = await getFullRestaurantBySlug(restaurantSlug)
 
-  await sendReservationCanceledByClientEmail({
+  await sendReservationCanceledFromAppEmail({
     client,
     restaurantSlug,
     restaurantName: name || '',
@@ -183,4 +186,74 @@ export async function handleClientLeftQueue({
 
   // add here logic of removed clients if needed (for metrics)
   return client
+}
+
+export async function addClientToQueueFromApp({
+  restaurantSlug,
+  email,
+  ...data
+}: { restaurantSlug: string; email: string } & CommensalDataParams) {
+  const { name, groupSize, description, phoneNumber } = data
+  const { name: restaurantName } = await getFullRestaurantBySlug(restaurantSlug)
+
+  const { response: success, authToken } = await kvAddCommensal({
+    restaurantSlug,
+    email,
+    clientData: {
+      name,
+      groupSize,
+      description: description || '',
+      phoneNumber,
+    },
+  })
+
+  if (success)
+    await sendAddedToQueueFromAppEmail({
+      restaurantName: restaurantName || '',
+      email,
+      name,
+    })
+
+  return { response: success, authToken }
+}
+
+export async function addClientToQueue({
+  restaurantSlug,
+  restaurantName: restaurantNameFromParams,
+  email,
+  ...data
+}: {
+  restaurantSlug: string
+  restaurantName?: string
+  email: string
+} & CommensalDataParams) {
+  const { name, groupSize, description, phoneNumber } = data
+  let restaurantName = restaurantNameFromParams
+  if (!restaurantName) {
+    const restaurant = await getFullRestaurantBySlug(restaurantSlug)
+    restaurantName = restaurant.name || ''
+  }
+
+  const { response: success, authToken } = await kvAddCommensal({
+    restaurantSlug,
+    email,
+    clientData: {
+      name,
+      groupSize,
+      description: description || '',
+      phoneNumber,
+    },
+  })
+
+  if (success) {
+    await sendAddedToQueueEmail({
+      restaurantName,
+      restaurantSlug,
+      email,
+      name,
+      authToken,
+    })
+  }
+
+  return { response: success, authToken }
 }

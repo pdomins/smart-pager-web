@@ -16,7 +16,6 @@ const ViewMenu = ({ menu }: { menu: string }) => {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages)
     setPageNumber(1)
-    console.log(menu)
   }
 
   function changePage(offset: number) {
@@ -43,7 +42,7 @@ const ViewMenu = ({ menu }: { menu: string }) => {
       ) : (
         <div className="w-full max-w-md overflow-hidden">
           <Document
-            file={'/tabla-de-integrales.pdf'}
+            file={menu}
             onLoadError={() => setIsErrored(true)}
             onLoadSuccess={onDocumentLoadSuccess}
           >

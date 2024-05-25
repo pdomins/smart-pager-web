@@ -76,7 +76,8 @@ export default function RestaurantPickUp({
       <AddPickUpDialog
         isOpenDialog={isOpenDialog}
         setIsOpenDialog={setIsOpenDialog}
-        restaurantSlug={restaurantData.slug}
+        restaurantSlug={restaurantSlug}
+        restaurantName={restaurantName}
         getPickUpList={getPickUpList}
       />
       <Gradient />

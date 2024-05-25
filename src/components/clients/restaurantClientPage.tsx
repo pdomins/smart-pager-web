@@ -39,7 +39,9 @@ export default function RestaurantClientPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const restaurant = await getFullRestaurantBySlug(restaurantSlug.restaurant)
+        const restaurant = await getFullRestaurantBySlug(
+          restaurantSlug.restaurant
+        )
         if (!restaurant) {
           router.push('/404')
           return

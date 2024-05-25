@@ -44,6 +44,7 @@ export default function Page() {
 
   return (
     <>
+      <title>Regístrate - Smart Pager</title>
       <Navbar />
       {!restaurantData || restaurantData?.slug ? (
         <Loading />

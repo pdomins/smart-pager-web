@@ -1,7 +1,9 @@
 import { pattern } from '@/lib/phone'
 import { validateSchema } from '@/lib/validator'
-import { addCommensal } from '@/services/kv/commensal-queue-service'
-import { handleClientLeftQueue } from '@/services/queue-service'
+import {
+  addClientToQueueFromApp,
+  removeClientFromQueueFromApp,
+} from '@/services/queue-service'
 import { HTTP_RESPONSE_STATUS } from '@/types/https'
 import { NextRequest, NextResponse } from 'next/server'
 import * as yup from 'yup'
@@ -57,15 +59,13 @@ export async function POST(
     },
   } = data
 
-  const { response } = await addCommensal({
+  const { response } = await addClientToQueueFromApp({
     restaurantSlug,
     email,
-    clientData: {
-      name,
-      groupSize: commensals,
-      description: description || '',
-      phoneNumber,
-    },
+    groupSize: commensals,
+    description: description || '',
+    name,
+    phoneNumber,
   })
 
   if (!response) {
@@ -102,7 +102,7 @@ export async function DELETE(
 
   if (!data) return res
 
-  const client = await handleClientLeftQueue({
+  const client = await removeClientFromQueueFromApp({
     email: data.client.email,
     restaurantSlug,
   })

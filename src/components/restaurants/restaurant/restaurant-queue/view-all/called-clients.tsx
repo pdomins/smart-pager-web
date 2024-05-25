@@ -74,7 +74,8 @@ const CalledClientListPage = ({
       <AddToQueueDialog
         isOpenDialog={isOpenDialog}
         setIsOpenDialog={setIsOpenDialog}
-        restaurantSlug={restaurantData.slug}
+        restaurantSlug={restaurantSlug}
+        restaurantName={restaurantName}
         getCommensalList={fetchClients}
       />
       <Gradient />

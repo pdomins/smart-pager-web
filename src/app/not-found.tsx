@@ -1,17 +1,14 @@
+'use client'
 import React from 'react'
-import Link from 'next/link'
 import Container from '@/components/style/container'
 import Gradient from '@/components/style/gradient'
-import { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Error 404 - Smart Pager',
-  description: 'smartpager.com.ar',
-}
+import { useRouter } from 'next/navigation'
 
 export default function NotFound() {
+  const router = useRouter()
   return (
     <div className="relative" id="error">
+      <title>Página No Encontrada - Smart Pager</title>
       <Gradient />
       <Container>
         <div className="relative pt-36 ml-auto">
@@ -35,7 +32,9 @@ export default function NotFound() {
               preocupes, siempre puedes
               <span className="text-violet-700">
                 {' '}
-                <Link href="/">volver al inicio</Link>{' '} {/* TODO: fix this */}
+                <button onClick={() => router.push('/')}>
+                  volver al inicio
+                </button>{' '}
               </span>
               y explorar desde allí.
             </p>

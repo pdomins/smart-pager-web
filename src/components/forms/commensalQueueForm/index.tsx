@@ -4,10 +4,9 @@ import { useParams, useRouter } from 'next/navigation'
 
 import CommensalQueueInnerForm from './form'
 import { pattern } from '@/lib/phone'
-import { addCommensal } from '@/services/kv/commensal-queue-service'
-import { sendAddedToQueueEmail } from '@/repositories/email-repository'
 import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
 import Spinner from '@/components/utils/spinner'
+import { addClientToQueue } from '@/services/queue-service'
 
 export default function CommensalQueueForm({
   toggleCommensalFormVisibility,
@@ -39,25 +38,17 @@ export default function CommensalQueueForm({
     if (!isSubmittable) return
 
     try {
-      const { response: success, authToken } = await addCommensal({
+      const { response: success } = await addClientToQueue({
         restaurantSlug,
+        restaurantName,
         email,
-        clientData: {
-          name,
-          groupSize: commensals,
-          description,
-          phoneNumber: phone,
-        },
+        name,
+        groupSize: commensals,
+        description,
+        phoneNumber: phone,
       })
 
       if (success) {
-        await sendAddedToQueueEmail({
-          restaurantSlug,
-          restaurantName,
-          name,
-          email,
-          authToken,
-        })
         router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
       } else {
         console.error('Failed to add commensal')

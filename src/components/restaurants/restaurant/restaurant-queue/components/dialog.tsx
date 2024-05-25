@@ -1,8 +1,9 @@
 // No lo voy a hacer reutilizable, despues para la queue de retiros hacemos otro :)
 'use client'
 import CommensalQueueInnerForm from '@/components/forms/commensalQueueForm/form'
+import Spinner from '@/components/utils/spinner'
 import { pattern } from '@/lib/phone'
-import { addCommensal } from '@/services/kv/commensal-queue-service'
+import { addClientToQueue } from '@/services/queue-service'
 import { Dialog } from '@mui/material'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 
@@ -10,11 +11,13 @@ const AddToQueueDialog = ({
   isOpenDialog,
   setIsOpenDialog,
   restaurantSlug,
+  restaurantName,
   getCommensalList,
 }: {
   isOpenDialog: boolean
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>
   restaurantSlug: string
+  restaurantName: string
   getCommensalList: () => Promise<void>
 }) => {
   const [email, setEmail] = useState<string>()
@@ -22,6 +25,7 @@ const AddToQueueDialog = ({
   const [commensals, setCommensals] = useState('1')
   const [phone, setPhone] = useState<string>()
   const [description, setDescription] = useState<string>('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const isSubmittable =
     email && name && commensals && phone && pattern.test(phone)
@@ -44,31 +48,33 @@ const AddToQueueDialog = ({
     }
 
     if (!isSubmittable) return
+    try {
+      setIsSubmitting(true)
+      console.log({
+        restaurantSlug,
+        email,
+        clientData: {
+          name,
+          groupSize: commensals,
+          description,
+          phoneNumber: phone,
+        },
+      })
 
-    console.log({
-      restaurantSlug,
-      email,
-      clientData: {
+      await addClientToQueue({
+        restaurantSlug,
+        restaurantName,
+        email,
         name,
         groupSize: commensals,
         description,
         phoneNumber: phone,
-      },
-    })
-
-    await addCommensal({
-      restaurantSlug,
-      email,
-      clientData: {
-        name,
-        groupSize: commensals,
-        description,
-        phoneNumber: phone,
-      },
-    })
-
-    handleClose()
-    getCommensalList()
+      })
+    } finally {
+      setIsSubmitting(false)
+      handleClose()
+      getCommensalList()
+    }
   }
 
   return (
@@ -95,13 +101,19 @@ const AddToQueueDialog = ({
             />
             {/* Botón de enviar */}
             <div className="px-3">
-              <button
-                type="submit"
-                className="bg-violet-500 hover:bg-violet-700 text-white font-bold mt-4 py-2 rounded rounded-full w-full disabled:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-75"
-                disabled={!isSubmittable}
-              >
-                Añadir
-              </button>
+              {!isSubmitting ? (
+                <button
+                  type="submit"
+                  className="bg-violet-500 hover:bg-violet-700 text-white font-bold mt-4 py-2 rounded rounded-full w-full disabled:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-75"
+                  disabled={!isSubmittable}
+                >
+                  Añadir
+                </button>
+              ) : (
+                <div className="flex justify-center">
+                  <Spinner />
+                </div>
+              )}
             </div>
           </form>
         </div>

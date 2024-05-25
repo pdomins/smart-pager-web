@@ -128,9 +128,7 @@ export default function RestaurantMenu({
             type="submit"
             className="relative flex px-6 h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-violet-700 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
           >
-            <span className="relative text-white text-white">
-              Subir menú
-            </span>
+            <span className="relative text-white text-white">Subir menú</span>
           </button>
         )}
       </form>

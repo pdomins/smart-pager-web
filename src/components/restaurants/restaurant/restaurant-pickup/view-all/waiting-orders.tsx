@@ -61,7 +61,8 @@ const WaitingPickUpListPage = ({
       <AddPickUpDialog
         isOpenDialog={isOpenDialog}
         setIsOpenDialog={setIsOpenDialog}
-        restaurantSlug={restaurantData.slug}
+        restaurantSlug={restaurantSlug}
+        restaurantName={restaurantName}
         getPickUpList={fetchOrders}
       />
       <Gradient />

@@ -1,6 +1,7 @@
 import { assertAndReturn } from '@/lib/assertions'
 import { ContactUsHTML, NewRestaurantHTML } from '@/lib/emails'
 import {
+  PickUpAddedHTML,
   PickUpCanceledHTML,
   PickUpReadyHTML,
   PickUpReadyRetryHTML,
@@ -11,7 +12,8 @@ import {
   AddedToQueueHTML,
   TableCanceledHTML,
   ReservationCanceledHTML,
-  ReservationCanceledByClientHTML,
+  ReservationCanceledFromAppHTML,
+  AddedToQueueFromAppHTML,
 } from '@/lib/emails/queue'
 import { CommensalData, PickUpData } from '@/types/queues'
 
@@ -166,7 +168,7 @@ export async function sendReservationCanceledEmail({
   })
 }
 
-export async function sendReservationCanceledByClientEmail({
+export async function sendReservationCanceledFromAppEmail({
   client,
   restaurantName,
   restaurantSlug,
@@ -179,10 +181,46 @@ export async function sendReservationCanceledByClientEmail({
   return await sendEmailFromEndpoint({
     recipient: email,
     subject: `Te desanotaste de la lista!`,
-    html: ReservationCanceledByClientHTML({
+    html: ReservationCanceledFromAppHTML({
       name,
       restaurantName,
       restaurantSlug,
+    }),
+  })
+}
+
+export async function sendAddedToQueueFromAppEmail({
+  ...params
+}: {
+  restaurantName: string
+  name: string
+  email: string
+}) {
+  return await sendEmailFromEndpoint({
+    recipient: params.email,
+    subject: '¡Te encontras en la lista de espera!',
+    html: AddedToQueueFromAppHTML({ ...params }),
+  })
+}
+
+export async function sendPickUpAddedEmail({
+  restaurantName,
+  name,
+  email,
+  orderNumber,
+}: {
+  restaurantName: string
+  name: string
+  email: string
+  orderNumber: string
+}) {
+  await sendEmail({
+    recipient: email,
+    subject: '¡Tu pedido está siendo preparado!',
+    html: PickUpAddedHTML({
+      name,
+      restaurantName,
+      orderNumber,
     }),
   })
 }

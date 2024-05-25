@@ -12,7 +12,7 @@ export const getAuthenticatedServerProps = async () => {
     session?.user?.email as string
   )
   if (!restaurantData) return notFound()
-  if(!restaurantData.name) return redirect('/management/sign-up')
+  if (!restaurantData.name) return redirect('/management/sign-up')
   if (!restaurantData.authorized) return redirect('/')
 
   return { session, restaurantData }
@@ -24,6 +24,9 @@ export const getUnauthenticatedServerProps = async () => {
     const restaurantData = await getRestaurantByEmail(
       session?.user?.email as string
     )
-    if (restaurantData && restaurantData.authorized) redirect('/management')
+    if (restaurantData) {
+      if (restaurantData.authorized) redirect('/management')
+      else if (!restaurantData.slug) redirect('/management/sign-up')
+    }
   }
 }
