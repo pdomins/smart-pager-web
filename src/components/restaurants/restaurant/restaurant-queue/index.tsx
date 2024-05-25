@@ -21,7 +21,6 @@ import {
   cancelCommensal,
   retryCallCommensal,
 } from '@/services/queue-service'
-import Snackbar from '@/components/utils/snackbar'
 
 export default function RestaurantQueue({
   restaurantData,
@@ -32,8 +31,6 @@ export default function RestaurantQueue({
   const [waitingClients, setWaitingClients] = useState<CommensalData[]>()
   const [calledClients, setCalledClients] = useState<CommensalData[]>()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
-  const [isErrorOnSubmittingClient, setIsErrorOnSubmittingClient] =
-    useState(false)
 
   if (!restaurantData.slug) {
     return <Loading />
@@ -74,20 +71,12 @@ export default function RestaurantQueue({
 
   return (
     <div className="relative" id="queue">
-      <Snackbar
-        type="error"
-        isOpen={isErrorOnSubmittingClient}
-        variant="filled"
-        setIsOpen={setIsErrorOnSubmittingClient}
-        text="El email o teléfono del cliente ya está registrado en una lista de espera de comensales o de pedidos para retirar. Por favor, asegúrate de cancelar el pedido existente antes de registrar esta información de nuevo."
-      />
       <AddToQueueDialog
         isOpenDialog={isOpenDialog}
         setIsOpenDialog={setIsOpenDialog}
         restaurantSlug={restaurantSlug}
         restaurantName={restaurantName}
         getCommensalList={getCommensalList}
-        setIsError={setIsErrorOnSubmittingClient}
       />
       <Gradient />
       <Container>

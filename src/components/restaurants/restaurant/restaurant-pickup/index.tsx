@@ -23,7 +23,6 @@ import {
   cancelPickUp,
   retryCallPickUp,
 } from '@/services/queue-service'
-import Snackbar from '@/components/utils/snackbar'
 
 export default function RestaurantPickUp({
   restaurantData,
@@ -34,7 +33,6 @@ export default function RestaurantPickUp({
   const [waitingOrders, setWaitingOrders] = useState<PickUpData[]>()
   const [calledOrders, setCalledOrders] = useState<PickUpData[]>()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
-  const [isError, setIsError] = useState(false)
 
   if (!restaurantData.slug) {
     return <Loading />
@@ -75,20 +73,12 @@ export default function RestaurantPickUp({
 
   return (
     <div className="relative" id="queue">
-      <Snackbar
-        type="error"
-        isOpen={isError}
-        variant="filled"
-        setIsOpen={setIsError}
-        text="El email o teléfono del cliente ya está registrado en una lista de espera de comensales o de pedidos para retirar. Por favor, asegúrate de cancelar el pedido existente antes de registrar esta información de nuevo."
-      />
       <AddPickUpDialog
         isOpenDialog={isOpenDialog}
         setIsOpenDialog={setIsOpenDialog}
         restaurantSlug={restaurantSlug}
         restaurantName={restaurantName}
         getPickUpList={getPickUpList}
-        setIsError={setIsError}
       />
       <Gradient />
       <Container>
