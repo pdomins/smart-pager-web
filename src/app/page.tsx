@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  getUnauthenticatedServerProps()
+  await getUnauthenticatedServerProps()
 
   return (
     <>
