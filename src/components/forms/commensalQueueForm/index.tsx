@@ -51,7 +51,7 @@ export default function CommensalQueueForm({
       if (success) {
         router.push(`/restaurants/${restaurantSlug}/queued/commensal`)
       } else {
-        console.error('Failed to add commensal')
+        router.push(`/restaurants/${restaurantSlug}/queued`)
       }
     } finally {
       setIsSubmitting(false)

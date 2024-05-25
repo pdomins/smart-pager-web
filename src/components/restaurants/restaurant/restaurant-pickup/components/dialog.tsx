@@ -14,12 +14,14 @@ const AddPickUpDialog = ({
   restaurantSlug,
   restaurantName,
   getPickUpList,
+  setIsError,
 }: {
   isOpenDialog: boolean
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>
   restaurantSlug: string
   restaurantName: string
   getPickUpList: () => Promise<void>
+  setIsError: Dispatch<SetStateAction<boolean>>
 }) => {
   const [email, setEmail] = useState<string>()
   const [name, setName] = useState<string>()
@@ -61,7 +63,7 @@ const AddPickUpDialog = ({
         },
       })
 
-      await addPickUp({
+      const success = await addPickUp({
         restaurantSlug,
         email,
         clientData: {
@@ -72,16 +74,20 @@ const AddPickUpDialog = ({
         },
       })
 
-      await sendPickUpAddedEmail({
-        restaurantName,
-        name,
-        email,
-        orderNumber: pickUpId,
-      })
+      if (!success) {
+        setIsError(true)
+      } else {
+        await sendPickUpAddedEmail({
+          restaurantName,
+          name,
+          email,
+          orderNumber: pickUpId,
+        })
+        handleClose()
+        getPickUpList()
+      }
     } finally {
       setIsSubmitting(false)
-      handleClose()
-      getPickUpList()
     }
   }
 

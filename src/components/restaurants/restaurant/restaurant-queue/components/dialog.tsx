@@ -13,12 +13,14 @@ const AddToQueueDialog = ({
   restaurantSlug,
   restaurantName,
   getCommensalList,
+  setIsError,
 }: {
   isOpenDialog: boolean
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>
   restaurantSlug: string
   restaurantName: string
   getCommensalList: () => Promise<void>
+  setIsError: Dispatch<SetStateAction<boolean>>
 }) => {
   const [email, setEmail] = useState<string>()
   const [name, setName] = useState<string>()
@@ -48,6 +50,7 @@ const AddToQueueDialog = ({
     }
 
     if (!isSubmittable) return
+
     try {
       setIsSubmitting(true)
       console.log({
@@ -61,7 +64,7 @@ const AddToQueueDialog = ({
         },
       })
 
-      await addClientToQueue({
+      const { response: success } = await addClientToQueue({
         restaurantSlug,
         restaurantName,
         email,
@@ -70,10 +73,14 @@ const AddToQueueDialog = ({
         description,
         phoneNumber: phone,
       })
+
+      if (!success) setIsError(true)
+      else {
+        handleClose()
+        getCommensalList()
+      }
     } finally {
       setIsSubmitting(false)
-      handleClose()
-      getCommensalList()
     }
   }
 

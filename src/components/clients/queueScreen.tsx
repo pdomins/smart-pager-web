@@ -29,11 +29,11 @@ export default function QueueScreen() {
       <div className="flex min-h-screen">
         <div className="text-center mx-auto px-4 sm:px-6 lg:px-8 items-center content-center">
           <h1 className="mt-5 font-bold text-3xl md:text-4xl lg:text-5xl text-gray-900">
-            ¡Ya se encuentra en una lista de espera!
+            ¡Ya te encontrás en una lista de espera!
           </h1>
           <p className="mt-4 md:text-lg lg:text-xl text-gray-700 italic">
-            Le enviaremos un mensaje por whatsapp cuando sea su turno. Si desea
-            desanotarse, verifique su email.
+            Te enviaremos un mensaje por whatsapp cuando sea tu turno. Si deseas
+            desanotarse, verificá tu email.
           </p>
           {menuUrl && (
             <button

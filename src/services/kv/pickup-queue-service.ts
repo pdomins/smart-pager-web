@@ -47,6 +47,7 @@ export async function addPickUp({
     clientData: data,
   })
   console.log(`Email ${email} added to the pickup queue.`)
+  
   return response
 }
 
