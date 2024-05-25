@@ -18,12 +18,15 @@ import { PickUpData } from '@/types/queues'
 import SkeletonCard from '../../components/skeleton-card'
 import AddPickUpDialog from '../components/dialog'
 import PickUpCard from '../components/card'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useRouter } from 'next/navigation'
 
 const CalledPickUpListPage = ({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) => {
+  const router = useRouter()
   const [orders, setOrders] = useState<PickUpData[]>()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const size = 3
@@ -71,11 +74,21 @@ const CalledPickUpListPage = ({
       />
       <Gradient />
       <Container className="flex flex-col flex-1 h-screen">
-        <div className="text-center pt-20">
-          <h1 className="font-bold text-4xl md:text-5xl">
-            Lista de Pedidos Completos
-          </h1>
-          <p className="mt-4 text-gray-700">
+        <div className="pt-20">
+          <div className="flex items-center justify-between">
+            <button
+              className="flex-1 relative text-left"
+              onClick={() => router.back()}
+            >
+              <ArrowBackIcon fontSize="large" />
+            </button>
+            <h1 className="flex-1 font-bold text-4xl md:text-5xl text-center">
+              Lista de <span className="text-purple-800">Pedidos</span>{' '}
+              Completos
+            </h1>
+            <div className="flex-1"></div>
+          </div>
+          <p className="mt-4 text-gray-700 text-center">
             Organizá aquellos pedidos que ya están listos pero aún no fueron
             retirados
           </p>

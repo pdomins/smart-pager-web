@@ -19,11 +19,15 @@ import {
   cancelCommensal,
   retryCallCommensal,
 } from '@/services/queue-service'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useRouter } from 'next/navigation'
+
 const CalledClientListPage = ({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) => {
+  const router = useRouter()
   const [clients, setClients] = useState<CommensalData[]>()
   const [groupSize, setGroupSize] = useState<string>('')
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -80,11 +84,20 @@ const CalledClientListPage = ({
       />
       <Gradient />
       <Container className="flex flex-col flex-1 h-screen">
-        <div className="text-center pt-20">
-          <h1 className="font-bold text-4xl md:text-5xl">
-            Lista de Clientes Llamados
-          </h1>
-          <p className="mt-4 text-gray-700">
+        <div className="pt-20">
+          <div className="flex items-center justify-between">
+            <button
+              className="flex-1 relative text-left"
+              onClick={() => router.back()}
+            >
+              <ArrowBackIcon fontSize="large" />
+            </button>
+            <h1 className="flex-1 font-bold text-4xl md:text-5xl text-center">
+              Clientes <span className="text-purple-800">Llamados</span>
+            </h1>
+            <div className="flex-1"></div>
+          </div>
+          <p className="mt-4 text-gray-700 text-center">
             Filtrar por número de personas en la mesa.
           </p>
         </div>

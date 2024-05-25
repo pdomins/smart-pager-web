@@ -82,7 +82,7 @@ export default function RestaurantQueue({
       <Container>
         <div className="text-center pt-20 pb-10">
           <h1 className="font-bold text-4xl md:text-5xl">
-            Lista de <span className="text-purple-800">Espera</span>
+            Lista de <span className="text-purple-800">Comensales</span>
           </h1>
           <p className="mt-4 text-gray-700">
             Gestiona la lista de clientes esperando a ser atendidos.

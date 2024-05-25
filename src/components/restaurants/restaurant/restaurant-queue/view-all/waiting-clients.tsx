@@ -16,12 +16,15 @@ import { Pagination, Tooltip } from '@mui/material'
 import { CommensalData } from '@/types/queues'
 import SkeletonCard from '../../components/skeleton-card'
 import { callCommensal, cancelCommensal } from '@/services/queue-service'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useRouter } from 'next/navigation'
 
 const WaitingClientListPage = ({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) => {
+  const router = useRouter()
   const [clients, setClients] = useState<CommensalData[]>()
   const [groupSize, setGroupSize] = useState<string>('')
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -78,14 +81,24 @@ const WaitingClientListPage = ({
       />
       <Gradient />
       <Container className="flex flex-col flex-1 h-screen">
-        <div className="text-center pt-20">
-          <h1 className="font-bold text-4xl md:text-5xl">
-            Lista de Clientes Esperando
-          </h1>
-          <p className="mt-4 text-gray-700">
+        <div className="pt-20">
+          <div className="flex items-center justify-between">
+            <button
+              className="flex-1 relative text-left"
+              onClick={() => router.back()}
+            >
+              <ArrowBackIcon fontSize="large" />
+            </button>
+            <h1 className="flex-1 font-bold text-4xl md:text-5xl text-center">
+              Lista de <span className="text-purple-800">Espera</span>
+            </h1>
+            <div className="flex-1"></div>
+          </div>
+          <p className="mt-4 text-gray-700 text-center">
             Filtrar por número de personas en la mesa.
           </p>
         </div>
+
         <div className="flex justify-between items-center space-x-2">
           <Filter groupSize={groupSize} setGroupSize={selectGroupSize} />
           <Tooltip title={'Agregar Cliente'} placement="top" arrow>
