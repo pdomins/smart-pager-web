@@ -8,6 +8,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PeopleIcon from '@mui/icons-material/People'
 import { useState } from 'react'
 import Spinner from '@/components/utils/spinner'
+import ConfirmationModal from '../../components/confirmation-modal'
 
 const ClientCard = ({
   client,
@@ -21,6 +22,8 @@ const ClientCard = ({
   onAcceptClient?: () => Promise<void>
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
+  
   const {
     name,
     groupSize: commensals,
@@ -44,6 +47,20 @@ const ClientCard = ({
 
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-center">
+      <ConfirmationModal
+        isOpenDialog={dialogIsOpen}
+        setIsOpenDialog={setDialogIsOpen}
+        name={name}
+        onSubmit={async () => {
+          try {
+            setIsLoading(true)
+            setDialogIsOpen(false)
+            await onRemoveClient()
+          } finally {
+            setIsLoading(false)
+          }
+        }}
+      />
       <div className="flex-1">
         <div className="flex items-start">
           <p className="text-lg font-bold">{name}</p>
@@ -110,14 +127,7 @@ const ClientCard = ({
           </Tooltip>
           <Tooltip title="Remover cliente" placement="top" arrow>
             <button
-              onClick={async () => {
-                try {
-                  setIsLoading(true)
-                  await onRemoveClient()
-                } finally {
-                  setIsLoading(false)
-                }
-              }}
+              onClick={() => setDialogIsOpen(true)}
               className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >
               <CloseIcon />
