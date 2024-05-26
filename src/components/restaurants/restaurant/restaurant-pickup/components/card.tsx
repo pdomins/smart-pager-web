@@ -5,6 +5,8 @@ import { Tooltip } from '@mui/material'
 import { differenceInMinutes, intervalToDuration } from 'date-fns'
 import { PickUpData } from '@/types/queues'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { useState } from 'react'
+import Spinner from '@/components/utils/spinner'
 
 const PickUpCard = ({
   order,
@@ -13,10 +15,11 @@ const PickUpCard = ({
   onAcceptOrder,
 }: {
   order: PickUpData
-  onCallOrder: () => void
-  onRemoveOrder: () => void
-  onAcceptOrder?: () => void
+  onCallOrder: () => Promise<void>
+  onRemoveOrder: () => Promise<void>
+  onAcceptOrder?: () => Promise<void>
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const {
     name,
     pickUpId,
@@ -72,34 +75,61 @@ const PickUpCard = ({
           )}
         </div>
       </div>
-      <div className="flex-initial">
-        {onAcceptOrder && (
-          <Tooltip title="Pedido retirado" placement="top" arrow>
+      {!isLoading ? (
+        <div className="flex-initial">
+          {onAcceptOrder && (
+            <Tooltip title="Pedido retirado" placement="top" arrow>
+              <button
+                onClick={async () => {
+                  try {
+                    setIsLoading(true)
+                    await onAcceptOrder()
+                  } finally {
+                    setIsLoading(false)
+                  }
+                }}
+                className="relative bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+              >
+                <DoneIcon />
+              </button>
+            </Tooltip>
+          )}
+          <Tooltip title="Llamar cliente" placement="top" arrow>
             <button
-              onClick={onAcceptOrder}
-              className="relative bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={async () => {
+                try {
+                  setIsLoading(true)
+                  await onCallOrder()
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              className="relative bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
             >
-              <DoneIcon />
+              <NotificationsActiveIcon />
             </button>
           </Tooltip>
-        )}
-        <Tooltip title="Llamar cliente" placement="top" arrow>
-          <button
-            onClick={onCallOrder}
-            className="relative bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            <NotificationsActiveIcon />
-          </button>
-        </Tooltip>
-        <Tooltip title="Remover pedido" placement="top" arrow>
-          <button
-            onClick={onRemoveOrder}
-            className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            <CloseIcon />
-          </button>
-        </Tooltip>
-      </div>
+          <Tooltip title="Remover pedido" placement="top" arrow>
+            <button
+              onClick={async () => {
+                try {
+                  setIsLoading(true)
+                  await onRemoveOrder()
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              <CloseIcon />
+            </button>
+          </Tooltip>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center px-4">
+          <Spinner />
+        </div>
+      )}
     </div>
   )
 }

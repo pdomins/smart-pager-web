@@ -6,6 +6,8 @@ import { differenceInMinutes, intervalToDuration } from 'date-fns'
 import { CommensalData } from '@/types/queues'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PeopleIcon from '@mui/icons-material/People'
+import { useState } from 'react'
+import Spinner from '@/components/utils/spinner'
 
 const ClientCard = ({
   client,
@@ -14,10 +16,11 @@ const ClientCard = ({
   onAcceptClient,
 }: {
   client: CommensalData
-  onCallClient: () => void
-  onRemoveClient: () => void
-  onAcceptClient?: () => void
+  onCallClient: () => Promise<void>
+  onRemoveClient: () => Promise<void>
+  onAcceptClient?: () => Promise<void>
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const {
     name,
     groupSize: commensals,
@@ -71,34 +74,61 @@ const ClientCard = ({
           )}
         </div>
       </div>
-      <div className="flex-initial">
-        {onAcceptClient && (
-          <Tooltip title="Cliente atendido" placement="top" arrow>
+      {!isLoading ? (
+        <div className="flex-initial">
+          {onAcceptClient && (
+            <Tooltip title="Cliente atendido" placement="top" arrow>
+              <button
+                onClick={async () => {
+                  try {
+                    setIsLoading(true)
+                    await onAcceptClient()
+                  } finally {
+                    setIsLoading(false)
+                  }
+                }}
+                className="relative bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+              >
+                <DoneIcon />
+              </button>
+            </Tooltip>
+          )}
+          <Tooltip title="Llamar cliente" placement="top" arrow>
             <button
-              onClick={onAcceptClient}
-              className="relative bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={async () => {
+                try {
+                  setIsLoading(true)
+                  await onCallClient()
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              className="relative bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
             >
-              <DoneIcon />
+              <NotificationsActiveIcon />
             </button>
           </Tooltip>
-        )}
-        <Tooltip title="Llamar cliente" placement="top" arrow>
-          <button
-            onClick={onCallClient}
-            className="relative bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            <NotificationsActiveIcon />
-          </button>
-        </Tooltip>
-        <Tooltip title="Remover cliente" placement="top" arrow>
-          <button
-            onClick={onRemoveClient}
-            className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            <CloseIcon />
-          </button>
-        </Tooltip>
-      </div>
+          <Tooltip title="Remover cliente" placement="top" arrow>
+            <button
+              onClick={async () => {
+                try {
+                  setIsLoading(true)
+                  await onRemoveClient()
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              className="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              <CloseIcon />
+            </button>
+          </Tooltip>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center px-4">
+          <Spinner />
+        </div>
+      )}
     </div>
   )
 }

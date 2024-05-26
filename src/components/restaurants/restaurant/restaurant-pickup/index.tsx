@@ -84,7 +84,7 @@ export default function RestaurantPickUp({
       <Container>
         <div className="text-center pt-20 pb-10">
           <h1 className="font-bold text-4xl md:text-5xl">
-            Lista de <span className="text-purple-800">Retiro</span>
+            Lista de <span className="text-purple-800">Pedidos</span>
           </h1>
           <p className="mt-4 text-gray-700">
             Organizá las órdenes listas para ser retiradas.
