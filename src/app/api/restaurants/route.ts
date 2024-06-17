@@ -7,8 +7,14 @@ export async function GET(req: NextRequest) {
   const page = Number(searchParams.get('page')) || 0
   const pageSize = Number(searchParams.get('pageSize')) || 10
   const search = searchParams.get('search') || undefined
+  const category = searchParams.get('category') || undefined
 
-  const restaurants = await searchRestaurants({ page, pageSize, search })
+  const restaurants = await searchRestaurants({
+    page,
+    pageSize,
+    search,
+    category,
+  })
 
   return NextResponse.json(
     { restaurants },

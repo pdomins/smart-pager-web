@@ -1,4 +1,5 @@
 import { RestaurantFormState } from '@/components/restaurants/sign-up/forms/restaurant-form'
+import { FoodType, foodTypes } from '@/lib/food'
 import {
   getRestaurants,
   getRestaurantsSearch,
@@ -29,16 +30,27 @@ export async function searchRestaurants({
   page,
   pageSize,
   search,
+  category,
 }: {
   page: number
   pageSize: number
   search?: string
+  category?: FoodType
 }) {
   if (!search) {
     const restaurants = await getRestaurants({ page, pageSize })
     return restaurants
   }
-  const restaurants = await getRestaurantsSearch({ page, pageSize, search })
+  const restaurants = await getRestaurantsSearch({
+    page,
+    pageSize,
+    search,
+    category,
+  })
 
   return restaurants
+}
+
+export function fetchRestaurantCategories(): readonly string[] {
+  return foodTypes
 }

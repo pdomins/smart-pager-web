@@ -1,6 +1,7 @@
 'use server'
 
 import { Coordinates } from '@/components/maps'
+import { FoodType } from '@/lib/food'
 import prisma from '@/lib/prisma'
 import { toKebabCase } from '@/lib/string'
 import uuid from '@/lib/uuid'
@@ -70,17 +71,24 @@ export async function getRestaurantsSearch({
   page,
   pageSize,
   search,
+  category,
 }: {
   page: number
   pageSize: number
   search: string
+  category?: FoodType
 }) {
   const skip = page * pageSize
+  const categoryCondition = category ? `AND r.type = ${category}` : ''
+  // const distanceCondition = TODO
+  // Que le pasamos desde la app para que tenga en cuenta la ubicacion actual del usuario
+
   const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
     SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
     FROM "Restaurant" r
     JOIN "Location" l ON r."locationId" = l.id
     WHERE similarity(r.name, ${search}) > 0.2 AND r.authorized = true
+    ${categoryCondition}
     ORDER BY similarity(r.name, ${search}) DESC, r.sponsored DESC
     LIMIT ${pageSize} OFFSET ${skip}
   `
