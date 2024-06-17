@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 function getCategory(category: string | null): string | undefined {
   if (category && (foodTypes as readonly string[]).includes(category)) {
-    return category
+    return category as FoodType
   } else {
     return undefined
   }
