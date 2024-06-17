@@ -37,7 +37,7 @@ export async function searchRestaurants({
   search?: string
   category?: FoodType
 }) {
-  if (!search) {
+  if (!search && !category) {
     const restaurants = await getRestaurants({ page, pageSize })
     return restaurants
   }

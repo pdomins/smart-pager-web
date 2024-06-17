@@ -75,11 +75,15 @@ export async function getRestaurantsSearch({
 }: {
   page: number
   pageSize: number
-  search: string
+  search?: string
   category?: FoodType
 }) {
   const skip = page * pageSize
   const categoryCondition = category ? `AND r.type = ${category}` : ''
+  const searchCondition = search
+    ? `AND similarity(r.name, ${search}) > 0.2`
+    : ''
+  const searchOrder = search ? `, similarity(r.name, ${search}) DESC` : ''
   // const distanceCondition = TODO
   // Que le pasamos desde la app para que tenga en cuenta la ubicacion actual del usuario
 
@@ -87,9 +91,10 @@ export async function getRestaurantsSearch({
     SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
     FROM "Restaurant" r
     JOIN "Location" l ON r."locationId" = l.id
-    WHERE similarity(r.name, ${search}) > 0.2 AND r.authorized = true
+    WHERE r.authorized = true
+    ${searchCondition}
     ${categoryCondition}
-    ORDER BY similarity(r.name, ${search}) DESC, r.sponsored DESC
+    ORDER BY r.sponsored DESC${searchOrder}
     LIMIT ${pageSize} OFFSET ${skip}
   `
 
