@@ -87,15 +87,24 @@ export async function getRestaurantsSearch({
   // const distanceCondition = TODO
   // Que le pasamos desde la app para que tenga en cuenta la ubicacion actual del usuario
 
+  // const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
+  //   SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+  //   FROM "Restaurant" r
+  //   JOIN "Location" l ON r."locationId" = l.id
+  //   WHERE r.authorized = true
+  //   ${searchCondition}
+  //   ${categoryCondition}
+  //   ORDER BY r.sponsored DESC${searchOrder}
+  //   LIMIT ${pageSize} OFFSET ${skip}
+  // `
+
   const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
-    SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-    FROM "Restaurant" r
-    JOIN "Location" l ON r."locationId" = l.id
-    WHERE r.authorized = true
-    ${searchCondition}
-    ${categoryCondition}
-    ORDER BY r.sponsored DESC${searchOrder}
-    LIMIT ${pageSize} OFFSET ${skip}
+  SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+  FROM "Restaurant" r
+  JOIN "Location" l ON r."locationId" = l.id
+  WHERE r.authorized = true
+  ORDER BY r.sponsored DESC
+  LIMIT 10 OFFSET 0
   `
 
   const results: Restaurants = rawResults.map((row) => ({
