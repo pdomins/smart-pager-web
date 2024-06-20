@@ -80,7 +80,7 @@ export async function getRestaurantsSearch({
 }) {
   console.log(page, pageSize, search, category)
   // const skip = page * pageSize
-  // const categoryCondition = category ? `AND r.type = ${category}` : ''
+  const categoryCondition = category ? ` AND r.type = ${category} ` : ''
   // const searchCondition = search
   //   ? `AND similarity(r.name, ${search}) > 0.2`
   //   : ''
@@ -103,7 +103,7 @@ export async function getRestaurantsSearch({
   SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
   FROM "Restaurant" r
   JOIN "Location" l ON r."locationId" = l.id
-  WHERE r.authorized = true
+  WHERE r.authorized = true ${categoryCondition}
   ORDER BY r.sponsored DESC
   LIMIT 10 OFFSET 0
   `
