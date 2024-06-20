@@ -79,36 +79,47 @@ export async function getRestaurantsSearch({
   category?: FoodType
 }) {
   console.log(page, pageSize, search, category)
-  // const skip = page * pageSize
-  const categoryCondition = category
-    ? ` AND r.type = ${category as string} `
-    : ''
-  // const searchCondition = search
-  //   ? `AND similarity(r.name, ${search}) > 0.2`
-  //   : ''
-  // const searchOrder = search ? `, similarity(r.name, ${search}) DESC` : ''
-  // const distanceCondition = TODO
-  // Que le pasamos desde la app para que tenga en cuenta la ubicacion actual del usuario
+  const skip = page * pageSize
 
-  // const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
-  //   SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-  //   FROM "Restaurant" r
-  //   JOIN "Location" l ON r."locationId" = l.id
-  //   WHERE r.authorized = true
-  //   ${searchCondition}
-  //   ${categoryCondition}
-  //   ORDER BY r.sponsored DESC${searchOrder}
-  //   LIMIT ${pageSize} OFFSET ${skip}
-  // `
+  let rawResults: RawRestaurantResult[] = []
 
-  const rawResults: RawRestaurantResult[] = await prisma.$queryRaw`
-  SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-  FROM "Restaurant" r
-  JOIN "Location" l ON r."locationId" = l.id
-  WHERE r.authorized = true ${categoryCondition}
-  ORDER BY r.sponsored DESC
-  LIMIT 10 OFFSET 0
-  `
+  if (category && search) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND r.type = ${category as string} AND similarity(r.name, ${search}) > 0.2
+      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (category) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND r.type = ${category as string}
+      ORDER BY r.sponsored DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (search) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND similarity(r.name, ${search}) > 0.2
+      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true
+      ORDER BY r.sponsored DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  }
 
   const results: Restaurants = rawResults.map((row) => ({
     slug: row.slug,
