@@ -80,7 +80,9 @@ export async function getRestaurantsSearch({
 }) {
   console.log(page, pageSize, search, category)
   // const skip = page * pageSize
-  const categoryCondition = category ? ` AND r.type = ${category} ` : ''
+  const categoryCondition = category
+    ? ` AND r.type = ${category as string} `
+    : ''
   // const searchCondition = search
   //   ? `AND similarity(r.name, ${search}) > 0.2`
   //   : ''
