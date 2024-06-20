@@ -78,12 +78,13 @@ export async function getRestaurantsSearch({
   search?: string
   category?: FoodType
 }) {
-  const skip = page * pageSize
-  const categoryCondition = category ? `AND r.type = ${category}` : ''
-  const searchCondition = search
-    ? `AND similarity(r.name, ${search}) > 0.2`
-    : ''
-  const searchOrder = search ? `, similarity(r.name, ${search}) DESC` : ''
+  console.log(page, pageSize, search, category)
+  // const skip = page * pageSize
+  // const categoryCondition = category ? `AND r.type = ${category}` : ''
+  // const searchCondition = search
+  //   ? `AND similarity(r.name, ${search}) > 0.2`
+  //   : ''
+  // const searchOrder = search ? `, similarity(r.name, ${search}) DESC` : ''
   // const distanceCondition = TODO
   // Que le pasamos desde la app para que tenga en cuenta la ubicacion actual del usuario
 
