@@ -111,7 +111,7 @@ export async function getRestaurantsSearch({
       SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
       FROM "Restaurant" r
       JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
+      WHERE r.authorized = true AND similarity(r.name, ${search}) > 0.2 AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
       ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
       LIMIT ${pageSize} OFFSET ${skip}
     `
