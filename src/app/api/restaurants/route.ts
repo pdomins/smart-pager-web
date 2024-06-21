@@ -19,12 +19,18 @@ export async function GET(req: NextRequest) {
   const category = getCategory(searchParams.get('category')) as
     | FoodType
     | undefined
+  const distance = Number(searchParams.get('distance')) || undefined
+  const longitude = Number(searchParams.get('longitude')) || undefined
+  const latitude = Number(searchParams.get('latitude')) || undefined
 
   const restaurants = await searchRestaurants({
     page,
     pageSize,
     search,
     category,
+    distance,
+    latitude,
+    longitude,
   })
 
   return NextResponse.json(
