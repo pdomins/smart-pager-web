@@ -31,13 +31,19 @@ export async function searchRestaurants({
   pageSize,
   search,
   category,
+  distance,
+  latitude,
+  longitude,
 }: {
   page: number
   pageSize: number
   search?: string
   category?: FoodType
+  distance?: number
+  latitude?: number
+  longitude?: number
 }) {
-  if (!search && !category) {
+  if (!search && !category && (!distance || distance === -1)) {
     const restaurants = await getRestaurants({ page, pageSize })
     return restaurants
   }
@@ -46,6 +52,9 @@ export async function searchRestaurants({
     pageSize,
     search,
     category,
+    distance,
+    latitude,
+    longitude,
   })
 
   return restaurants

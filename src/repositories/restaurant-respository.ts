@@ -72,18 +72,59 @@ export async function getRestaurantsSearch({
   pageSize,
   search,
   category,
+  distance,
+  latitude,
+  longitude,
 }: {
   page: number
   pageSize: number
   search?: string
   category?: FoodType
+  distance?: number
+  latitude?: number
+  longitude?: number
 }) {
-  console.log(page, pageSize, search, category)
   const skip = page * pageSize
 
   let rawResults: RawRestaurantResult[] = []
 
-  if (category && search) {
+  if (category && search && distance && latitude && longitude) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND r.type = ${category as string} AND similarity(r.name, ${search}) > 0.2 AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
+      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (category && distance && latitude && longitude) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND r.type = ${category as string} AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
+      ORDER BY r.sponsored DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (search && distance && latitude && longitude) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
+      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (distance && latitude && longitude) {
+    rawResults = await prisma.$queryRaw`
+      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+      FROM "Restaurant" r
+      JOIN "Location" l ON r."locationId" = l.id
+      WHERE r.authorized = true AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
+      ORDER BY r.sponsored DESC
+      LIMIT ${pageSize} OFFSET ${skip}
+    `
+  } else if (category && search) {
     rawResults = await prisma.$queryRaw`
       SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
       FROM "Restaurant" r
