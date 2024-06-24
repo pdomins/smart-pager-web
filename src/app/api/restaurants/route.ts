@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   const category = getCategory(searchParams.get('category')) as
     | FoodType
     | undefined
-  const distance = Number(searchParams.get('distance')) || -1
+  const distance = Number(searchParams.get('distance')) || undefined
   const longitude = Number(searchParams.get('longitude')) || undefined
   const latitude = Number(searchParams.get('latitude')) || undefined
 

@@ -67,10 +67,14 @@ type RawRestaurantResult = {
   longitude: number
 }
 
+function removeQuotes(inputString: string): string {
+  return inputString.replace(/["']/g, '')
+}
+
 export async function getRestaurantsSearch({
   page,
   pageSize,
-  search,
+  search: searchTerm,
   category,
   distance,
   latitude,
@@ -85,82 +89,33 @@ export async function getRestaurantsSearch({
   longitude?: number
 }) {
   const skip = page * pageSize
+  const curedSearchTerm = searchTerm ? removeQuotes(searchTerm) : ''
 
-  let rawResults: RawRestaurantResult[] = []
+  const categoryCondition = category ? `AND r.type = ${category as string}` : ''
 
-  if (category && search && distance && latitude && longitude) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND r.type = ${category as string} AND similarity(r.name, ${search}) > 0.2 AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
-      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (category && distance && latitude && longitude) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND r.type = ${category as string} AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
-      ORDER BY r.sponsored DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (search && distance && latitude && longitude) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND similarity(r.name, ${search}) > 0.2 AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
-      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (distance && latitude && longitude) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND ST_Distance_Sphere(ST_MakePoint(l.longitude, l.latitude),ST_MakePoint(${longitude}, ${latitude})) <= ${distance}
-      ORDER BY r.sponsored DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (category && search) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND r.type = ${category as string} AND similarity(r.name, ${search}) > 0.2
-      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (category) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND r.type = ${category as string}
-      ORDER BY r.sponsored DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else if (search) {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true AND similarity(r.name, ${search}) > 0.2
-      ORDER BY r.sponsored DESC, similarity(r.name, ${search}) DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  } else {
-    rawResults = await prisma.$queryRaw`
-      SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
-      FROM "Restaurant" r
-      JOIN "Location" l ON r."locationId" = l.id
-      WHERE r.authorized = true
-      ORDER BY r.sponsored DESC
-      LIMIT ${pageSize} OFFSET ${skip}
-    `
-  }
+  const distanceCondition =
+    distance && latitude && longitude
+      ? `AND ST_DWITHIN(l.coordinates::geography, ST_POINT(${longitude}, ${latitude})::geography, ${distance * 1000})` // st_dwithin works in meters (do NOT remove the *1000 ). We MUST cast to ::geography since we use srid 0 (default, we did not set a custom srid) so the points are geometries and not geographies. TODO: update the srid to geometry 4326
+      : ''
+
+  const searchTermCondition = searchTerm
+    ? `AND similarity(r.name, '${curedSearchTerm}') > 0.2`
+    : ''
+
+  const searchTermOrder = searchTerm
+    ? `, similarity(r.name, '${curedSearchTerm}') DESC`
+    : ''
+
+  const query = `
+    SELECT r.slug, r.name, r.email, r."operatingHours" AS "operatingHours", r.type, r.menu, r."avgTimePerTable" AS "avgTimePerTable", r.picture, r.sponsored, l.address, l.latitude, l.longitude
+    FROM "Restaurant" r, "Location" l
+    WHERE r."locationId" = l.id AND r.authorized = true ${categoryCondition} ${searchTermCondition} ${distanceCondition}
+    ORDER BY r.sponsored DESC ${searchTermOrder}
+    LIMIT ${pageSize} OFFSET ${skip}
+  `
+
+  const rawResults: RawRestaurantResult[] =
+    await prisma.$queryRaw`${Prisma.raw(query)}`
 
   const results: Restaurants = rawResults.map((row) => ({
     slug: row.slug,
