@@ -13,24 +13,31 @@ import Spinner from '@/components/utils/spinner'
 import { FoodType, foodTypes } from '@/lib/food'
 import { update } from '@/services/restaurant-service'
 import Snackbar from '@/components/utils/snackbar'
-import { isValidCalendar } from '@/lib/dates'
+import { copyAndCleanCalendar, isValidCalendar } from '@/lib/dates'
 
 const EditButtons = ({
   isEditing,
+  isSubmittable,
   resetInitialState,
   setIsEditing,
 }: {
   isEditing: boolean
+  isSubmittable: boolean
   resetInitialState: () => void
   setIsEditing: Dispatch<SetStateAction<boolean>>
 }) => {
   return isEditing ? (
     <>
-      <Tooltip title={'Guardar cambios'} placement="top" arrow>
+      <Tooltip
+        title={isSubmittable ? 'Guardar cambios' : 'No se puede guardar información inválida'}
+        placement="top"
+        arrow
+      >
         <button
           type="submit"
           key="submit"
-          className="relative bg-transparent text-gray-500 hover:text-green-500 font-bold rounded pr-2 mr-2"
+          className="relative bg-transparent text-gray-500 hover:text-green-500 font-bold rounded pr-2 mr-2 disabled:text-gray-500 disabled:cursor-not-allowed disabled:opacity-75"
+          disabled={!isSubmittable}
         >
           <DoneIcon />
         </button>
@@ -100,6 +107,10 @@ const RestaurantInfo = ({
       if (isSubmittable && hasChangesToSave()) {
         setIsLoading(true)
 
+        formState.weeklyCalendar = copyAndCleanCalendar(
+          formState.weeklyCalendar
+        )
+
         const res = await update({
           id: restaurantData.id,
           coordinates,
@@ -157,6 +168,7 @@ const RestaurantInfo = ({
               ) : (
                 <EditButtons
                   isEditing={isEditing}
+                  isSubmittable={!!isSubmittable}
                   resetInitialState={resetInitialState}
                   setIsEditing={setIsEditing}
                 />

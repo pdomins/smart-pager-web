@@ -5,7 +5,7 @@ import { Coordinates } from '../../maps'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantForm, { RestaurantFormState } from './forms/restaurant-form'
-import { defaultWeek, isValidCalendar } from '@/lib/dates'
+import { copyAndCleanCalendar, defaultWeek, isValidCalendar } from '@/lib/dates'
 import { update } from '@/services/restaurant-service'
 import { foodTypes, FoodType } from '@/lib/food'
 import { sendNewRestaurantEmail } from '@/repositories/email-repository'
@@ -37,6 +37,10 @@ export default function RestaurantSignUp({
     try {
       if (isSubmittable) {
         setIsLoading(true)
+
+        formState.weeklyCalendar = copyAndCleanCalendar(
+          formState.weeklyCalendar
+        )
 
         await update({
           id: restaurantData.id,

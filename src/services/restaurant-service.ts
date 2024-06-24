@@ -1,5 +1,4 @@
 import { RestaurantFormState } from '@/components/restaurants/sign-up/forms/restaurant-form'
-import { copyAndCleanCalendar } from '@/lib/dates'
 import { FoodType, foodTypes } from '@/lib/food'
 import {
   getRestaurants,
@@ -19,7 +18,7 @@ export async function update({
     address: data.address,
     type: data.restaurantType || undefined,
     avgTimePerTable: data.averageTimePerTable || undefined,
-    operatingHours: copyAndCleanCalendar(data.weeklyCalendar),
+    operatingHours: data.weeklyCalendar,
   }
 
   const updatedValues = await updateRestaurant({ id, name, ...dataToUpdate })

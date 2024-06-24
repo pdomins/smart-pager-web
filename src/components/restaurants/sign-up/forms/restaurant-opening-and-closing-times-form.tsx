@@ -1,6 +1,10 @@
 import Snackbar from '@/components/utils/snackbar'
 import { useState } from 'react'
-import { WeeklyCalendar, RestaurantFormState } from './restaurant-form'
+import {
+  WeeklyCalendar,
+  RestaurantFormState,
+  OpenCloseInterval,
+} from './restaurant-form'
 import { daysOfWeek } from '@/lib/dates'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
@@ -108,6 +112,10 @@ const RestaurantOpeningAndClosingTimesForm = ({
     }))
   }
 
+  const hasError = ({ openingTime, closingTime }: OpenCloseInterval) => {
+    return closingTime && openingTime && openingTime >= closingTime
+  }
+
   return (
     <>
       <Snackbar
@@ -174,50 +182,75 @@ const RestaurantOpeningAndClosingTimesForm = ({
                       </label>
                     </div>
                     {weeklyCalendar[day].intervals.map((interval, index) => (
-                      <div className="flex flex-row w-full gap-x-1" key={index}>
-                        <input
-                          type="time"
-                          className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
-                          value={interval.openingTime || ''}
-                          onChange={(e) =>
-                            updateTime(
-                              day,
-                              index,
-                              'openingTime',
-                              e.target.value
-                            )
-                          }
-                          required
-                          disabled={disabled}
-                        />
-
-                        <input
-                          type="time"
-                          className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
-                          value={interval.closingTime || ''}
-                          onChange={(e) =>
-                            updateTime(
-                              day,
-                              index,
-                              'closingTime',
-                              e.target.value
-                            )
-                          }
-                          required
-                          disabled={disabled}
-                        />
-
-                        <button
-                          onClick={() => {
-                            removeInterval(day, index)
-                          }}
-                          disabled={disabled}
-                          type="button"
-                          className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                      <>
+                        <div
+                          className="flex flex-row w-full gap-x-1"
+                          key={index}
                         >
-                          <RemoveCircleOutlineIcon />
-                        </button>
-                      </div>
+                          <input
+                            type="time"
+                            className={`${hasError({ openingTime: interval.openingTime, closingTime: interval.closingTime }) && 'border-red-500'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                            value={interval.openingTime || ''}
+                            onChange={(e) => {
+                              if (
+                                interval.closingTime &&
+                                e.target.value >= interval.closingTime
+                              ) {
+                                setShowIsTimeError(true)
+                              }
+                              updateTime(
+                                day,
+                                index,
+                                'openingTime',
+                                e.target.value
+                              )
+                            }}
+                            required
+                            disabled={disabled}
+                          />
+
+                          <input
+                            type="time"
+                            className={`${hasError({ openingTime: interval.openingTime, closingTime: interval.closingTime }) && 'border-red-500'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                            value={interval.closingTime || ''}
+                            onChange={(e) => {
+                              if (
+                                interval.openingTime &&
+                                interval.openingTime >= e.target.value
+                              ) {
+                                setShowIsTimeError(true)
+                              }
+                              updateTime(
+                                day,
+                                index,
+                                'closingTime',
+                                e.target.value
+                              )
+                            }}
+                            required
+                            disabled={disabled}
+                          />
+
+                          <button
+                            onClick={() => {
+                              removeInterval(day, index)
+                            }}
+                            disabled={disabled}
+                            type="button"
+                            className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                          >
+                            <RemoveCircleOutlineIcon />
+                          </button>
+                        </div>
+                        {hasError({
+                          openingTime: interval.openingTime,
+                          closingTime: interval.closingTime,
+                        }) && (
+                          <div className="text-red-500 text-sm italic">
+                            Por favor, selecciona un intervalo válido.
+                          </div>
+                        )}
+                      </>
                     ))}
                   </div>
                 )}

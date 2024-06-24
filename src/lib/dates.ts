@@ -71,6 +71,9 @@ export const isValidCalendar = (formState: RestaurantFormState) => {
         if (!interval.openingTime || !interval.closingTime) {
           return false
         }
+        if (interval.openingTime >= interval.closingTime) {
+          return false
+        }
       }
     }
   }
