@@ -122,9 +122,18 @@ export default function RestaurantClientPage() {
                       <p key={day}>
                         <span className="font-semibold">{day}:</span>{' '}
                         {info.isOpen ? (
-                          <span className="text-violet-600">
-                            {info.openingTime} - {info.closingTime}
-                          </span>
+                          info.intervals.length > 0 ? (
+                            info.intervals.map((interval, index) => (
+                              <span key={index} className="text-violet-600">
+                                {interval.openingTime} - {interval.closingTime}
+                                {index < info.intervals.length - 1 ? ', ' : ''}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-violet-600">
+                              No hay horarios disponibles
+                            </span>
+                          )
                         ) : (
                           'Cerrado'
                         )}

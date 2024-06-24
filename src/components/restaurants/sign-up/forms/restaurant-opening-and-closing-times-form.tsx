@@ -2,6 +2,8 @@ import Snackbar from '@/components/utils/snackbar'
 import { useState } from 'react'
 import { WeeklyCalendar, RestaurantFormState } from './restaurant-form'
 import { daysOfWeek } from '@/lib/dates'
+import ControlPointIcon from '@mui/icons-material/ControlPoint'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import styles from './styles.module.css'
 
 const RestaurantOpeningAndClosingTimesForm = ({
@@ -24,6 +26,83 @@ const RestaurantOpeningAndClosingTimesForm = ({
         [day]: {
           ...prev.weeklyCalendar[day],
           isOpen,
+        },
+      },
+    }))
+    const intervals = weeklyCalendar[day].intervals
+
+    if (intervals.length === 0) {
+      addInterval(day)
+    }
+  }
+
+  const addInterval = (day: string) => {
+    setFormState((prev) => ({
+      ...prev,
+      weeklyCalendar: {
+        ...prev.weeklyCalendar,
+        [day]: {
+          ...prev.weeklyCalendar[day],
+          intervals: [
+            ...prev.weeklyCalendar[day].intervals,
+            { openingTime: null, closingTime: null },
+          ],
+        },
+      },
+    }))
+  }
+
+  const removeInterval = (day: string, index: number) => {
+    setFormState((prev) => {
+      const intervals = prev.weeklyCalendar[day].intervals
+
+      if (intervals.length === 1) {
+        return {
+          ...prev,
+          weeklyCalendar: {
+            ...prev.weeklyCalendar,
+            [day]: {
+              ...prev.weeklyCalendar[day],
+              isOpen: false,
+            },
+          },
+        }
+      }
+
+      return {
+        ...prev,
+        weeklyCalendar: {
+          ...prev.weeklyCalendar,
+          [day]: {
+            ...prev.weeklyCalendar[day],
+            intervals: intervals.filter((_, idx) => idx !== index),
+          },
+        },
+      }
+    })
+  }
+
+  const updateTime = (
+    day: string,
+    index: number,
+    field: 'openingTime' | 'closingTime',
+    time: string
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      weeklyCalendar: {
+        ...prev.weeklyCalendar,
+        [day]: {
+          ...prev.weeklyCalendar[day],
+          intervals: prev.weeklyCalendar[day].intervals.map((interval, idx) => {
+            if (idx === index) {
+              return {
+                ...interval,
+                [field]: time,
+              }
+            }
+            return interval
+          }),
         },
       },
     }))
@@ -63,7 +142,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className={`${styles.form_checkbox}`}
+                    className={`${styles.form_checkbox} disabled:cursor-not-allowed disabled:opacity-75`}
                     checked={weeklyCalendar[day].isOpen}
                     onChange={() =>
                       toggleDayOpen(day, !weeklyCalendar[day].isOpen)
@@ -71,54 +150,75 @@ const RestaurantOpeningAndClosingTimesForm = ({
                     disabled={disabled}
                   />
                   <h3 className="font-semibold text-gray-700">{day}</h3>
+                  <button
+                    onClick={() => {
+                      addInterval(day)
+                    }}
+                    type="button"
+                    disabled={disabled}
+                    className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                  >
+                    <ControlPointIcon />
+                  </button>
                 </div>
                 {weeklyCalendar[day].isOpen && (
-                  <div className="flex gap-4 items-center">
-                    <label className="flex-1 text-gray-700">
-                      Horario de apertura:{' '}
-                      <span className="text-red-500">*</span>
-                      <input
-                        type="time"
-                        className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
-                        value={weeklyCalendar[day].openingTime || ''}
-                        onChange={(e) => {
-                          setFormState((prev) => ({
-                            ...prev,
-                            weeklyCalendar: {
-                              ...prev.weeklyCalendar,
-                              [day]: {
-                                ...prev.weeklyCalendar[day],
-                                openingTime: e.target.value,
-                              },
-                            },
-                          }))
-                        }}
-                        required
-                        disabled={disabled}
-                      />
-                    </label>
-                    <label className="flex-1 text-gray-700">
-                      Horario de cierre: <span className="text-red-500">*</span>
-                      <input
-                        type="time"
-                        className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
-                        value={weeklyCalendar[day].closingTime || ''}
-                        onChange={(e) => {
-                          setFormState((prev) => ({
-                            ...prev,
-                            weeklyCalendar: {
-                              ...prev.weeklyCalendar,
-                              [day]: {
-                                ...prev.weeklyCalendar[day],
-                                closingTime: e.target.value,
-                              },
-                            },
-                          }))
-                        }}
-                        required
-                        disabled={disabled}
-                      />
-                    </label>
+                  <div className="flex gap-4 items-center flex-col">
+                    <div className="flex flex-row w-full">
+                      <label className="flex-1 text-gray-700">
+                        Horario de apertura:{' '}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <label className="flex-1 text-gray-700">
+                        Horario de cierre:{' '}
+                        <span className="text-red-500">*</span>
+                      </label>
+                    </div>
+                    {weeklyCalendar[day].intervals.map((interval, index) => (
+                      <div className="flex flex-row w-full gap-x-1" key={index}>
+                        <input
+                          type="time"
+                          className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                          value={interval.openingTime || ''}
+                          onChange={(e) =>
+                            updateTime(
+                              day,
+                              index,
+                              'openingTime',
+                              e.target.value
+                            )
+                          }
+                          required
+                          disabled={disabled}
+                        />
+
+                        <input
+                          type="time"
+                          className={`form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
+                          value={interval.closingTime || ''}
+                          onChange={(e) =>
+                            updateTime(
+                              day,
+                              index,
+                              'closingTime',
+                              e.target.value
+                            )
+                          }
+                          required
+                          disabled={disabled}
+                        />
+
+                        <button
+                          onClick={() => {
+                            removeInterval(day, index)
+                          }}
+                          disabled={disabled}
+                          type="button"
+                          className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                        >
+                          <RemoveCircleOutlineIcon />
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

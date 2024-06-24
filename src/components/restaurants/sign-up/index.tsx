@@ -5,7 +5,7 @@ import { Coordinates } from '../../maps'
 import Spinner from '../../utils/spinner'
 import { Restaurant } from '@/types/restaurant'
 import RestaurantForm, { RestaurantFormState } from './forms/restaurant-form'
-import { defaultWeek } from '@/lib/dates'
+import { defaultWeek, isValidCalendar } from '@/lib/dates'
 import { update } from '@/services/restaurant-service'
 import { foodTypes, FoodType } from '@/lib/food'
 import { sendNewRestaurantEmail } from '@/repositories/email-repository'
@@ -60,23 +60,11 @@ export default function RestaurantSignUp({
     }
   }
 
-  const isValidCalendar = () => {
-    for (const day in formState.weeklyCalendar) {
-      const dayInfo = formState.weeklyCalendar[day]
-      if (dayInfo.isOpen) {
-        if (!dayInfo.openingTime || !dayInfo.closingTime) {
-          return false
-        }
-      }
-    }
-    return true
-  }
-
   const isSubmittable =
     formState.name &&
     formState.restaurantType &&
     foodTypes.includes(formState.restaurantType as FoodType) &&
-    isValidCalendar() &&
+    isValidCalendar(formState) &&
     formState.averageTimePerTable &&
     coordinates &&
     address

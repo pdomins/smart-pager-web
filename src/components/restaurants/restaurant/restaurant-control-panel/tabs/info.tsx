@@ -13,6 +13,7 @@ import Spinner from '@/components/utils/spinner'
 import { FoodType, foodTypes } from '@/lib/food'
 import { update } from '@/services/restaurant-service'
 import Snackbar from '@/components/utils/snackbar'
+import { isValidCalendar } from '@/lib/dates'
 
 const EditButtons = ({
   isEditing,
@@ -126,23 +127,11 @@ const RestaurantInfo = ({
     )
   }
 
-  const isValidCalendar = () => {
-    for (const day in formState.weeklyCalendar) {
-      const dayInfo = formState.weeklyCalendar[day]
-      if (dayInfo.isOpen) {
-        if (!dayInfo.openingTime || !dayInfo.closingTime) {
-          return false
-        }
-      }
-    }
-    return true
-  }
-
   const isSubmittable =
     formState.name &&
     formState.restaurantType &&
     foodTypes.includes(formState.restaurantType as FoodType) &&
-    isValidCalendar() &&
+    isValidCalendar(formState) &&
     formState.averageTimePerTable &&
     coordinates &&
     address

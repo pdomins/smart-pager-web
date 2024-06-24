@@ -6,9 +6,13 @@ import RestaurantOpeningAndClosingTimesForm from './restaurant-opening-and-closi
 import { RestaurantTypeForm } from './restaurant-type'
 import { FoodType } from '@/lib/food'
 
-export type DayOfWeekInfo = {
+export type OpenCloseInterval = {
   openingTime: string | null
   closingTime: string | null
+}
+
+export type DayOfWeekInfo = {
+  intervals: OpenCloseInterval[]
   isOpen: boolean
 }
 

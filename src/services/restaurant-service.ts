@@ -1,4 +1,5 @@
 import { RestaurantFormState } from '@/components/restaurants/sign-up/forms/restaurant-form'
+import { copyAndCleanCalendar } from '@/lib/dates'
 import { FoodType, foodTypes } from '@/lib/food'
 import {
   getRestaurants,
@@ -18,7 +19,7 @@ export async function update({
     address: data.address,
     type: data.restaurantType || undefined,
     avgTimePerTable: data.averageTimePerTable || undefined,
-    operatingHours: data.weeklyCalendar,
+    operatingHours: copyAndCleanCalendar(data.weeklyCalendar),
   }
 
   const updatedValues = await updateRestaurant({ id, name, ...dataToUpdate })
@@ -43,7 +44,7 @@ export async function searchRestaurants({
   latitude?: number
   longitude?: number
 }) {
-  if (!search && !category && (!distance || distance === -1)) {
+  if (!search && !category && !distance) {
     const restaurants = await getRestaurants({ page, pageSize })
     return restaurants
   }
@@ -60,6 +61,6 @@ export async function searchRestaurants({
   return restaurants
 }
 
-export function fetchRestaurantCategories(): readonly string[] {
+export function fetchRestaurantCategories() {
   return foodTypes
 }
