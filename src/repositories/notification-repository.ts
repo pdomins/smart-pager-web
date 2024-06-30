@@ -1,9 +1,8 @@
-// import { assertAndReturn } from '@/lib/assertions'
 
-const NOTIFICATIONS_URL =
-  'https://fcm.googleapis.com/v1/projects/smart-pager-415412/messages:send'
+import { assertAndReturn } from "@/lib/assertions"
 
-  // NOTIFICATIONS_URL='https://fcm.googleapis.com/v1/projects/smart-pager-415412/messages:send'
+const NOTIFICATIONS_URL = assertAndReturn(process.env.NEXT_PUBLIC_NOTIFICATIONS_URL)
+
 export async function sendNotification({
   body,
   title,

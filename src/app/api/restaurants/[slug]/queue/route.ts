@@ -64,21 +64,28 @@ export async function POST(
     },
   } = data
 
-  const { response } = await addClientToQueueFromApp({
-    restaurantSlug,
-    email,
-    groupSize: commensals,
-    description: description || '',
-    name,
-    phoneNumber,
-    mobileAuthToken: authToken,
-    messagingToken,
-  })
+  try {
+    const { response } = await addClientToQueueFromApp({
+      restaurantSlug,
+      email,
+      groupSize: commensals,
+      description: description || '',
+      name,
+      phoneNumber,
+      mobileAuthToken: authToken,
+      messagingToken,
+    })
 
-  if (!response) {
+    if (!response) {
+      return NextResponse.json(
+        { msg: 'Client already in queue' },
+        { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
+      )
+    }
+  } catch (error) {
     return NextResponse.json(
-      { msg: 'Client already in queue' },
-      { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
+      { msg: `Something unexpected happened, ${error}` },
+      { status: HTTP_RESPONSE_STATUS.SERVICE_UNAVAILABLE }
     )
   }
 
