@@ -8,6 +8,8 @@ export type CommensalDataParams = {
   groupSize: string
   phoneNumber: string
   description: string
+  mobileAuthToken?: string
+  messagingToken?: string
 }
 
 export type CommensalData = CommensalDataParams & {

@@ -113,9 +113,7 @@ export async function getRestaurantsSearch({
     ORDER BY r.sponsored DESC ${searchTermOrder}
     LIMIT ${pageSize} OFFSET ${skip}
   `
-
-  console.log(query)
-
+  
   const rawResults: RawRestaurantResult[] =
     await prisma.$queryRaw`${Prisma.raw(query)}`
 

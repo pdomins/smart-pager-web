@@ -24,6 +24,12 @@ import {
 } from '@/repositories/email-repository'
 import { getClientData as kvGetClientData } from '@/repositories/queue-repository'
 import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
+import {
+  sendReservationCanceledNotification,
+  sendTableCanceledNotification,
+  sendTableReadyNotification,
+  sendTableReadyRemainderNotification,
+} from '@/repositories/notification-repository'
 
 export async function callCommensal({
   restaurantName,
@@ -36,6 +42,12 @@ export async function callCommensal({
 }) {
   await kvCallCommensal({ restaurantSlug, client })
   await sendTableReadyEmail({ restaurantName, ...client })
+  if (client.messagingToken && client.mobileAuthToken)
+    await sendTableReadyNotification({
+      restaurantName,
+      messagingToken: client.messagingToken,
+      mobileAuthToken: client.mobileAuthToken,
+    })
 
   // add metrics logic here
 }
@@ -49,6 +61,12 @@ export async function retryCallCommensal({
 }) {
   await kvRetryCallCommensal({ client })
   await sendTableReadyRemainderEmail({ restaurantName, ...client })
+  if (client.messagingToken && client.mobileAuthToken)
+    await sendTableReadyRemainderNotification({
+      restaurantName,
+      messagingToken: client.messagingToken,
+      mobileAuthToken: client.mobileAuthToken,
+    })
 
   // add metrics logic here
 }
@@ -81,14 +99,29 @@ export async function cancelCommensal({
     restaurantSlug,
     client,
   })
+
   if (client.timesCalled === 0) {
     await sendReservationCanceledEmail({
       restaurantName,
       client,
       restaurantSlug,
     })
+    if (client.messagingToken && client.mobileAuthToken) {
+      await sendReservationCanceledNotification({
+        restaurantName,
+        messagingToken: client.messagingToken,
+        mobileAuthToken: client.mobileAuthToken,
+      })
+    }
   } else {
     await sendTableCanceledEmail({ restaurantName, client, restaurantSlug })
+    if (client.messagingToken && client.mobileAuthToken) {
+      await sendTableCanceledNotification({
+        restaurantName,
+        messagingToken: client.messagingToken,
+        mobileAuthToken: client.mobileAuthToken,
+      })
+    }
   }
 
   // add here logic of removed commensals without completion if needed (for metrics)
@@ -213,6 +246,8 @@ export async function addClientToQueueFromApp({
       email,
       name,
     })
+
+  // await sendNotification({})
 
   return { response: success, authToken }
 }

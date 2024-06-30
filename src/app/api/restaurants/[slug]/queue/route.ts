@@ -15,6 +15,8 @@ const schema = yup.object().shape({
     commensalsAmount: yup.string().required(),
     phoneNumber: yup.string().required().matches(pattern),
     description: yup.string().optional(),
+    authToken: yup.string().required(),
+    messagingToken: yup.string().required(),
   }),
 })
 
@@ -37,7 +39,8 @@ const deleteSchema = yup.object().shape({
  *    - commensalsAmount (string): The total number of diners included in the reservation.
  *    - phoneNumber (string): The client's contact phone number.
  *    - description (string, optional): Any additional information about the reservation that the client wishes to provide.
- *
+ *    - authToken (string): Auth token needed to send notifications
+ *    - messagingToken (string): Mobile id
  */
 export async function POST(
   req: NextRequest,
@@ -56,6 +59,8 @@ export async function POST(
       commensalsAmount: commensals,
       description,
       phoneNumber,
+      authToken,
+      messagingToken,
     },
   } = data
 
@@ -66,6 +71,8 @@ export async function POST(
     description: description || '',
     name,
     phoneNumber,
+    mobileAuthToken: authToken,
+    messagingToken,
   })
 
   if (!response) {
@@ -121,6 +128,7 @@ export async function DELETE(
 
 // TODO DELETE ME AFTER
 export async function GET() {
+  //await sendNotification({ authToken: '', messagingToken: '' })
   return NextResponse.json(
     { msg: 'hola dax' },
     { status: HTTP_RESPONSE_STATUS.SUCCESS }
