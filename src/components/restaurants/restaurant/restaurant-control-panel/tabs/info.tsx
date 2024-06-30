@@ -29,7 +29,7 @@ const EditButtons = ({
   return isEditing ? (
     <>
       <Tooltip
-        title={isSubmittable ? 'Guardar cambios' : 'No se puede guardar información inválida'}
+        title={isSubmittable ? 'Guardar cambios' : 'Revisar formato de la información antes de guardar'}
         placement="top"
         arrow
       >

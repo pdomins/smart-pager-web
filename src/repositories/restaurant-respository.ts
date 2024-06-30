@@ -91,7 +91,7 @@ export async function getRestaurantsSearch({
   const skip = page * pageSize
   const curedSearchTerm = searchTerm ? removeQuotes(searchTerm) : ''
 
-  const categoryCondition = category ? `AND r.type = ${category as string}` : ''
+  const categoryCondition = category ? `AND r.type = '${category as string}'` : ''
 
   const distanceCondition =
     distance && latitude && longitude
@@ -113,6 +113,8 @@ export async function getRestaurantsSearch({
     ORDER BY r.sponsored DESC ${searchTermOrder}
     LIMIT ${pageSize} OFFSET ${skip}
   `
+
+  console.log(query)
 
   const rawResults: RawRestaurantResult[] =
     await prisma.$queryRaw`${Prisma.raw(query)}`
