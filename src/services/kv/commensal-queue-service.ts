@@ -81,7 +81,9 @@ export async function addCommensal({
     email,
     clientData: data,
   })
-  console.log(`Email ${email} added to the queue.`)
+  console.log(
+    `Email ${email} added to the queue. Data: ${JSON.stringify(data)}`
+  )
 
   return { response, authToken }
 }
