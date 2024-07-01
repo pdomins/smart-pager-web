@@ -132,12 +132,3 @@ export async function DELETE(
     { status: HTTP_RESPONSE_STATUS.SUCCESS }
   )
 }
-
-// TODO DELETE ME AFTER
-export async function GET() {
-  //await sendNotification({ authToken: '', messagingToken: '' })
-  return NextResponse.json(
-    { msg: 'hola dax' },
-    { status: HTTP_RESPONSE_STATUS.SUCCESS }
-  )
-}
