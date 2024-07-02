@@ -33,8 +33,8 @@ export default function CommensalQueueScreen() {
             ¡Listo!
           </h1>
           <p className="mt-4 md:text-lg lg:text-xl text-gray-700 italic">
-            Le enviaremos un mensaje por whatsapp cuando su mesa este lista. Si
-            desea desanotarse, verifique su email.
+            Te enviaremos un email cuando sea tu turno. Si deseas
+            desanotarte, verificá tu email.
           </p>
           {menuUrl && (
             <button

@@ -32,8 +32,8 @@ export default function QueueScreen() {
             ¡Ya te encontrás en una lista de espera!
           </h1>
           <p className="mt-4 md:text-lg lg:text-xl text-gray-700 italic">
-            Te enviaremos un mensaje por whatsapp cuando sea tu turno. Si deseas
-            desanotarse, verificá tu email.
+            Te enviaremos un email cuando sea tu turno. Si deseas
+            desanotarte, verificá tu email.
           </p>
           {menuUrl && (
             <button
