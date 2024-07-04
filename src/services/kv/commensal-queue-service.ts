@@ -82,7 +82,7 @@ export async function addCommensal({
     clientData: data,
   })
   console.log(
-    `Email ${email} added to the queue. Data: ${JSON.stringify(data)}`
+    `Email ${email} added to the queue.}`
   )
 
   return { response, authToken }
