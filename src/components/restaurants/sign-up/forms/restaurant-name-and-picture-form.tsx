@@ -1,24 +1,43 @@
 import { RestaurantFormState } from './restaurant-form'
-import Pfp from 'public/club-mila.png'
+import Placeholder from 'public/placeholder.svg'
 import Image from 'next/image'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
+import { Tooltip } from '@mui/material'
+import { ChangeEvent } from 'react'
 
 const RestaurantNameForm = ({
   name,
+  picture,
   setFormState,
   disabled = false,
 }: {
   name: string
+  picture: string | null
   setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file: File | null = event.target.files ? event.target.files[0] : null
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setFormState((prev) => ({
+          ...prev,
+          picture: reader.result as string,
+          pictureFile: file,
+        }))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   return (
     <div className="block">
       <div className="flex items-center">
         <div className="relative inline-block">
           <Image
-            src={Pfp.src}
-            alt="Logo"
+            src={picture || Placeholder.src}
+            alt="Profile Picture"
             unoptimized={true}
             width={75}
             height={75}
@@ -26,13 +45,19 @@ const RestaurantNameForm = ({
             className="mr-1 rounded-full cursor-auto z-10"
           />
           {!disabled && (
-            <button
-              className="absolute bottom-0 right-0 bg-white/90 rounded-full p-1 shadow z-20"
-              onClick={() => console.log('Edit icon clicked')}
-              type="button"
-            >
-              <FileUploadIcon className="text-sm text-purple-500" />
-            </button>
+            <Tooltip title={'Subir nueva foto'} placement="bottom" arrow>
+              <label className="absolute bottom-0 right-0 bg-white/90 rounded-full p-1 shadow z-20 cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => handleImageUpload(e)}
+                  required
+                  disabled={disabled}
+                />
+                <FileUploadIcon className="text-sm text-purple-500" />
+              </label>
+            </Tooltip>
           )}
         </div>
         <div className="flex-1 pl-4">

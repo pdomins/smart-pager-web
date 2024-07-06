@@ -29,7 +29,11 @@ const EditButtons = ({
   return isEditing ? (
     <>
       <Tooltip
-        title={isSubmittable ? 'Guardar cambios' : 'Revisar formato de la información antes de guardar'}
+        title={
+          isSubmittable
+            ? 'Guardar cambios'
+            : 'Revisar formato de la información antes de guardar'
+        }
         placement="top"
         arrow
       >
@@ -84,6 +88,8 @@ const RestaurantInfo = ({
     weeklyCalendar: restaurantData.operatingHours as unknown as WeeklyCalendar,
     averageTimePerTable: restaurantData.avgTimePerTable,
     restaurantType: restaurantData.type as FoodType,
+    picture: restaurantData.picture,
+    pictureFile: null,
   }
 
   const resetInitialState = () => {

@@ -24,6 +24,8 @@ export default function RestaurantSignUp({
     averageTimePerTable: null,
     selectedFile: null,
     restaurantType: null,
+    picture: null,
+    pictureFile: null,
   }
 
   const [formState, setFormState] = useState<RestaurantFormState>(initialState)

@@ -1,7 +1,7 @@
 import { Coordinates } from '@/components/maps'
 import RestaurantAverageTimePerTableForm from './restaurant-average-time-per-table-form'
 import RestaurantLocationForm from './restaurant-location-form'
-import RestaurantNameForm from './restaurant-name-form'
+import RestaurantNameForm from './restaurant-name-and-picture-form'
 import RestaurantOpeningAndClosingTimesForm from './restaurant-opening-and-closing-times-form'
 import { RestaurantTypeForm } from './restaurant-type'
 import { FoodType } from '@/lib/food'
@@ -25,6 +25,8 @@ export type RestaurantFormState = {
   weeklyCalendar: WeeklyCalendar
   restaurantType: FoodType | null
   averageTimePerTable: string | null
+  picture: string | null
+  pictureFile: File | null
 }
 
 const RestaurantForm = ({
@@ -52,6 +54,7 @@ const RestaurantForm = ({
     <>
       <RestaurantNameForm
         name={formState.name || ''}
+        picture={formState.picture}
         setFormState={setFormState}
         disabled={disabled}
       />
