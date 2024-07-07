@@ -120,6 +120,7 @@ export default function RestaurantPickUp({
             waitingOrders?.length > 0 ? (
               waitingOrders.map((order) => (
                 <PickUpCard
+                  restaurantName={restaurantName}
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {
@@ -158,6 +159,7 @@ export default function RestaurantPickUp({
             calledOrders.length > 0 ? (
               calledOrders.map((order) => (
                 <PickUpCard
+                  restaurantName={restaurantName}
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {

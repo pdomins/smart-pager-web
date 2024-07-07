@@ -118,6 +118,7 @@ export default function RestaurantQueue({
             waitingClients?.length > 0 ? (
               waitingClients.map((client) => (
                 <ClientCard
+                  restaurantName={restaurantName}
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
@@ -160,6 +161,7 @@ export default function RestaurantQueue({
             calledClients.length > 0 ? (
               calledClients.map((client) => (
                 <ClientCard
+                  restaurantName={restaurantName}
                   key={client.email}
                   client={client}
                   onCallClient={async () => {

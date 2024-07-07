@@ -8,14 +8,18 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useState } from 'react'
 import Spinner from '@/components/utils/spinner'
 import ConfirmationModal from '../../components/confirmation-modal'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import { formatPhoneNumber } from '@/lib/phone'
 
 const PickUpCard = ({
   order,
+  restaurantName,
   onCallOrder,
   onRemoveOrder,
   onAcceptOrder,
 }: {
   order: PickUpData
+  restaurantName: string
   onCallOrder: () => Promise<void>
   onRemoveOrder: () => Promise<void>
   onAcceptOrder?: () => Promise<void>
@@ -29,6 +33,7 @@ const PickUpCard = ({
     timesCalled,
     joinedAt: reservationTime,
     description,
+    phoneNumber,
   } = order
 
   const diffMinutes = differenceInMinutes(new Date(), reservationTime)
@@ -81,6 +86,27 @@ const PickUpCard = ({
               </button>
             </Tooltip>
           )}
+        </div>
+        <div className="flex space-x-1 ">
+          <p className="text-sm mt-2 relative">
+            {formatPhoneNumber(phoneNumber)}{' '}
+          </p>
+          <Tooltip
+            title={'Enviar un mensaje por Whatsapp Web'}
+            placement="right"
+            arrow
+          >
+            <button
+              className="relative text-green-500 text-xs "
+              onClick={() =>
+                window.open(
+                  `https://wa.me/${phoneNumber}?text=${encodeURI(`Hola ${name}! Nos comunicamos con vos desde ${restaurantName} por el pedido que realizaste. Por favor, acercate al mostrador!`)}`
+                )
+              }
+            >
+              <WhatsAppIcon />
+            </button>
+          </Tooltip>
         </div>
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">Tiempo en espera: {formattedDuration}</p>

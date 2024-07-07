@@ -106,6 +106,7 @@ const WaitingPickUpListPage = ({
             Orders.length > 0 ? (
               Orders.map((order) => (
                 <OrderCard
+                  restaurantName={restaurantName}
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {

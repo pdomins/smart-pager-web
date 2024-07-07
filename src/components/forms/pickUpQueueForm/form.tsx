@@ -61,7 +61,7 @@ const PickUpQueueInnerForm = ({
       />
 
       {/* Número de Teléfono */}
-      <div className="w-full px-3 mb-6 md:mb-0">
+      <div className="w-full px-3 md:mb-0 mb-0 pb-0">
         <LabelField label="Numero de Teléfono" required={true} />
         <PhoneInput
           inputProps={{
@@ -93,6 +93,11 @@ const PickUpQueueInnerForm = ({
             borderColor: '#DDEBF6', //'#D4E2EC',
           }}
         />
+        <div
+          className={`${!phone || (phone && pattern.test(phone)) || phone === areaCode ? 'text-gray-500 ' : 'text-red-500 '} text-sm italic mt-0 pt-0 mb-6`}
+        >
+          El número de telefono debe seguir el formato +(54) 11 2345-6789.
+        </div>
       </div>
 
       {/* Descripción */}

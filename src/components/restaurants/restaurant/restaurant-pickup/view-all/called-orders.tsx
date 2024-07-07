@@ -99,6 +99,7 @@ const CalledPickUpListPage = ({
             orders.length > 0 ? (
               orders.map((order) => (
                 <PickUpCard
+                  restaurantName={restaurantName}
                   key={order.email}
                   order={order}
                   onCallOrder={async () => {

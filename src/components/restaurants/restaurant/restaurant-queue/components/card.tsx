@@ -9,13 +9,17 @@ import PeopleIcon from '@mui/icons-material/People'
 import { useState } from 'react'
 import Spinner from '@/components/utils/spinner'
 import ConfirmationModal from '../../components/confirmation-modal'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import { formatPhoneNumber } from '@/lib/phone'
 
 const ClientCard = ({
+  restaurantName,
   client,
   onCallClient,
   onRemoveClient,
   onAcceptClient,
 }: {
+  restaurantName: string
   client: CommensalData
   onCallClient: () => Promise<void>
   onRemoveClient: () => Promise<void>
@@ -23,13 +27,14 @@ const ClientCard = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
-  
+
   const {
     name,
     groupSize: commensals,
     description,
     timesCalled,
     joinedAt: reservationTime,
+    phoneNumber,
   } = client
 
   const diffMinutes = differenceInMinutes(new Date(), reservationTime)
@@ -81,6 +86,27 @@ const ClientCard = ({
           </button>
         </div>
         {/* <p>Personas: {commensals}</p> */}
+        <div className="flex space-x-1 ">
+          <p className="text-sm mt-2 relative">
+            {formatPhoneNumber(phoneNumber)}{' '}
+          </p>
+          <Tooltip
+            title={'Enviar un mensaje por Whatsapp Web'}
+            placement="right"
+            arrow
+          >
+            <button
+              className="relative text-green-500 text-xs "
+              onClick={() =>
+                window.open(
+                  `https://wa.me/${phoneNumber}?text=${encodeURI(`Hola ${name}! Nos comunicamos con vos desde ${restaurantName}. Por favor, acercate al mostrador!`)}`
+                )
+              }
+            >
+              <WhatsAppIcon />
+            </button>
+          </Tooltip>
+        </div>
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">Tiempo en espera: {formattedDuration}</p>
           {timesCalled > 0 && (

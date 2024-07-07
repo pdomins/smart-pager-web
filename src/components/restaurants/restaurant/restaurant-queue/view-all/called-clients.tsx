@@ -109,6 +109,7 @@ const CalledClientListPage = ({
             clients.length > 0 ? (
               clients.map((client) => (
                 <ClientCard
+                  restaurantName={restaurantName}
                   key={client.email}
                   client={client}
                   onCallClient={async () => {
