@@ -24,8 +24,8 @@ export default function RestaurantSignUp({
     averageTimePerTable: null,
     selectedFile: null,
     restaurantType: null,
-    picture: null,
     pictureFile: null,
+    pictureUrl: null,
   }
 
   const [formState, setFormState] = useState<RestaurantFormState>(initialState)
@@ -73,6 +73,7 @@ export default function RestaurantSignUp({
     isValidCalendar(formState) &&
     formState.averageTimePerTable &&
     coordinates &&
+    formState.pictureUrl &&
     address
 
   return (

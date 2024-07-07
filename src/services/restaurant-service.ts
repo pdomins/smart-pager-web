@@ -7,11 +7,45 @@ import {
 } from '@/repositories/restaurant-respository'
 import { CoordinatesWithAddress } from '@/types/location'
 
+async function updateRestaurantPicture({
+  id,
+  picture,
+  previousPictureUrl,
+}: {
+  id: number
+  picture: File
+  previousPictureUrl?: string
+}) {
+  const response = await fetch(`/api/restaurants/upload?filename=pfp-${id}`, {
+    method: 'POST',
+    body: picture,
+  })
+
+  if (response.ok) {
+    if (previousPictureUrl)
+      await fetch(`/api/restaurants/upload?url=${previousPictureUrl}`, {
+        method: 'DELETE',
+      })
+  }
+  const responseData = await response.json()
+  return responseData.url
+}
+
 export async function update({
   id,
+  previousPictureUrl,
   ...data
-}: { id: number } & RestaurantFormState & CoordinatesWithAddress) {
+}: { id: number; previousPictureUrl?: string } & RestaurantFormState &
+  CoordinatesWithAddress) {
   const name = data.name || ''
+  let picture = data.pictureUrl
+
+  if (data.pictureFile)
+    picture = await updateRestaurantPicture({
+      id,
+      previousPictureUrl,
+      picture: data.pictureFile,
+    })
 
   const dataToUpdate = {
     coordinates: data.coordinates,
@@ -19,6 +53,7 @@ export async function update({
     type: data.restaurantType || undefined,
     avgTimePerTable: data.averageTimePerTable || undefined,
     operatingHours: data.weeklyCalendar,
+    picture: picture || undefined,
   }
 
   const updatedValues = await updateRestaurant({ id, name, ...dataToUpdate })

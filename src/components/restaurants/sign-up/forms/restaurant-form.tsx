@@ -25,7 +25,7 @@ export type RestaurantFormState = {
   weeklyCalendar: WeeklyCalendar
   restaurantType: FoodType | null
   averageTimePerTable: string | null
-  picture: string | null
+  pictureUrl: string | null
   pictureFile: File | null
 }
 
@@ -54,7 +54,7 @@ const RestaurantForm = ({
     <>
       <RestaurantNameForm
         name={formState.name || ''}
-        picture={formState.picture}
+        pictureUrl={formState.pictureUrl}
         setFormState={setFormState}
         disabled={disabled}
       />

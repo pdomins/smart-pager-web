@@ -88,8 +88,8 @@ const RestaurantInfo = ({
     weeklyCalendar: restaurantData.operatingHours as unknown as WeeklyCalendar,
     averageTimePerTable: restaurantData.avgTimePerTable,
     restaurantType: restaurantData.type as FoodType,
-    picture: restaurantData.picture,
     pictureFile: null,
+    pictureUrl: restaurantData.picture,
   }
 
   const resetInitialState = () => {

@@ -3,28 +3,38 @@ import Placeholder from 'public/placeholder.svg'
 import Image from 'next/image'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { Tooltip } from '@mui/material'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
+import Snackbar from '@/components/utils/snackbar'
+
+const SIZE_LIMIT = 5 * 1024 // 5 KB
 
 const RestaurantNameForm = ({
   name,
-  picture,
+  pictureUrl,
   setFormState,
   disabled = false,
 }: {
   name: string
-  picture: string | null
+  pictureUrl: string | null
   setFormState: React.Dispatch<React.SetStateAction<RestaurantFormState>>
   disabled?: boolean
 }) => {
+  const [hasError, setHasError] = useState(false)
+
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file: File | null = event.target.files ? event.target.files[0] : null
     if (file) {
+      if (file.size > SIZE_LIMIT) {
+        setHasError(true)
+        return
+      }
+
       const reader = new FileReader()
       reader.onloadend = () => {
         setFormState((prev) => ({
           ...prev,
-          picture: reader.result as string,
           pictureFile: file,
+          pictureUrl: reader.result as string,
         }))
       }
       reader.readAsDataURL(file)
@@ -33,10 +43,17 @@ const RestaurantNameForm = ({
 
   return (
     <div className="block">
+      <Snackbar
+        type="error"
+        isOpen={hasError}
+        variant="filled"
+        setIsOpen={setHasError}
+        text="Por favor, asegurate que tu imágen sea menor que 5KB."
+      />
       <div className="flex items-center">
         <div className="relative inline-block">
           <Image
-            src={picture || Placeholder.src}
+            src={pictureUrl || Placeholder.src}
             alt="Profile Picture"
             unoptimized={true}
             width={75}

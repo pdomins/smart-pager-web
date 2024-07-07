@@ -8,6 +8,7 @@ export type UpdateRestaurantData = {
   type?: string
   avgTimePerTable?: string
   operatingHours?: object
+  picture?: string
 }
 
 export { type Restaurant }
