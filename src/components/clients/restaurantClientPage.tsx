@@ -81,7 +81,7 @@ export default function RestaurantClientPage() {
                 className="rounded-full"
               />
 
-              <h1 className="text-3xl md:text-4xl font-bold ml-4">
+              <h1 className="text-3xl md:text-4xl font-bold ml-0 lg:ml-4">
                 Bienvenido a {restaurantData.name}
               </h1>
             </div>
