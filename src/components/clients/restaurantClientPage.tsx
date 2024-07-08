@@ -12,18 +12,16 @@ import { daysOfWeek, isRestaurantOpen } from '@/lib/dates'
 import { WeeklyCalendar } from '../restaurants/sign-up/forms/restaurant-form'
 import Image from 'next/image'
 import Placeholder from 'public/placeholder.svg'
+import MenuPage from './menuPage'
 
 export default function RestaurantClientPage() {
   const [showCommensalForm, setShowCommensalForm] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const [restaurantData, setRestaurantData] = useState<Restaurant | null>(null)
   const router = useRouter()
   const restaurantSlug = useParams<{ restaurant: string }>()
 
   const [menuUrl, setMenuUrl] = useState<string | null>()
-
-  const viewMenu = async () => {
-    if (menuUrl) window.open(menuUrl, '_blank')
-  }
 
   useEffect(() => {
     const fetchMenuUrl = async () => {
@@ -59,15 +57,23 @@ export default function RestaurantClientPage() {
 
   const toggleCommensalFormVisibility = () => {
     setShowCommensalForm(!showCommensalForm)
+    setShowMenu(false)
+  }
+
+  const toggleMenuPageVisibility = () => {
+    setShowCommensalForm(false)
+    setShowMenu(!showMenu)
   }
 
   if (!restaurantData) return <Loading />
   const calendar = restaurantData.operatingHours as WeeklyCalendar
 
+  const showMainPage = !showCommensalForm && !showMenu
+
   return (
     <div className="flex flex-col min-h-screen">
       <Gradient />
-      {!showCommensalForm && (
+      {showMainPage && (
         <div className="py-5 text-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center mb-2">
@@ -95,12 +101,18 @@ export default function RestaurantClientPage() {
 
       {isRestaurantOpen(calendar) ? (
         <div className="flex-grow flex flex-col items-center justify-center px-4">
+          {showMenu && (
+            <MenuPage
+              menuUrl={menuUrl || ''}
+              toggleMenuPageVisibility={toggleMenuPageVisibility}
+            />
+          )}
           {showCommensalForm && (
             <CommensalQueueForm
               toggleCommensalFormVisibility={toggleCommensalFormVisibility}
             />
           )}
-          {!showCommensalForm && (
+          {showMainPage && (
             <div className="w-full max-w-md">
               <div className="flex flex-col items-center gap-4">
                 <button
@@ -111,7 +123,7 @@ export default function RestaurantClientPage() {
                 </button>
                 {menuUrl && (
                   <button
-                    onClick={viewMenu}
+                    onClick={toggleMenuPageVisibility}
                     className="relative w-full bg-violet-700/10 hover:bg-violet-700/15 text-purple-700 font-bold py-2 rounded rounded-full"
                   >
                     Ver Menú
