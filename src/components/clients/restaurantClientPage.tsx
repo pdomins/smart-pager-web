@@ -10,6 +10,8 @@ import Loading from '../utils/loading'
 import Gradient from '../style/gradient'
 import { daysOfWeek, isRestaurantOpen } from '@/lib/dates'
 import { WeeklyCalendar } from '../restaurants/sign-up/forms/restaurant-form'
+import Image from 'next/image'
+import Placeholder from 'public/placeholder.svg'
 
 export default function RestaurantClientPage() {
   const [showCommensalForm, setShowCommensalForm] = useState(false)
@@ -67,12 +69,27 @@ export default function RestaurantClientPage() {
       <Gradient />
       {!showCommensalForm && (
         <div className="py-5 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold">
-            Bienvenido a {restaurantData.name}
-          </h1>
-          <p className="mt-2 text-gray-700">
-            Tu experincia gastronómica comienza aquí.
-          </p>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center mb-2">
+              <Image
+                src={restaurantData.picture || Placeholder.src}
+                alt="Profile Picture"
+                unoptimized={true}
+                width={75}
+                height={75}
+                loading="lazy"
+                className="rounded-full"
+              />
+
+              <h1 className="text-3xl md:text-4xl font-bold ml-4">
+                Bienvenido a {restaurantData.name}
+              </h1>
+            </div>
+
+            <p className="mt-2 text-gray-700">
+              Tu experiencia gastronómica empieza acá.
+            </p>
+          </div>
         </div>
       )}
 
