@@ -1,7 +1,8 @@
+import { assertAndReturn } from '@/lib/assertions'
 
-import { assertAndReturn } from "@/lib/assertions"
-
-const NOTIFICATIONS_URL = assertAndReturn(process.env.NEXT_PUBLIC_NOTIFICATIONS_URL)
+const NOTIFICATIONS_URL = assertAndReturn(
+  process.env.NEXT_PUBLIC_NOTIFICATIONS_URL
+)
 
 export async function sendNotification({
   body,
@@ -46,8 +47,8 @@ export async function sendTableReadyNotification({
   return await sendNotification({
     authToken,
     messagingToken,
-    title: restaurantName,
-    body: 'TABEL READY',
+    title: `Mesa lista en ${restaurantName} está lista!`,
+    body: 'Acercate a la recepción para ser ubicado.',
   })
 }
 
@@ -63,8 +64,8 @@ export async function sendTableReadyRemainderNotification({
   return await sendNotification({
     authToken,
     messagingToken,
-    title: restaurantName,
-    body: 'TABLE IS STILL READY',
+    title: `Tu mesa en ${restaurantName} te espera`,
+    body: 'Acercate a la recepción para ser atendido antes de que se libere tu reserva.',
   })
 }
 
@@ -80,8 +81,8 @@ export async function sendTableCanceledNotification({
   return await sendNotification({
     authToken,
     messagingToken,
-    title: restaurantName,
-    body: 'TABLE CANCELED',
+    title: `Tu mesa en ${restaurantName} fue cancelada`,
+    body: 'Te esperamos mucho tiempo pero no apareciste! :( Esperamos verte pronto!.',
   })
 }
 
@@ -97,7 +98,7 @@ export async function sendReservationCanceledNotification({
   return await sendNotification({
     authToken,
     messagingToken,
-    title: restaurantName,
-    body: 'RESERVATION CANCELED',
+    title: `Reserva cancelada en ${restaurantName}`,
+    body: 'Se canceló tu reserva. Esperamos que puedas visitarnos en otra ocasión.',
   })
 }
