@@ -47,7 +47,7 @@ export async function sendTableReadyNotification({
   return await sendNotification({
     authToken,
     messagingToken,
-    title: `Mesa lista en ${restaurantName} está lista!`,
+    title: `Tu mesa en ${restaurantName} está lista!`,
     body: 'Acercate a la recepción para ser ubicado.',
   })
 }
