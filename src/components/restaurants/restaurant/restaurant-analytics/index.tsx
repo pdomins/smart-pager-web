@@ -13,7 +13,13 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js'
-import { Bar, Pie } from 'react-chartjs-2'
+import 'react-datepicker/dist/react-datepicker.css'
+
+import { Bar } from 'react-chartjs-2'
+import Filter from './filter'
+import { useState } from 'react'
+import { ANALYTICS_FILTER_TYPE } from '@/lib/analytics'
+import CustomDatePicker from './date-picker'
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +31,7 @@ ChartJS.register(
   ArcElement
 )
 
-const options = {
+const clientsPerHour = {
   responsive: true,
   plugins: {
     legend: {
@@ -33,65 +39,65 @@ const options = {
     },
     title: {
       display: true,
-      text: 'Generic Chart',
+      text: 'Cantidad de Comensales',
     },
   },
 }
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max)
+const averageWaitingTime = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Tiempo de Espera Promedio (minutos)',
+    },
+  },
 }
 
-const data = {
+const labels = Array.from({ length: 24 }, (_, i) => `${i}:00`)
+
+// function getRandomInt(max: number) {
+//   return Math.floor(Math.random() * max)
+// }
+
+const clientsPerHourData = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
-      data: labels.map(() => getRandomInt(1000)),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => getRandomInt(1000)),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      label: 'Cantidad de Comensales',
+      data: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 3, 0, 0, 0, 0, 1, 4, 8, 5, 1,
+      ],
+      backgroundColor: 'rgba(139, 92, 246, 0.5)',
     },
   ],
 }
 
-export const chartData = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+const averageWaitingTimeData = {
+  labels,
   datasets: [
     {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
+      label: 'Tiempo de Espera Promedio (minutos)',
+      data: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 25, 30, 0, 0, 0, 0, 20, 35, 40,
+        25, 15,
       ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
+      backgroundColor: 'rgba(139, 92, 246, 0.5)',
     },
   ],
 }
+
 export default function RestaurantAnalytics({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
   console.log(restaurantData)
+  const [filter, setFilter] = useState(ANALYTICS_FILTER_TYPE.DAY)
+
   return (
     <div className="relative" id="analytics">
       <Gradient />
@@ -104,19 +110,23 @@ export default function RestaurantAnalytics({
             Tomá tus decisiones bien informado.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-20">
+        <div className="flex items-center space-x-5">
+          <Filter filter={filter} setFilter={setFilter} />
+          <CustomDatePicker filter={filter} />
+        </div>
+        <div className="grid grid-cols-2 gap-20 py-5">
           <div className="col-span-1">
-            <Bar className="relative" options={options} data={data} />
+            <Bar
+              className="relative"
+              options={clientsPerHour}
+              data={clientsPerHourData}
+            />
           </div>
           <div className="col-span-1">
-            <Pie
-              className="relative max-h-320px"
-              data={chartData}
-              style={{ maxHeight: '300px' }}
-              options={{
-                ...options,
-                maintainAspectRatio: false,
-              }}
+            <Bar
+              className="relative"
+              options={averageWaitingTime}
+              data={averageWaitingTimeData}
             />
           </div>
         </div>
