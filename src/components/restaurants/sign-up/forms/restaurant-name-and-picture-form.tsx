@@ -69,7 +69,6 @@ const RestaurantNameForm = ({
                   accept="image/*"
                   className="hidden"
                   onChange={(e) => handleImageUpload(e)}
-                  required
                   disabled={disabled}
                 />
                 <FileUploadIcon className="text-sm text-purple-500" />
