@@ -44,7 +44,6 @@ export async function callCommensal({
   await sendTableReadyEmail({ restaurantName, ...client })
   if (client.messagingToken && client.mobileAuthToken)
     await sendTableReadyNotification({
-      restaurantName,
       messagingToken: client.messagingToken,
       mobileAuthToken: client.mobileAuthToken,
     })
@@ -63,7 +62,6 @@ export async function retryCallCommensal({
   await sendTableReadyRemainderEmail({ restaurantName, ...client })
   if (client.messagingToken && client.mobileAuthToken)
     await sendTableReadyRemainderNotification({
-      restaurantName,
       messagingToken: client.messagingToken,
       mobileAuthToken: client.mobileAuthToken,
     })
@@ -117,7 +115,6 @@ export async function cancelCommensal({
     await sendTableCanceledEmail({ restaurantName, client, restaurantSlug })
     if (client.messagingToken && client.mobileAuthToken) {
       await sendTableCanceledNotification({
-        restaurantName,
         messagingToken: client.messagingToken,
         mobileAuthToken: client.mobileAuthToken,
       })

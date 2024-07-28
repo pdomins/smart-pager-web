@@ -36,52 +36,46 @@ export async function sendNotification({
 }
 
 export async function sendTableReadyNotification({
-  restaurantName,
   mobileAuthToken: authToken,
   messagingToken,
 }: {
-  restaurantName: string
   mobileAuthToken: string
   messagingToken: string
 }) {
   return await sendNotification({
     authToken,
     messagingToken,
-    title: `Tu mesa en ${restaurantName} está lista!`,
+    title: `Tu mesa está lista!`,
     body: 'Acercate a la recepción para ser ubicado.',
   })
 }
 
 export async function sendTableReadyRemainderNotification({
-  restaurantName,
   mobileAuthToken: authToken,
   messagingToken,
 }: {
-  restaurantName: string
   mobileAuthToken: string
   messagingToken: string
 }) {
   return await sendNotification({
     authToken,
     messagingToken,
-    title: `Tu mesa en ${restaurantName} te espera`,
+    title: `Tu mesa te espera`,
     body: 'Acercate a la recepción para ser atendido antes de que se libere tu reserva.',
   })
 }
 
 export async function sendTableCanceledNotification({
-  restaurantName,
   mobileAuthToken: authToken,
   messagingToken,
 }: {
-  restaurantName: string
   mobileAuthToken: string
   messagingToken: string
 }) {
   return await sendNotification({
     authToken,
     messagingToken,
-    title: `Tu mesa en ${restaurantName} fue cancelada`,
+    title: `Tu mesa fue cancelada`,
     body: 'Te esperamos mucho tiempo pero no apareciste! :( Esperamos verte pronto!.',
   })
 }
