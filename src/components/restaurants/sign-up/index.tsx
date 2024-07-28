@@ -10,6 +10,8 @@ import { update } from '@/services/restaurant-service'
 import { foodTypes, FoodType } from '@/lib/food'
 import { sendNewRestaurantEmail } from '@/repositories/email-repository'
 import { useRouter } from 'next/navigation'
+import Snackbar from '@/components/utils/snackbar'
+
 
 export default function RestaurantSignUp({
   restaurantData,
@@ -33,6 +35,8 @@ export default function RestaurantSignUp({
   const [coordinates, setCoordinates] = useState<Coordinates>(null)
   const [address, setAddress] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [hasError, setHasError] = useState(false)
+
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -60,7 +64,7 @@ export default function RestaurantSignUp({
         router.push('/management/sign-up/success')
       }
     } catch (error) {
-      alert('Error al cargar los datos, por favor intente nuevamente.')
+      setHasError(true)
     } finally {
       setIsLoading(false)
     }
@@ -77,6 +81,13 @@ export default function RestaurantSignUp({
     address
 
   return (
+    <>  <Snackbar
+    type="error"
+    isOpen={hasError}
+    variant="filled"
+    setIsOpen={setHasError}
+    text="Error al cargar los datos, por favor intente nuevamente."
+  />
     <div className="relative" id="signup">
       <Gradient />
       <Container>
@@ -122,5 +133,6 @@ export default function RestaurantSignUp({
         </div>
       </Container>
     </div>
+    </>
   )
 }

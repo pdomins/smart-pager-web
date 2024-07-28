@@ -6,6 +6,7 @@ import {
 import { RestaurantWithCoordinates } from '@/types/restaurant'
 import Spinner from '@/components/utils/spinner'
 import ViewMenu from './pdf'
+import Snackbar from '@/components/utils/snackbar'
 
 export default function RestaurantMenu({
   restaurantData,
@@ -16,6 +17,12 @@ export default function RestaurantMenu({
   const [menu, setMenu] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
+  const [successfullyUploaded, setSuccessfullyUploaded] = useState(false)
+  const [wrongFormat, setWrongFormat] = useState(false)
+  const [wrongSize, setWrongSize] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const [noFile, setNoFile] = useState(false)
+
 
   useEffect(() => {
     const getMenu = async () => {
@@ -36,7 +43,7 @@ export default function RestaurantMenu({
     setIsUploading(true)
 
     if (!inputFileRef.current || !inputFileRef.current.files) {
-      alert('Ningún archivo seleccionado') //TODO MODAL?
+      setNoFile(true)
       return
     }
 
@@ -45,12 +52,13 @@ export default function RestaurantMenu({
     const maxSizeInBytes = 2 * 1024 * 1024 // 2 MB
 
     if (!file.name.toLowerCase().endsWith('.pdf')) {
-      alert('El archivo debe estar en formato PDF.') //TODO MODAL?
+      setWrongFormat(true)
       return
     }
 
     if (file.size > maxSizeInBytes) {
-      alert('El archivo debe tener un tamaño menor a 2MB.')
+      setWrongSize(true)
+      return 
     }
 
     const response = await fetch(
@@ -63,7 +71,7 @@ export default function RestaurantMenu({
 
     if (response.ok) {
       setIsUploading(false)
-      alert('Menú subido con éxito.') //TODO MODAL ?
+      
       const menu_response = await getRestaurantMenu(restaurantData.id)
 
       if (menu_response)
@@ -74,13 +82,50 @@ export default function RestaurantMenu({
       const responseData = await response.json()
       setMenu(responseData.url)
       updateRestaurantMenu(restaurantData.id, responseData.url)
+      setSuccessfullyUploaded(true);
     } else {
       setIsUploading(false)
-      alert('Error al subir el menú.')
-    } // TODO MODAL ?
+      setHasError(true)
+    }
   }
 
   return (
+    <>  
+    <Snackbar
+        type="success"
+        isOpen={successfullyUploaded}
+        variant="filled"
+        setIsOpen={setSuccessfullyUploaded}
+        text="¡Listo! Menú subido con éxito."
+      />
+    <Snackbar
+        type="error"
+        isOpen={wrongFormat}
+        variant="filled"
+        setIsOpen={setWrongFormat}
+        text="El archivo debe estar en formato PDF."
+      />
+    <Snackbar
+        type="error"
+        isOpen={wrongSize}
+        variant="filled"
+        setIsOpen={setWrongSize}
+        text="El archivo debe tener un tamaño menor a 2MB."
+      />
+    <Snackbar
+        type="error"
+        isOpen={hasError}
+        variant="filled"
+        setIsOpen={setHasError}
+        text="Error al subir el menú."
+      />
+    <Snackbar
+        type="error"
+        isOpen={noFile}
+        variant="filled"
+        setIsOpen={setNoFile}
+        text="Ningún archivo seleccionado."
+      />
     <div className="max-w-md mx-auto bg-white mt-2 p-6 rounded-lg shadow-md">
       <div className="flex flex-col items-center mb-2 pb-2">
         {menu && (
@@ -133,5 +178,6 @@ export default function RestaurantMenu({
         )}
       </form>
     </div>
+    </>
   )
 }
