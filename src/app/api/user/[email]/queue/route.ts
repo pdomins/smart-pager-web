@@ -3,6 +3,7 @@ import { getClientData } from '@/repositories/queue-repository'
 import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
 import { removeClientFromQueueFromApp } from '@/services/queue-service'
 import { HTTP_RESPONSE_STATUS } from '@/types/https'
+import { differenceInMinutes } from 'date-fns'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -64,12 +65,10 @@ export async function GET(
 
   const restaurant = await getRestaurantBySlug(clientData.restaurantSlug)
 
-  const timeInQueue =
-    (new Date().getTime() - new Date(clientData.joinedAt).getTime()) / 60000 // 60000 milliseconds in a minute
+  const timeInQueue = differenceInMinutes(new Date(), clientData.joinedAt)
 
-  const waitingTime = Math.max(
-    Number(restaurant.avgTimePerTable || 45) - timeInQueue,
-    0
+  const waitingTime = Math.ceil(
+    Math.max(Number(restaurant.avgTimePerTable || 45) - timeInQueue, 0)
   )
 
   const client = {
