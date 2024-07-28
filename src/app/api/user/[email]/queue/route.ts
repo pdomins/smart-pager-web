@@ -65,7 +65,7 @@ export async function GET(
   const restaurant = await getRestaurantBySlug(clientData.restaurantSlug)
 
   const timeInQueue =
-    (new Date().getTime() - clientData.joinedAt.getTime()) / 60000 // 60000 milliseconds in a minute
+    (new Date().getTime() - new Date(clientData.joinedAt).getTime()) / 60000 // 60000 milliseconds in a minute
 
   const waitingTime = Math.max(
     Number(restaurant.avgTimePerTable || 45) - timeInQueue,
