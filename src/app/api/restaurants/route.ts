@@ -23,6 +23,16 @@ export async function GET(req: NextRequest) {
   const longitude = Number(searchParams.get('longitude')) || undefined
   const latitude = Number(searchParams.get('latitude')) || undefined
 
+  console.log({
+    page,
+    pageSize,
+    search,
+    category,
+    distance,
+    latitude,
+    longitude,
+  })
+
   const restaurants = await searchRestaurants({
     page,
     pageSize,
