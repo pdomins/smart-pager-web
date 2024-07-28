@@ -234,7 +234,7 @@ export async function addClientToQueueFromApp({
     mobileAuthToken,
     messagingToken,
   } = data
-  
+
   const { name: restaurantName } = await getFullRestaurantBySlug(restaurantSlug)
 
   const { response: success, authToken } = await kvAddCommensal({
@@ -247,6 +247,7 @@ export async function addClientToQueueFromApp({
       phoneNumber,
       mobileAuthToken,
       messagingToken,
+      restaurantSlug,
     },
   })
 
@@ -285,6 +286,7 @@ export async function addClientToQueue({
       groupSize,
       description: description || '',
       phoneNumber,
+      restaurantSlug,
     },
   })
 

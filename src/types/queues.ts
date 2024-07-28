@@ -8,6 +8,7 @@ export type CommensalDataParams = {
   groupSize: string
   phoneNumber: string
   description: string
+  restaurantSlug: string
   mobileAuthToken?: string
   messagingToken?: string
 }
@@ -24,6 +25,7 @@ export type PickUpDataParams = {
   pickUpId: string
   phoneNumber: string
   description: string
+  restaurantSlug: string
 }
 
 export type PickUpData = PickUpDataParams & {

@@ -71,6 +71,7 @@ const AddPickUpDialog = ({
           phoneNumber: phone,
           pickUpId,
           description,
+          restaurantSlug,
         },
       })
 

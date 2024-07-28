@@ -1,5 +1,7 @@
 // import { removeClientFromQueueFromApp } from '@/services/queue-service'
+import { getClientData } from '@/repositories/queue-repository'
 import { getRestaurantBySlug } from '@/repositories/restaurant-respository'
+import { removeClientFromQueueFromApp } from '@/services/queue-service'
 import { HTTP_RESPONSE_STATUS } from '@/types/https'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -16,16 +18,24 @@ export async function DELETE(
 ) {
   const { email } = params
 
-  // const client = await removeClientFromQueueFromApp({
-  //   email,
-  //   restaurantSlug: '',
-  // })
+  const clientData = await getClientData({ email })
 
-  // if (!client)
-  //   return NextResponse.json(
-  //     { msg: `Client ${email} not in queue` },
-  //     { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
-  //   )
+  if (!clientData)
+    return NextResponse.json(
+      { msg: `Client ${email} not in queue` },
+      { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
+    )
+
+  const client = await removeClientFromQueueFromApp({
+    email,
+    restaurantSlug: clientData.restaurantSlug,
+  })
+
+  if (!client)
+    return NextResponse.json(
+      { msg: `Client ${email} not in queue` },
+      { status: HTTP_RESPONSE_STATUS.METHOD_NOT_ALLOWED }
+    )
 
   return NextResponse.json(
     { msg: `Successfully removed ${email} from queue` },
@@ -46,14 +56,26 @@ export async function GET(
 ) {
   const { email } = params
 
-  const restaurant = await getRestaurantBySlug('el-club-de-la-mila-5')
+  const clientData = await getClientData({ email })
 
-  const positionInQueue = 1
+  if (!clientData) {
+    return NextResponse.json({ status: HTTP_RESPONSE_STATUS.NO_CONTENT })
+  }
+
+  const restaurant = await getRestaurantBySlug(clientData.restaurantSlug)
+
+  const timeInQueue =
+    (new Date().getTime() - clientData.joinedAt.getTime()) / 60000 // 60000 milliseconds in a minute
+
+  const waitingTime = Math.max(
+    Number(restaurant.avgTimePerTable || 45) - timeInQueue,
+    0
+  )
 
   const client = {
     email,
-    positionInQueue,
-    waitingTime: positionInQueue * Number(restaurant.avgTimePerTable || 45),
+    waitingTime,
+    isCalled: clientData.timesCalled > 0 ? true : false,
   }
 
   return NextResponse.json(
