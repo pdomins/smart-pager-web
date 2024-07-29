@@ -106,7 +106,6 @@ export async function cancelCommensal({
     })
     if (client.messagingToken && client.mobileAuthToken) {
       await sendReservationCanceledNotification({
-        restaurantName,
         messagingToken: client.messagingToken,
         mobileAuthToken: client.mobileAuthToken,
       })

@@ -76,23 +76,21 @@ export async function sendTableCanceledNotification({
     authToken,
     messagingToken,
     title: `Tu mesa fue cancelada`,
-    body: 'Te esperamos mucho tiempo pero no apareciste! :( Esperamos verte pronto!.',
+    body: 'Te esperamos mucho tiempo pero no apareciste! Esperamos verte pronto!.',
   })
 }
 
 export async function sendReservationCanceledNotification({
-  restaurantName,
   mobileAuthToken: authToken,
   messagingToken,
 }: {
-  restaurantName: string
   mobileAuthToken: string
   messagingToken: string
 }) {
   return await sendNotification({
     authToken,
     messagingToken,
-    title: `Reserva cancelada en ${restaurantName}`,
+    title: `Reserva cancelada`,
     body: 'Se canceló tu reserva. Esperamos que puedas visitarnos en otra ocasión.',
   })
 }
