@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     email: yup.string().required(),
     name: yup.string().required(),
     commensalsAmount: yup.string().required(),
-    phoneNumber: yup.string().required().matches(pattern),
+    phoneNumber: yup.string().optional().matches(pattern),
     description: yup.string().optional(),
     authToken: yup.string().required(),
     messagingToken: yup.string().required(),
@@ -71,7 +71,7 @@ export async function POST(
       groupSize: commensals,
       description: description || '',
       name,
-      phoneNumber,
+      phoneNumber: phoneNumber || '',
       mobileAuthToken: authToken,
       messagingToken,
     })

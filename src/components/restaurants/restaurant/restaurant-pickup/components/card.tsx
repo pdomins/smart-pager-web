@@ -87,27 +87,31 @@ const PickUpCard = ({
             </Tooltip>
           )}
         </div>
-        <div className="flex space-x-1 ">
-          <p className="text-sm mt-2 relative">
-            {formatPhoneNumber(phoneNumber)}{' '}
-          </p>
-          <Tooltip
-            title={'Enviar un mensaje por Whatsapp Web'}
-            placement="right"
-            arrow
-          >
-            <button
-              className="relative text-green-500 text-xs "
-              onClick={() =>
-                window.open(
-                  `https://wa.me/${phoneNumber}?text=${encodeURI(`Hola ${name}! Nos comunicamos con vos desde ${restaurantName} por el pedido que realizaste. Por favor, acercate al mostrador!`)}`
-                )
-              }
+        {phoneNumber && (
+          <div className="flex space-x-1">
+            <p className="text-sm mt-2 relative">
+              {formatPhoneNumber(phoneNumber)}{' '}
+            </p>
+            <Tooltip
+              title={'Enviar un mensaje por Whatsapp Web'}
+              placement="right"
+              arrow
             >
-              <WhatsAppIcon />
-            </button>
-          </Tooltip>
-        </div>
+              <button
+                className="relative text-green-500 text-xs"
+                onClick={() =>
+                  window.open(
+                    `https://wa.me/${phoneNumber}?text=${encodeURI(
+                      `Hola ${name}! Nos comunicamos con vos desde ${restaurantName} por el pedido que realizaste. Por favor, acercate al mostrador!`
+                    )}`
+                  )
+                }
+              >
+                <WhatsAppIcon />
+              </button>
+            </Tooltip>
+          </div>
+        )}
         <div className="flex space-x-1 ">
           <p className="text-sm mt-2">Tiempo en espera: {formattedDuration}</p>
           {timesCalled > 0 && (

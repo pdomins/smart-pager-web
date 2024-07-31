@@ -240,7 +240,7 @@ export async function addClientToQueueFromApp({
       name,
       groupSize,
       description: description || '',
-      phoneNumber,
+      phoneNumber: phoneNumber || '',
       mobileAuthToken,
       messagingToken,
       restaurantSlug,
