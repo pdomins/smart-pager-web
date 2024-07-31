@@ -180,7 +180,7 @@ export async function sendReservationCanceledFromAppEmail({
   const { email, name } = client
   return await sendEmailFromEndpoint({
     recipient: email,
-    subject: `Te desanotaste de la lista!`,
+    subject: `¡Te desanotaste de la lista!`,
     html: ReservationCanceledFromAppHTML({
       name,
       restaurantName,
