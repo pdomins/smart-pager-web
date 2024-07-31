@@ -91,7 +91,9 @@ export async function getRestaurantsSearch({
   const skip = page * pageSize
   const curedSearchTerm = searchTerm ? removeQuotes(searchTerm) : ''
 
-  const categoryCondition = category ? `AND r.type = '${category as string}'` : ''
+  const categoryCondition = category
+    ? `AND r.type = '${category as string}'`
+    : ''
 
   const distanceCondition =
     distance && latitude && longitude
@@ -113,7 +115,7 @@ export async function getRestaurantsSearch({
     ORDER BY r.sponsored DESC ${searchTermOrder}
     LIMIT ${pageSize} OFFSET ${skip}
   `
-  
+
   const rawResults: RawRestaurantResult[] =
     await prisma.$queryRaw`${Prisma.raw(query)}`
 
@@ -324,7 +326,7 @@ const updateRestaurantDetails = async ({
   let locationId: string | undefined = uuid()
 
   if (coordinates) {
-    removePreviousLocationIfExists({ restaurantId: id })
+    await removePreviousLocationIfExists({ restaurantId: id })
     await sql`
   INSERT INTO "Location" ("id", "coordinates", "latitude" , "longitude", "address")
   VALUES (${locationId}, ST_Point(${coordinates.lng}, ${coordinates.lat}), ${coordinates.lat}, ${coordinates.lng}, ${address});`
