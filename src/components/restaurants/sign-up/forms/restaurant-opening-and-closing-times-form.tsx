@@ -8,7 +8,9 @@ import {
 import { daysOfWeek } from '@/lib/dates'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
+import RepeatIcon from '@mui/icons-material/Repeat'
 import styles from './styles.module.css'
+import { Tooltip } from '@mui/material'
 
 const RestaurantOpeningAndClosingTimesForm = ({
   weeklyCalendar,
@@ -116,6 +118,35 @@ const RestaurantOpeningAndClosingTimesForm = ({
     return closingTime && openingTime && openingTime >= closingTime
   }
 
+  const hasValidDayBefore = (day: string) => {
+    for (const prev of daysOfWeek) {
+      if (prev === day) return false
+      if (weeklyCalendar[prev].isOpen) return true
+    }
+    return false
+  }
+
+  const copyLastOpenDayInterval = (day: string) => {
+    let lastDay: string = ''
+    for (const prev of daysOfWeek) {
+      if (prev === day) break
+      if (weeklyCalendar[prev].isOpen) lastDay = prev
+    }
+
+    if (!lastDay) return
+
+    setFormState((prev) => ({
+      ...prev,
+      weeklyCalendar: {
+        ...prev.weeklyCalendar,
+        [day]: {
+          ...prev.weeklyCalendar[day],
+          intervals: prev.weeklyCalendar[lastDay].intervals,
+        },
+      },
+    }))
+  }
+
   return (
     <>
       <Snackbar
@@ -158,16 +189,38 @@ const RestaurantOpeningAndClosingTimesForm = ({
                     disabled={disabled}
                   />
                   <h3 className="font-semibold text-gray-700">{day}</h3>
-                  <button
-                    onClick={() => {
-                      addInterval(day)
-                    }}
-                    type="button"
-                    disabled={disabled}
-                    className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
-                  >
-                    <ControlPointIcon />
-                  </button>
+                  {!disabled && weeklyCalendar[day].isOpen && (
+                    <>
+                      <Tooltip title={'Añadir intervalo'} placement="top" arrow>
+                        <button
+                          onClick={() => {
+                            addInterval(day)
+                          }}
+                          type="button"
+                          className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                        >
+                          <ControlPointIcon />
+                        </button>
+                      </Tooltip>
+                      {!disabled &&
+                        weeklyCalendar[day].isOpen &&
+                        hasValidDayBefore(day) && (
+                          <Tooltip
+                            title={'Repetir horarios del último día habil'}
+                            placement="top"
+                            arrow
+                          >
+                            <button
+                              onClick={() => copyLastOpenDayInterval(day)}
+                              type="button"
+                              className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                            >
+                              <RepeatIcon />
+                            </button>
+                          </Tooltip>
+                        )}
+                    </>
+                  )}
                 </div>
                 {weeklyCalendar[day].isOpen && (
                   <div className="flex gap-4 items-center flex-col">
@@ -182,11 +235,8 @@ const RestaurantOpeningAndClosingTimesForm = ({
                       </label>
                     </div>
                     {weeklyCalendar[day].intervals.map((interval, index) => (
-                      <>
-                        <div
-                          className="flex flex-row w-full gap-x-1"
-                          key={index}
-                        >
+                      <div key={index} className="w-full">
+                        <div className="flex flex-row w-full gap-x-1">
                           <input
                             type="time"
                             className={`${hasError({ openingTime: interval.openingTime, closingTime: interval.closingTime }) && 'border-red-500'} form-input mt-1 block w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-violet-700 transition-colors`}
@@ -231,16 +281,23 @@ const RestaurantOpeningAndClosingTimesForm = ({
                             disabled={disabled}
                           />
 
-                          <button
-                            onClick={() => {
-                              removeInterval(day, index)
-                            }}
-                            disabled={disabled}
-                            type="button"
-                            className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
-                          >
-                            <RemoveCircleOutlineIcon />
-                          </button>
+                          {!disabled && weeklyCalendar[day].isOpen && (
+                            <Tooltip
+                              title={'Eliminar intervalo'}
+                              placement="top"
+                              arrow
+                            >
+                              <button
+                                onClick={() => {
+                                  removeInterval(day, index)
+                                }}
+                                type="button"
+                                className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </button>
+                            </Tooltip>
+                          )}
                         </div>
                         {hasError({
                           openingTime: interval.openingTime,
@@ -250,7 +307,7 @@ const RestaurantOpeningAndClosingTimesForm = ({
                             Por favor, selecciona un intervalo válido.
                           </div>
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}
