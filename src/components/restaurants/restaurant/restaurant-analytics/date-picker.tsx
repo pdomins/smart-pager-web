@@ -4,12 +4,19 @@ import { es } from 'date-fns/locale/es'
 import { Ref, forwardRef, useState } from 'react'
 import { ANALYTICS_FILTER_TYPE, getDateFormat } from '@/lib/analytics'
 registerLocale('es', es)
+
 interface ExampleCustomInputProps {
   value?: string
   onClick?: () => void
 }
 
-const CustomDatePicker = ({ filter }: { filter: string }) => {
+const CustomDatePicker = ({
+  filter,
+  minDate,
+}: {
+  filter: string
+  minDate?: Date
+}) => {
   const [startDate, setStartDate] = useState(new Date())
 
   // eslint-disable-next-line react/display-name
@@ -39,6 +46,10 @@ const CustomDatePicker = ({ filter }: { filter: string }) => {
     }
   }
 
+  const getMinDate = () => {
+    return minDate ? { minDate: minDate } : {}
+  }
+
   return (
     <div>
       <label
@@ -56,6 +67,7 @@ const CustomDatePicker = ({ filter }: { filter: string }) => {
         customInput={<ExampleCustomInput />}
         maxDate={new Date()}
         {...getDatePickerProps(filter)}
+        {...getMinDate()}
       />
     </div>
   )

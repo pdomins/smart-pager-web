@@ -1,6 +1,6 @@
 'use client'
 
-import { Restaurant } from '@/types/restaurant'
+import { Restaurant } from '@prisma/client'
 import Gradient from '../../../style/gradient'
 import Container from '../../../style/container'
 import {
@@ -17,7 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { Bar } from 'react-chartjs-2'
 import Filter from './filter'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ANALYTICS_FILTER_TYPE } from '@/lib/analytics'
 import CustomDatePicker from './date-picker'
 
@@ -31,72 +31,71 @@ ChartJS.register(
   ArcElement
 )
 
-const clientsPerHour = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Cantidad de Comensales',
-    },
-  },
-}
-
-const averageWaitingTime = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Tiempo de Espera Promedio (minutos)',
-    },
-  },
-}
-
-const labels = Array.from({ length: 24 }, (_, i) => `${i}:00`)
-
-// function getRandomInt(max: number) {
-//   return Math.floor(Math.random() * max)
-// }
-
-const clientsPerHourData = {
-  labels,
-  datasets: [
-    {
-      label: 'Cantidad de Comensales',
-      data: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 3, 0, 0, 0, 0, 1, 4, 8, 5, 1,
-      ],
-      backgroundColor: 'rgba(139, 92, 246, 0.5)',
-    },
-  ],
-}
-
-const averageWaitingTimeData = {
-  labels,
-  datasets: [
-    {
-      label: 'Tiempo de Espera Promedio (minutos)',
-      data: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 25, 30, 0, 0, 0, 0, 20, 35, 40,
-        25, 15,
-      ],
-      backgroundColor: 'rgba(139, 92, 246, 0.5)',
-    },
-  ],
-}
-
 export default function RestaurantAnalytics({
   restaurantData,
 }: {
   restaurantData: Restaurant
 }) {
-  console.log(restaurantData)
+  const tailwindPurple = 'rgba(139, 92, 246, 0.5)'
   const [filter, setFilter] = useState(ANALYTICS_FILTER_TYPE.DAY)
+  const [labels, setLabels] = useState<string[]>()
+  const [restaurantClientsData, setRestaurantClientsData] = useState<string[]>()
+  const [avgWaitingTimeData, setAvgWaitingTimeData] = useState<string[]>()
+
+  useEffect(() => {
+    if (!restaurantData) return
+    setLabels([])
+    setRestaurantClientsData([])
+    setAvgWaitingTimeData([])
+  }, [restaurantData, filter])
+
+  const clientsOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Cantidad de Comensales',
+      },
+    },
+  }
+
+  const averageWaitingTimeOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Tiempo de Espera Promedio (minutos)',
+      },
+    },
+  }
+
+  const clientsData = {
+    labels,
+    datasets: [
+      {
+        label: 'Cantidad de Comensales',
+        data: restaurantClientsData,
+        backgroundColor: tailwindPurple,
+      },
+    ],
+  }
+
+  const averageWaitingTimeOptionsData = {
+    labels,
+    datasets: [
+      {
+        label: 'Tiempo de Espera Promedio (minutos)',
+        data: avgWaitingTimeData,
+        backgroundColor: tailwindPurple,
+      },
+    ],
+  }
 
   return (
     <div className="relative" id="analytics">
@@ -112,24 +111,52 @@ export default function RestaurantAnalytics({
         </div>
         <div className="flex items-center space-x-5">
           <Filter filter={filter} setFilter={setFilter} />
-          <CustomDatePicker filter={filter} />
+          <CustomDatePicker
+            filter={filter}
+            minDate={new Date(restaurantData.createdAt)}
+          />
         </div>
-        <div className="grid grid-cols-2 gap-20 py-5">
-          <div className="col-span-1">
-            <Bar
-              className="relative"
-              options={clientsPerHour}
-              data={clientsPerHourData}
-            />
+        {labels &&
+        restaurantClientsData &&
+        avgWaitingTimeData &&
+        restaurantClientsData.length > 0 &&
+        avgWaitingTimeData.length > 0 ? (
+          <div className="grid grid-cols-2 gap-20 py-5">
+            <div className="col-span-1">
+              {restaurantClientsData && restaurantClientsData.length > 0 ? (
+                <Bar
+                  className="relative"
+                  options={clientsOptions}
+                  data={clientsData}
+                />
+              ) : (
+                <p className="text-gray-700">
+                  No hay información disponible para mostrar en la fecha
+                  seleccionada
+                </p>
+              )}
+            </div>
+            <div className="col-span-1">
+              {avgWaitingTimeData && avgWaitingTimeData.length > 0 ? (
+                <Bar
+                  className="relative"
+                  options={averageWaitingTimeOptions}
+                  data={averageWaitingTimeOptionsData}
+                />
+              ) : (
+                <p className="text-gray-700">
+                  No hay información disponible para mostrar en la fecha
+                  seleccionada
+                </p>
+              )}
+            </div>
           </div>
-          <div className="col-span-1">
-            <Bar
-              className="relative"
-              options={averageWaitingTime}
-              data={averageWaitingTimeData}
-            />
-          </div>
-        </div>
+        ) : (
+          <p className="text-center text-gray-700 mt-5">
+            Lo sentimos, no hay informacion disponible para la fecha
+            seleccionada.
+          </p>
+        )}
       </Container>
     </div>
   )
