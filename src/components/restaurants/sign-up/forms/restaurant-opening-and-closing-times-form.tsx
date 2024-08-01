@@ -118,32 +118,29 @@ const RestaurantOpeningAndClosingTimesForm = ({
     return closingTime && openingTime && openingTime >= closingTime
   }
 
-  const hasValidDayBefore = (day: string) => {
+  const shouldShowRepeatIntervals = (day: string) => {
     for (const prev of daysOfWeek) {
-      if (prev === day) return false
-      if (weeklyCalendar[prev].isOpen) return true
+      if (prev === day) return true
+      if (
+        JSON.stringify(weeklyCalendar[day]) ===
+        JSON.stringify(weeklyCalendar[prev])
+      )
+        return false
     }
-    return false
+    return true
   }
 
-  const copyLastOpenDayInterval = (day: string) => {
-    let lastDay: string = ''
-    for (const prev of daysOfWeek) {
-      if (prev === day) break
-      if (weeklyCalendar[prev].isOpen) lastDay = prev
-    }
-
-    if (!lastDay) return
+  const setEveryIntervalAs = (day: string) => {
+    const selectedInterval = weeklyCalendar[day].intervals
 
     setFormState((prev) => ({
       ...prev,
-      weeklyCalendar: {
-        ...prev.weeklyCalendar,
-        [day]: {
-          ...prev.weeklyCalendar[day],
-          intervals: prev.weeklyCalendar[lastDay].intervals,
-        },
-      },
+      weeklyCalendar: Object.fromEntries(
+        daysOfWeek.map((d) => [
+          d,
+          { ...weeklyCalendar[d], intervals: selectedInterval },
+        ])
+      ),
     }))
   }
 
@@ -204,14 +201,14 @@ const RestaurantOpeningAndClosingTimesForm = ({
                       </Tooltip>
                       {!disabled &&
                         weeklyCalendar[day].isOpen &&
-                        hasValidDayBefore(day) && (
+                        shouldShowRepeatIntervals(day) && (
                           <Tooltip
-                            title={'Repetir horarios del último día habil'}
+                            title={'Asignar horarios en todos los días'}
                             placement="top"
                             arrow
                           >
                             <button
-                              onClick={() => copyLastOpenDayInterval(day)}
+                              onClick={() => setEveryIntervalAs(day)}
                               type="button"
                               className="relative bg-transparent text-purple-500 hover:text-purple-700 font-bold rounded mr-2 disabled:text-gray-300 disabled:cursor-not-allowed disabled:opacity-75"
                             >
