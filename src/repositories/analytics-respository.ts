@@ -1,8 +1,9 @@
-// SELECT "createdAt", EXTRACT(HOUR FROM "createdAt") AS YEAR FROM "Restaurant" WHERE id = 5;
 'use server'
 
 import prisma from '@/lib/prisma'
+import { CommensalData } from '@/types/queues'
 import { Prisma } from '@prisma/client'
+import { differenceInMinutes } from 'date-fns'
 
 export type ClientsAmountResult = {
   count: number
@@ -54,4 +55,33 @@ export async function getClientsAmountAndAvgWaitingTime({
     await prisma.$queryRaw`${Prisma.raw(query)}`
 
   return rawResults
+}
+
+export async function createClientAnalytics({
+  restaurantId,
+  client,
+  accepted,
+}: {
+  restaurantId: number
+  accepted: boolean
+  client: CommensalData
+}) {
+  const { joinedAt } = client
+  const params = accepted
+    ? {
+        seatedAt: new Date(),
+        waitingTimeMinutes: differenceInMinutes(new Date(), joinedAt),
+      }
+    : {
+        canceledAt: new Date(),
+        waitingTimeMinutes: differenceInMinutes(new Date(), joinedAt),
+      }
+
+  await prisma.analytics.create({
+    data: {
+      joinedAt,
+      restaurantId,
+      ...params,
+    },
+  })
 }

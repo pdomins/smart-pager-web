@@ -1,6 +1,11 @@
 import { ANALYTICS_FILTER_TYPE } from '@/lib/analytics'
 import { months } from '@/lib/dates'
-import { getClientsAmountAndAvgWaitingTime } from '@/repositories/analytics-respository'
+import {
+  createClientAnalytics,
+  getClientsAmountAndAvgWaitingTime,
+} from '@/repositories/analytics-respository'
+import { getFullRestaurantBySlug } from '@/repositories/restaurant-respository'
+import { CommensalData } from '@/types/queues'
 import { getDaysInMonth } from 'date-fns'
 
 export async function getAnalytics({
@@ -81,4 +86,18 @@ export async function getAnalytics({
     avgWaitingTimeArray,
     restaurantClientsArray,
   }
+}
+
+export async function createAnalytics({
+  restaurantSlug,
+  client,
+  accepted,
+}: {
+  restaurantSlug: string
+  client: CommensalData
+  accepted: boolean
+}) {
+  const { id: restaurantId } = await getFullRestaurantBySlug(restaurantSlug)
+
+  await createClientAnalytics({ restaurantId, client, accepted })
 }

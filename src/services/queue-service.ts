@@ -30,6 +30,7 @@ import {
   sendTableReadyNotification,
   sendTableReadyRemainderNotification,
 } from '@/repositories/notification-repository'
+import { createAnalytics } from './analytics-service'
 
 export async function callCommensal({
   restaurantName,
@@ -47,8 +48,6 @@ export async function callCommensal({
       messagingToken: client.messagingToken,
       mobileAuthToken: client.mobileAuthToken,
     })
-
-  // add metrics logic here
 }
 
 export async function retryCallCommensal({
@@ -65,8 +64,6 @@ export async function retryCallCommensal({
       messagingToken: client.messagingToken,
       mobileAuthToken: client.mobileAuthToken,
     })
-
-  // add metrics logic here
 }
 
 export async function acceptCommensal({
@@ -81,7 +78,7 @@ export async function acceptCommensal({
     client,
   })
 
-  // add here logic of removed commensals on acceptance (for metrics)
+  await createAnalytics({ restaurantSlug, client, accepted: true })
 }
 
 export async function cancelCommensal({
@@ -120,7 +117,7 @@ export async function cancelCommensal({
     }
   }
 
-  // add here logic of removed commensals without completion if needed (for metrics)
+  await createAnalytics({ restaurantSlug, client, accepted: false })
 }
 
 export async function removeCommensalFromEmail({
@@ -135,7 +132,7 @@ export async function removeCommensalFromEmail({
     client,
   })
 
-  // metrics -> removed by client
+  await createAnalytics({ restaurantSlug, client, accepted: false })
 }
 
 export async function callPickUp({
@@ -149,8 +146,6 @@ export async function callPickUp({
 }) {
   await kvCallPickUp({ order, restaurantSlug })
   await sendPickUpReadyEmail({ restaurantName, ...order })
-
-  // metrics logic
 }
 
 export async function retryCallPickUp({
@@ -162,8 +157,6 @@ export async function retryCallPickUp({
 }) {
   await kvRetryCallPickUp({ order })
   await sendPickUpReadyRetryEmail({ restaurantName, ...order })
-
-  // metrics logic
 }
 
 export async function acceptPickUp({
@@ -174,8 +167,6 @@ export async function acceptPickUp({
   order: PickUpData
 }) {
   await kvRemovePickUp({ restaurantSlug, order })
-
-  // add here logic of removed pickups on acceptance if needed (for metrics)
 }
 
 export async function cancelPickUp({
@@ -189,8 +180,6 @@ export async function cancelPickUp({
 }) {
   await kvRemovePickUp({ restaurantSlug, order })
   await sendPickUpCanceledEmail({ restaurantName, ...order })
-
-  // add here logic of removed pickups without completion if needed (for metrics)
 }
 
 export async function removeClientFromQueueFromApp({
@@ -213,7 +202,7 @@ export async function removeClientFromQueueFromApp({
     restaurantName: name || '',
   })
 
-  // add here logic of removed clients if needed (for metrics)
+  await createAnalytics({ restaurantSlug, client, accepted: false })
   return client
 }
 
