@@ -1,9 +1,6 @@
 import { ANALYTICS_FILTER_TYPE } from '@/lib/analytics'
 import { months } from '@/lib/dates'
-import {
-  getClientsAmount,
-  getClientsAvgWaitingTime,
-} from '@/repositories/analytics-respository'
+import { getClientsAmountAndAvgWaitingTime } from '@/repositories/analytics-respository'
 import { getDaysInMonth } from 'date-fns'
 
 export async function getAnalytics({
@@ -33,6 +30,7 @@ export async function getAnalytics({
       break
     }
     default: {
+      // DAY
       label = Array.from({ length: 24 }, (_, i) => `${i}:00`)
       day = date.getDate()
       month = date.getMonth() + 1
@@ -41,24 +39,46 @@ export async function getAnalytics({
     }
   }
 
-  const avgWaitingTime = await getClientsAvgWaitingTime({
+  const clientsAmount = await getClientsAmountAndAvgWaitingTime({
     restaurantSlug,
     day,
     month,
     year,
   })
 
-  const clientsAmount = await getClientsAmount({
-    restaurantSlug,
-    day,
-    month,
-    year,
-  })
+  const restaurantClientsArray = new Array(label.length).fill(0)
+  const avgWaitingTimeArray = new Array(label.length).fill(0)
 
-  console.log({ avgWaitingTime, clientsAmount })
+  switch (filter) {
+    case ANALYTICS_FILTER_TYPE.MONTH: {
+      clientsAmount.forEach((item) => {
+        const idx = Number(item.day) || 0
+        restaurantClientsArray[idx] = Number(item.count)
+        avgWaitingTimeArray[idx] = Number(item.avg)
+      })
+      break
+    }
+    case ANALYTICS_FILTER_TYPE.YEAR: {
+      clientsAmount.forEach((item) => {
+        const idx = Number(item.month) || 0
+        restaurantClientsArray[idx] = Number(item.count)
+        avgWaitingTimeArray[idx] = Number(item.avg)
+      })
+      break
+    }
+    default: {
+      clientsAmount.forEach((item) => {
+        const idx = Number(item.hour) || 0
+        restaurantClientsArray[idx] = Number(item.count)
+        avgWaitingTimeArray[idx] = Number(item.avg)
+      })
+      break
+    }
+  }
+
   return {
     label,
-    avgWaitingTimeArray: label.map(() => Math.random()),
-    restaurantClientsArray: label.map(() => Math.random()),
+    avgWaitingTimeArray,
+    restaurantClientsArray,
   }
 }

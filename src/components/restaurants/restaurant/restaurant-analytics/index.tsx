@@ -91,6 +91,29 @@ export default function RestaurantAnalytics({
         text: 'Cantidad de Comensales',
       },
     },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text:
+            filter === ANALYTICS_FILTER_TYPE.DAY
+              ? 'Horas'
+              : filter === ANALYTICS_FILTER_TYPE.MONTH
+                ? 'Día del mes'
+                : 'Mes',
+        },
+      },
+      y: {
+        ticks: {
+          callback: function (value: number | string) {
+            if (Number.isInteger(value)) {
+              return value
+            }
+          },
+          stepSize: 1,
+        },
+      },
+    },
   }
 
   const averageWaitingTimeOptions = {
@@ -102,6 +125,19 @@ export default function RestaurantAnalytics({
       title: {
         display: true,
         text: 'Tiempo de Espera Promedio (minutos)',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text:
+            filter === ANALYTICS_FILTER_TYPE.DAY
+              ? 'Horas'
+              : filter === ANALYTICS_FILTER_TYPE.MONTH
+                ? 'Día del mes'
+                : 'Mes',
+        },
       },
     },
   }
