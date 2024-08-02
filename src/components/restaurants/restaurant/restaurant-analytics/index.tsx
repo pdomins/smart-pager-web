@@ -20,6 +20,9 @@ import Filter from './filter'
 import { useEffect, useState } from 'react'
 import { ANALYTICS_FILTER_TYPE } from '@/lib/analytics'
 import CustomDatePicker from './date-picker'
+import Spinner from '@/components/utils/spinner'
+import { getAnalytics } from '@/services/analytics-service'
+import { assertAndReturn } from '@/lib/assertions'
 
 ChartJS.register(
   CategoryScale,
@@ -37,17 +40,45 @@ export default function RestaurantAnalytics({
   restaurantData: Restaurant
 }) {
   const tailwindPurple = 'rgba(139, 92, 246, 0.5)'
+  const [startDate, setStartDate] = useState(new Date())
+
   const [filter, setFilter] = useState(ANALYTICS_FILTER_TYPE.DAY)
   const [labels, setLabels] = useState<string[]>()
-  const [restaurantClientsData, setRestaurantClientsData] = useState<string[]>()
-  const [avgWaitingTimeData, setAvgWaitingTimeData] = useState<string[]>()
+  const [restaurantClientsData, setRestaurantClientsData] = useState<number[]>()
+  const [avgWaitingTimeData, setAvgWaitingTimeData] = useState<number[]>()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (!restaurantData) return
-    setLabels([])
-    setRestaurantClientsData([])
-    setAvgWaitingTimeData([])
-  }, [restaurantData, filter])
+    const fetchAnalytics = async ({
+      date,
+      filter,
+    }: {
+      date: Date
+      filter: string
+    }) => {
+      try {
+        setIsLoading(true)
+        const { label, avgWaitingTimeArray, restaurantClientsArray } =
+          await getAnalytics({
+            restaurantSlug: assertAndReturn(restaurantData.slug),
+            date,
+            filter,
+          })
+        setLabels(label)
+        setRestaurantClientsData(restaurantClientsArray)
+        setAvgWaitingTimeData(avgWaitingTimeArray)
+      } catch (error) {
+        setLabels([])
+        setRestaurantClientsData([])
+        setAvgWaitingTimeData([])
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchAnalytics({ date: startDate, filter })
+  }, [restaurantData, filter, startDate])
 
   const clientsOptions = {
     responsive: true,
@@ -114,45 +145,37 @@ export default function RestaurantAnalytics({
           <CustomDatePicker
             filter={filter}
             minDate={new Date(restaurantData.createdAt)}
+            startDate={startDate}
+            setStartDate={setStartDate}
           />
         </div>
-        {labels &&
-        restaurantClientsData &&
-        avgWaitingTimeData &&
-        restaurantClientsData.length > 0 &&
-        avgWaitingTimeData.length > 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center mt-10">
+            <Spinner />
+          </div>
+        ) : labels &&
+          restaurantClientsData &&
+          avgWaitingTimeData &&
+          restaurantClientsData.length > 0 &&
+          avgWaitingTimeData.length > 0 ? (
           <div className="grid grid-cols-2 gap-20 py-5">
             <div className="col-span-1">
-              {restaurantClientsData && restaurantClientsData.length > 0 ? (
-                <Bar
-                  className="relative"
-                  options={clientsOptions}
-                  data={clientsData}
-                />
-              ) : (
-                <p className="text-gray-700">
-                  No hay información disponible para mostrar en la fecha
-                  seleccionada
-                </p>
-              )}
+              <Bar
+                className="relative"
+                options={clientsOptions}
+                data={clientsData}
+              />
             </div>
             <div className="col-span-1">
-              {avgWaitingTimeData && avgWaitingTimeData.length > 0 ? (
-                <Bar
-                  className="relative"
-                  options={averageWaitingTimeOptions}
-                  data={averageWaitingTimeOptionsData}
-                />
-              ) : (
-                <p className="text-gray-700">
-                  No hay información disponible para mostrar en la fecha
-                  seleccionada
-                </p>
-              )}
+              <Bar
+                className="relative"
+                options={averageWaitingTimeOptions}
+                data={averageWaitingTimeOptionsData}
+              />
             </div>
           </div>
         ) : (
-          <p className="text-center text-gray-700 mt-5">
+          <p className="text-center text-gray-500 mt-10">
             Lo sentimos, no hay informacion disponible para la fecha
             seleccionada.
           </p>

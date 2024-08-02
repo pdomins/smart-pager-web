@@ -1,7 +1,7 @@
 import DatePicker from 'react-datepicker'
 import { registerLocale } from 'react-datepicker'
 import { es } from 'date-fns/locale/es'
-import { Ref, forwardRef, useState } from 'react'
+import { Dispatch, Ref, SetStateAction, forwardRef } from 'react'
 import { ANALYTICS_FILTER_TYPE, getDateFormat } from '@/lib/analytics'
 registerLocale('es', es)
 
@@ -13,12 +13,14 @@ interface ExampleCustomInputProps {
 const CustomDatePicker = ({
   filter,
   minDate,
+  startDate,
+  setStartDate,
 }: {
   filter: string
   minDate?: Date
+  startDate: Date
+  setStartDate: Dispatch<SetStateAction<Date>>
 }) => {
-  const [startDate, setStartDate] = useState(new Date())
-
   // eslint-disable-next-line react/display-name
   const ExampleCustomInput = forwardRef<
     HTMLButtonElement,

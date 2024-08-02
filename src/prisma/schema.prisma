@@ -24,6 +24,8 @@ model Restaurant {
   avgTimePerTable String?
   operatingHours  Json?
 
+  analytics Analytics[]
+
   location   Location? @relation(fields: [locationId], references: [id])
   locationId String?   @unique
 
@@ -47,4 +49,18 @@ model Location {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@index([coordinates], name: "location_idx", type: Gist)
+}
+
+model Analytics {
+  id                 String   @id @default(cuid())
+  joinedAt           DateTime
+  seatedAt           DateTime?
+  canceledAt         DateTime?
+  waitingTimeMinutes Int?
+
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
