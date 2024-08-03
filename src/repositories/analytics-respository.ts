@@ -66,15 +66,21 @@ export async function createClientAnalytics({
   accepted: boolean
   client: CommensalData
 }) {
-  const { joinedAt } = client
+  const now = new Date()
+  now.setHours(now.getHours() - 3)
+
+  const { joinedAt: joinedAtUTC } = client
+  const joinedAt = new Date(joinedAtUTC)
+  joinedAt.setHours(joinedAt.getHours() - 3)
+
   const params = accepted
     ? {
-        seatedAt: new Date(),
-        waitingTimeMinutes: differenceInMinutes(new Date(), joinedAt),
+        seatedAt: now,
+        waitingTimeMinutes: differenceInMinutes(now, joinedAt),
       }
     : {
-        canceledAt: new Date(),
-        waitingTimeMinutes: differenceInMinutes(new Date(), joinedAt),
+        canceledAt: now,
+        waitingTimeMinutes: differenceInMinutes(now, joinedAt),
       }
 
   await prisma.analytics.create({
