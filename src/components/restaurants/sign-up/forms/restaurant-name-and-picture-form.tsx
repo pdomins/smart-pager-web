@@ -6,7 +6,7 @@ import { Tooltip } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import Snackbar from '@/components/utils/snackbar'
 
-const SIZE_LIMIT = 5 * 1024 // 5 KB
+const SIZE_LIMIT = 25 * 1024 // 25 KB
 
 const RestaurantNameForm = ({
   name,
@@ -48,7 +48,7 @@ const RestaurantNameForm = ({
         isOpen={hasError}
         variant="filled"
         setIsOpen={setHasError}
-        text="Por favor, asegurate que tu imágen sea menor que 5KB."
+        text="Por favor, asegurate que tu imágen sea menor que 25KB."
       />
       <div className="flex items-center">
         <div className="relative inline-block">
