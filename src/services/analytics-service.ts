@@ -51,6 +51,14 @@ export async function getAnalytics({
     year,
   })
 
+  if (clientsAmount.length === 0) {
+    return {
+      label,
+      avgWaitingTimeArray: [],
+      restaurantClientsArray: [],
+    }
+  }
+
   const restaurantClientsArray = new Array(label.length).fill(0)
   const avgWaitingTimeArray = new Array(label.length).fill(0)
 
