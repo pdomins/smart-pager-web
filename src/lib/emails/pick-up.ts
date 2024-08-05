@@ -73,7 +73,7 @@ export const PickUpReadyHTML = ({
         </div>
         <div class="footer">
           <div><strong>Smart Pager</strong></div>
-          <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+          <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
         </div>
       </div>
       </body>
@@ -156,7 +156,7 @@ export const PickUpReadyRetryHTML = ({
     </div>
     <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
     </div>
     </div>
     </body>
@@ -239,7 +239,7 @@ export const PickUpCanceledHTML = ({
     </div>
     <div class="footer">
       <div><strong>Smart Pager</strong></div>
-      <p class="text-footer">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos al (11) 1234-5678.</p>
+      <p class="text-footer">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos a smartpager.pf@gmail.com.</p>
     </div>
   </div>
   </body>
@@ -339,7 +339,7 @@ export const PickUpAddedHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>

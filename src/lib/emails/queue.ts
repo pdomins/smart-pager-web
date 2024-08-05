@@ -81,7 +81,7 @@ export const TableReadyHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>
@@ -157,7 +157,7 @@ export const TableReadyRemainderHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>
@@ -268,7 +268,7 @@ export const AddedToQueueHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>
@@ -357,7 +357,7 @@ export const AddedToQueueFromAppHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos al (11) 1234-5678.</p>
+        <p class="text-footer">Si tienes alguna pregunta, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>
