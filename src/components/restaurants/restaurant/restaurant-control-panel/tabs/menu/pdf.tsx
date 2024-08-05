@@ -54,7 +54,7 @@ const ViewMenu = ({ menu }: { menu: string }) => {
           </Document>
           <div className="flex flex-col items-center">
             <p>
-              Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+              Página {pageNumber || (numPages ? 1 : '--')} de {numPages || '--'}
             </p>
             <div className="flex items-center justify-center space-x-2">
               <button
@@ -63,7 +63,7 @@ const ViewMenu = ({ menu }: { menu: string }) => {
                 disabled={pageNumber <= 1}
                 onClick={previousPage}
               >
-                <span className="relative text-purple-700">Previous</span>
+                <span className="relative text-purple-700">Anterior</span>
               </button>
               <button
                 type="button"
@@ -71,7 +71,7 @@ const ViewMenu = ({ menu }: { menu: string }) => {
                 disabled={pageNumber >= numPages}
                 onClick={nextPage}
               >
-                <span className="relative text-purple-700">Next</span>
+                <span className="relative text-purple-700">Siguiente</span>
               </button>
             </div>
           </div>
