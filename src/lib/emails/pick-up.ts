@@ -239,7 +239,7 @@ export const PickUpCanceledHTML = ({
     </div>
     <div class="footer">
       <div><strong>Smart Pager</strong></div>
-      <p class="text-footer">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos a smartpager.pf@gmail.com.</p>
+      <p class="text-footer">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos vía <u>smartpager.pf@gmail.com</u>.</p>
     </div>
   </div>
   </body>

@@ -445,7 +445,7 @@ export const TableCanceledHTML = ({
       </div>
       <div class="footer">
         <div><strong>Smart Pager</strong></div>
-        <p class="text-footer">Para cualquier consulta o nueva reserva, contáctanos al (11) 1234-5678.</p>
+        <p class="text-footer">Para cualquier consulta o nueva reserva, contáctanos vía <u>smartpager.pf@gmail.com</u>.</p>
       </div>
     </div>
     </body>
@@ -533,7 +533,7 @@ export const ReservationCanceledHTML = ({
         </div>
         <div class="footer">
           <div><strong>Smart Pager</strong></div>
-          <p class="text-footer">Por favor, contáctanos al (11) 1234-5678 para más información o para hacer una nueva reserva.</p>
+          <p class="text-footer">Por favor, contáctanos vía <u>smartpager.pf@gmail.com</u> para más información o para hacer una nueva reserva.</p>
         </div>
       </div>
       </body>
@@ -622,7 +622,7 @@ export const ReservationCanceledFromAppHTML = ({
         </div>
         <div class="footer">
           <div><strong>Smart Pager</strong></div>
-          <p class="text-footer">Por favor, contáctanos al (11) 1234-5678 para más información o para hacer una nueva reserva.</p>
+          <p class="text-footer">Por favor, contáctanos vía <u>smartpager.pf@gmail.com</u> para más información o para hacer una nueva reserva.</p>
         </div>
       </div>
       </body>
